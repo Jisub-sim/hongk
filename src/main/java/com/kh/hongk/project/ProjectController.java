@@ -10,5 +10,30 @@ public class ProjectController {
 	public String projectList() {
 		return "project/projectPage";
 	}
+	
+	@RequestMapping("teamcare.do")
+	public String teamCare() {
+		return "project/team/teamCare";
+	}
+	@RequestMapping("teamadd.do")
+	public String teamAdd() {
+		return "project/team/teamAdd";
+	}
+	@RequestMapping("taskadd.do")
+	public String taskAdd() {
+		return "project/task/taskAdd";
+	}
+	@RequestMapping("taskclick.do")
+	public String taskClick() {
+		return "project/task/taskClick";
+	}
+	@RequestMapping("askadd.do")
+	public String askAdd() {
+		return "project/ask/askAdd";
+	}
+	@RequestMapping("progress.do")
+	public String progressUpdate() {
+		return"project/popup/progressUpdate";
+	}
 
 }
