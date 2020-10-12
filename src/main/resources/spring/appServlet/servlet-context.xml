@@ -25,6 +25,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	
 	<context:component-scan base-package="com.kh.hongk" />
 	
+	<aop:aspectj-autoproxy/>
 	
 	
 </beans:beans>

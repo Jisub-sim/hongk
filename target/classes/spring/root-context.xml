@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
-	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-		
-	    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:aop="http://www.springframework.org/schema/aop"
+   xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+   
+   <!-- Root Context: defines shared resources visible to all other web components -->
+      
+   <bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource"
     destroy-method="close">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
-		<property name="username" value="hongk"/>
-		<property name="password" value="hongk"/>
-		<property name="defaultAutoCommit" value="false"/>
-	</bean>
-	
-	 <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+      <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+      <property name="username" value="hongk"/>
+      <property name="password" value="hongk"/>
+      <property name="defaultAutoCommit" value="false"/>
+   </bean>
+   
+    <bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
        <constructor-arg ref="dataSourceSpied"/>
        <property name="logFormatter">
           <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
@@ -28,10 +28,10 @@
        </property>
     </bean>
       <!-- 
-    	트랜잭션 처리(commit/rollback)
-    	JDBC : Connection 객체
-    	MyBatis : SqlSession 객체
-    	Spring : TransactionManager 객체
+       트랜잭션 처리(commit/rollback)
+       JDBC : Connection 객체
+       MyBatis : SqlSession 객체
+       Spring : TransactionManager 객체
      -->
      <!--  1. DataSourceTransactionManager 객체 bean 등록 -->    
    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -42,19 +42,19 @@
    <!-- 트랜잭션을 적용할 때 사용 될 Advisor를 생성(실제 트랜잭션 적용은 아님) -->    
    <tx:advice id="txAdvice" transaction-manager="transactionManager">
       <tx:attributes>
-      	<!-- 트랜잭션을 선언 할 메소드 및 트랜잭션 속성 설정
-      	name : 적용 메소드명 명시
-      	read-only : 성능을 최적화 하기 위해 사용할수도 있고 특정 트랜잭션 작업 안에서 쓰기 작업이  일어나는 것을
-      	으도적으로 방지하기 위해 사용. 일반적으로 읽기 전용 트랜잭션이 시작 된 후 DML 작업이 진행되면 예외 발생
-      	rollback-for : 특정 예외가 발생 시 강제로 rollback -->
+         <!-- 트랜잭션을 선언 할 메소드 및 트랜잭션 속성 설정
+         name : 적용 메소드명 명시
+         read-only : 성능을 최적화 하기 위해 사용할수도 있고 특정 트랜잭션 작업 안에서 쓰기 작업이  일어나는 것을
+         으도적으로 방지하기 위해 사용. 일반적으로 읽기 전용 트랜잭션이 시작 된 후 DML 작업이 진행되면 예외 발생
+         rollback-for : 특정 예외가 발생 시 강제로 rollback -->
          <tx:method name="select*" read-only="true" rollback-for="Exception" />
          <tx:method name="insert*" rollback-for="Exception" />
          <tx:method name="update*" rollback-for="Exception" />
          <tx:method name="delete*" rollback-for="Exception" />
       </tx:attributes>
    </tx:advice>
-	
-	<!--  3. Namespace에서 AOP 추가 -->
+   
+   <!--  3. Namespace에서 AOP 추가 -->
    <aop:config>
       <aop:pointcut id="serviceMethod"
          expression="execution(* com.kh.spring..*Impl.*(..)))" />
