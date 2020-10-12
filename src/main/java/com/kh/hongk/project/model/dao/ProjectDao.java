@@ -14,8 +14,7 @@ public class ProjectDao {
 	private SqlSessionTemplate sqlSession;
 
 	public ArrayList<Member> selectMemberList() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList)sqlSession.selectList("projectMapper.selectMemberList",null,null);
 	}
 	
 	
