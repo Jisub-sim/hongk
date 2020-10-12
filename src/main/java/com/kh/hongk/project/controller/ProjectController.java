@@ -1,10 +1,24 @@
-package com.kh.hongk.project;
+package com.kh.hongk.project.controller;
 
+import java.util.ArrayList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kh.hongk.project.model.service.ProjectService;
+import com.kh.hongk.project.model.vo.Member;
+
 @Controller
 public class ProjectController {
+	@Autowired
+	private ProjectService pService;
+	
+	private Logger logger = LoggerFactory.getLogger(ProjectController.class);
+	
+	
 	
 	@RequestMapping("project.do")
 	public String projectList() {
@@ -17,6 +31,9 @@ public class ProjectController {
 	}
 	@RequestMapping("teamadd.do")
 	public String teamAdd() {
+		//조직도 가져오기
+		ArrayList<Member> m = pService.selectMemberList();
+		
 		return "project/team/teamAdd";
 	}
 	@RequestMapping("taskadd.do")
@@ -33,7 +50,10 @@ public class ProjectController {
 	}
 	@RequestMapping("progress.do")
 	public String progressUpdate() {
-		return"project/popup/progressUpdate";
+		return "project/popup/progressUpdate";
 	}
-
+	@RequestMapping("proUpdate.do")
+	public String projectUpdate() {
+		return "project/projectUpdate";
+	}
 }
