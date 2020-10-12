@@ -38,7 +38,6 @@
     text-align:center;
     padding-top : 7px;
     font-weight: 700;
-    color:white;
     background-color:skyblue;
     margin-left:0;
 }
@@ -97,11 +96,15 @@ ul, li{
     padding-right:5px;
 }
 .task_name{
-    width:65%;
+    width:50%;
 }
 .task_mana{
     width:15%;
     text-align:center;
+}
+.task_status{
+	width:15%;
+	text-align:center;
 }
 .task_date{
     width:20%;
@@ -110,6 +113,9 @@ ul, li{
 #main div{
 	border: 1px solid skyblue;
 }
+#pg{
+	color:white;
+}
 </style>
 </head>
 <body>
@@ -117,13 +123,19 @@ ul, li{
 		
 		 <div id="main">
         <div class="project" id="project_info">
-            <div id="progress">진행률</div>
+            <div id="progress"><a href="javascript:clickfunction();" id="pg">진행률</a></div>
             <section id="update">
-            <a href>수정</a>
+            <script>
+            	function clickfunction(){
+            		window.open("progress.do","a","width=400,height=150,left=100, top=50");
+            	}
+            </script>
+            <a href="proUpdate.do">수정</a>
             /
             <a href>삭제</a>
             /
-            <a href>팀관리</a>
+            <c:url var="teamcare" value="teamcare.do"/>
+            <a href="${ teamcare }">팀관리</a>
         </section>
         <ul id="main_info">
             <li>프로젝트명 : </li>
@@ -166,32 +178,38 @@ ul, li{
         </div>
         <div class="project" id="task">
             <table id="task_style">
-                <th colspan="3">업무목록<a href="" class="plus">+</a></th>
+                <th colspan="4">업무목록<a href="taskadd.do" class="plus">+</a></th>
                 
                 <tr>
-                    <td class="task_name">업무명</td>
+                    <td class="task_name"><a href="taskclick.do">업무명</a></td>
                     <td class="task_mana">담당자</td>
+					<td class="task_status">상태</td>
                     <td class="task_date">게시일</td>
+                                       
+                    
                 </tr>
                 <tr>
                         <td class="task_name">오늘까지 이거해라</td>
                         <td class="task_mana">담당자</td>
+                        <td class="task_status">상태</td>
                         <td class="task_date">2020-10-03</td>
                     </tr>
             </table>
         </div>
         <div class="project" id="ask">
                 <table id="ask_style">
-                        <th colspan="3">요청사항<a href="" class="plus">+</a></th>
+                        <th colspan="4">요청사항<a href="askadd.do" class="plus">+</a></th>
                         
                         <tr>
                             <td class="task_name">업무명</td>
                             <td class="task_mana">담당자</td>
+							<td class="task_status">상태</td>
                             <td class="task_date">게시일</td>
                         </tr>
                         <tr>
                                 <td class="task_name">오늘까지 이거해주세요</td>
                                 <td class="task_mana">담당자</td>
+                                <td class="task_status">상태</td>
                                 <td class="task_date">2020-10-03</td>
                             </tr>
                     </table>
