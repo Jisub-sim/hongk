@@ -1,4 +1,4 @@
-package com.kh.hongk.project.model.vo;
+package com.kh.hongk.member.model.vo;
 
 import java.sql.Date;
 

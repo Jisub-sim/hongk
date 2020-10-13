@@ -6,11 +6,12 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias type="com.kh.hongk.project.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.hongk.member.model.vo.Member" alias="Member"/>
 	
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mappers/project-mapper.xml"/>
+		<mapper resource="mappers/member-mapper.xml"/>
 	</mappers>
 </configuration>
