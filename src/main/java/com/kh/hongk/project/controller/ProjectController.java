@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.service.ProjectService;
-import com.kh.hongk.project.model.vo.Member;
 
 @Controller
 public class ProjectController {
@@ -18,7 +18,10 @@ public class ProjectController {
 	
 	private Logger logger = LoggerFactory.getLogger(ProjectController.class);
 	
-	
+	@RequestMapping("myProject.do")
+	public String myProject() {
+		return "project/myProject";
+	}
 	
 	@RequestMapping("project.do")
 	public String projectList() {
