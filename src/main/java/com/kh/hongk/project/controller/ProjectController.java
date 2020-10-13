@@ -2,14 +2,18 @@ package com.kh.hongk.project.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.service.ProjectService;
+import com.kh.hongk.project.model.vo.Project;
 
 @Controller
 public class ProjectController {
@@ -19,8 +23,18 @@ public class ProjectController {
 	private Logger logger = LoggerFactory.getLogger(ProjectController.class);
 	
 	@RequestMapping("myProject.do")
-	public String myProject() {
-		return "project/myProject";
+	public ModelAndView myProject(ModelAndView mv, HttpServletRequest request ) {
+		// 내가 관련된 프로젝트 가져오기 
+		int mNo =((Member)request.getSession().getAttribute("loginUser")).getmNo();
+		System.out.println("프로젝트 mNo : " + mNo);
+		ArrayList<Project> list = pService.selectmyProject(mNo);
+		System.out.println("list : " + list);
+		
+		if(list != null) {
+			mv.addObject("list", list);
+			mv.setViewName("project/myProject");
+		}
+		return mv;
 	}
 	
 	@RequestMapping("project.do")

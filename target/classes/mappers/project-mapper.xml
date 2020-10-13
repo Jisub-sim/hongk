@@ -19,4 +19,33 @@
 		<result property="deptCode" column="DEPT_CODE"/>
 		<result property="jobCode" column="JOB_CODE"/>	
 	</resultMap>
+	
+	<resultMap type="Project" id="projectResultSet">
+		<id property="pId" column="PID"/>
+		<result property="pTitle" column="PTITLE"/>
+		<result property="pContent" column="PCONTENT"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="pDate" column="PDATE"/>
+		<result property="deadLine" column="DEADLINE"/>
+		<result property="pStatus" column="PSTATUS"/>
+		<result property="manager" column="MANAGER"/>
+	</resultMap>
+	
+	<resultMap type="Pmember" id="pmemberResultSet">
+		<id property="mNo" column="MNO"/>
+		<result property="pKinds" column="P_KINDS"/>
+		<result property="pmStatus" column="PM_STATUS"/>
+		<result property="ptId" column="PT_ID"/>
+		<result property="pId" column="PID"/>
+	</resultMap>
+	
+	<select id="selectmyProject" parameterType="Project" resultMap="projectResultSet">
+		SELECT P.PID,PTITLE,PCONTENT,PROGRESS,PDATE,DEADLINE,PSTATUS,MANAGER
+		FROM PROJECT P, PMEMBER M
+		WHERE MNO = #{mNo}
+		AND P.PID = M.PID
+		ORDER BY PDATE
+	
+	</select>
+	
 </mapper>
