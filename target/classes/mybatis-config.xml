@@ -7,11 +7,13 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.hongk.member.model.vo.Member" alias="Member"/>
-	
+		<typeAlias alias="Electronic_Approval" type="com.kh.hongk.approval.model.vo.Electronic_Approval"/>
+		<typeAlias alias="Form" type="com.kh.hongk.approval.model.vo.Form"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mappers/project-mapper.xml"/>
 		<mapper resource="mappers/member-mapper.xml"/>
+		<mapper resource="mappers/ea-mapper.xml"/>
 	</mappers>
 </configuration>
