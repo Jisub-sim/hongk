@@ -9,6 +9,9 @@
 		<typeAlias type="com.kh.hongk.member.model.vo.Member" alias="Member"/>
 		<typeAlias alias="Electronic_Approval" type="com.kh.hongk.approval.model.vo.Electronic_Approval"/>
 		<typeAlias alias="Form" type="com.kh.hongk.approval.model.vo.Form"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Project" alias="Project"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
+	
 	</typeAliases>
 
 	<mappers>
