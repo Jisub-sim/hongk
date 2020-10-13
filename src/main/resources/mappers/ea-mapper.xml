@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="eaMapper">
+	<resultMap type="Electronic_Approval" id="eaResultSet">
+		<id property="ea_no" column="EA_NO"/>
+		<result property="draftng_date" column="DRAFTING_DATE"/>
+		<result property="complete_date" column="COMPLETE_DATE"/>
+		<result property="ea_type" column="EA_TYPE"/>
+		<result property="ea_title" column="EA_TITLE"/>
+		<result property="ea_content" column="EA_CONTENT"/>
+		<result property="ea_status" column="EA_STATUS"/>
+		<result property="drafter" column="DRAFTER"/>
+		<result property="form_no" column="Form_no"/>
+	</resultMap>
+	
+	<resultMap type="Form" id="formResultSet">
+		<id property="form_no" column="FORM_NO"/>
+		<result property="form_name" column="FORM_NAME"/>
+		<result property="form_content" column="FORM_CONTENT"/>
+		<result property="mno" column="MNO"/>
+		<result property="form_create_date" column="FORM_CREATE_DATE"/>
+		<result property="form_type" column="FORM_TYPE"/>
+		<result property="form_category" column="FORM_CATEGORY"/>
+	</resultMap>
+	
+	
+	<insert id="formInsert" parameterType="Form">
+		INSERT INTO FORM VALUES(
+			SEQ_fORMID.NEXTVAL, #{form_name}, #{form_content}, #{ mno }, SYSDATE,
+			#{form_type}, #{form_category}
+		)
+	</insert>
+	
+	<select id="selectFormList" resultMap="formResultSet">
+		SELECT *
+		FROM FORM
+		ORDER BY FORM_NO DESC
+	</select>
+	
+	<select id="selectForm" resultMap="formResultSet">
+		SELECT *
+		FROM FORM
+		WHERE FORM_no=#{ fid }
+	</select>
+	
+	<insert id="temeaform" parameterType="Electronic_Approval">
+		INSERT INTO Electronic_Approval VALUES(
+			SEQ_EAID.NEXTVAL, SYSDATE, NULL , #{ ea_type }, #{ea_title}
+			, #{ea_content}, 'T', #{drafter}, #{form_no}
+		)
+	</insert>
+	
+	<insert id="insertea" parameterType="Electronic_Approval">
+		INSERT INTO Electronic_Approval VALUES(
+			SEQ_EAID.NEXTVAL, SYSDATE, NULL , #{ ea_type }, #{ea_title}
+			, #{ea_content}, 'W', #{drafter}, #{form_no}
+		)
+	</insert>
+	
+	<select id="selectListTem" resultMap="eaResultSet">
+		SELECT *
+		FROM Electronic_Approval
+		WHERE EA_STATUS='T'
+	</select>
+	
+	
+</mapper>

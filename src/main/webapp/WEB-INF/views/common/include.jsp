@@ -187,9 +187,10 @@ a {
             <i class="fab fa-accusoft"></i>
             <a href="" id="logo_font">Hongk</a>
         </div>
+        	<c:url var="approval" value="app.do"/>
             <c:url var="project" value="project.do"/>
         <ul id="navi_font">
-            <li><a href="" class="navi_font">전자결재</a></li>
+            <li><a href="${ approval }"class="navi_font">전자결재</a></li>
             <li><a href="${ project }" class="navi_font">프로젝트</a></li>
             <li><a href="" class="navi_font">일정관리</a></li>
             <li><a href="" class="navi_font">게시판</a></li>
@@ -225,14 +226,42 @@ a {
         </c:if>
       </header>
       <h3 id="sideTitle">게시판</h3>
+       
       <ul>
         <li><a href="notice.html" style="color: orange">공지사항</a></li>
         <li><a href="propose.html">제안 게시판</a></li>
         <li><a href="department.html">부서 게시판</a></li>
         <li><a href="free.html">자유 게시판</a></li>
         <li><a href="myProject.do">내 프로젝트보기</a></li>
-       
       </ul>
+          <!--    
+         <c:url var="formList" value="formList.do"/>
+        <c:url var="earequest" value="earequest.do"/>
+        <c:url var="temporEAList" value="temporEAList.do"/>
+        <c:url var="waitingEAList" value="waitingEAList.do"/>
+        <c:url var="progressEAList" value="progressEAList.do"/>
+        <c:url var="completeEAList" value="completeEAList.do"/>
+        <c:url var="TBackEAList" value="TBackEAList.do"/>
+        <c:url var="referEAList" value="referEAList.do"/>
+        <c:url var="sigList" value="sigList.do"/>
+        <c:url var="FormInsertPage" value="FormInsertPage.do"/>
+        <ul>
+        <li><br><b>기안</b></li>
+        <li><a href="${ formList }">기안문 작성</a></li>
+        <li><a href="${ earequest }">결재 요청함</a></li>
+        <li><a href="${ temporEAList }">임시 저장함</a></li>
+        <li><br><b>결재</b></li>
+        <li><a href="${ waitingEAList }">결재대기함</a></li>
+        <li><a href="${ progressEAList }">결재진행함</a></li>
+        <li><a href="${ completeEAList }">완료문서함</a></li>
+        <li><a href="${ TBackEAList }">반려문서함</a></li>
+        <li><a href="${ referEAList }">참조문서함</a></li>
+        <li><br><b>기타</b></li>
+        <li><a href="${ sigList }">서명관리</a></li>
+        <!-- 양식 추가 가능한 권한은..? -->
+        <li><a href="${ FormInsertPage }">양식 추가</a></li>
+      </ul> 
+      -->
     </div>
     
     <div id="icon_menu">
