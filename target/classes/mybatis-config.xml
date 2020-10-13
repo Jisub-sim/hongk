@@ -7,6 +7,8 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.hongk.member.model.vo.Member" alias="Member"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Project" alias="Project"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
 	
 	</typeAliases>
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.dao.ProjectDao;
+import com.kh.hongk.project.model.vo.Project;
 
 @Service("bService")
 public class ProjectServiceImpl implements ProjectService {
@@ -14,9 +15,13 @@ public class ProjectServiceImpl implements ProjectService {
 	private ProjectDao pDao;
 	
 	@Override
-	public ArrayList<Member> selectMemberList() {
-		
+	public ArrayList<Member> selectMemberList() {		
 		return pDao.selectMemberList();
+	}
+
+	@Override
+	public ArrayList<Project> selectmyProject(int mNo) {
+		return pDao.selectmyProject(mNo);
 	}
 
 }

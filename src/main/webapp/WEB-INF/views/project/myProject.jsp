@@ -41,14 +41,21 @@
 			<th class="l1">업무</th>
 			<th class="l1">상태</th>
 			<th id="date" class="l1">등록일</th>
+			<c:forEach var="p" items="${ list }">
 			<tr>
-				<td>#001</td>
-				<td>Fianl project test</td>
-				<td>1/2</td>
-				<td>1/2</td>
-				<td>진행중</td>
-				<td>2020-10-13</td>
+				<td class="l1">${ p.pId }</td>
+				<td><c:url var="project" value="project.do">
+						<c:param name="pId" value="${ p.pId }"/>
+					</c:url>
+				<a href="${ project }">${ p.pTitle }</a></td>
+				<td class="l1">1/2</td>
+				<td class="l1">1/2</td>
+				<td class="l1"><c:if test="${ p.progress eq 'I'}">진행중</c:if>
+				<c:if test="${ p.progress eq 'S'}">보류</c:if>
+				<c:if test="${ p.progress eq 'C'}">완료</c:if></td>
+				<td class="l1">${ p.pDate }</td>
 			</tr>
+			</c:forEach>
 		</table>
 		
 		
