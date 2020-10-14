@@ -56,8 +56,8 @@ ul, li{
   list-style-type:none;  
 }
 #main_info{
-    padding-top: 40px;
-    padding-left:50px;
+    padding-top: 20px;
+    padding-left:80px;
 }
 #main_info li{
     padding-top:10px;
@@ -123,7 +123,11 @@ ul, li{
 		
 		 <div id="main">
         <div class="project" id="project_info">
-            <div id="progress"><a href="javascript:clickfunction();" id="pg">진행률</a></div>
+            <div id="progress"><a href="javascript:clickfunction();" id="pg">
+            	<c:if test="${ p.progress eq 'I'}">진행중</c:if>
+				<c:if test="${ p.progress eq 'S'}">보류</c:if>
+				<c:if test="${ p.progress eq 'C'}">완료</c:if>
+            </a></div>
             <section id="update">
             <script>
             	function clickfunction(){
@@ -134,13 +138,16 @@ ul, li{
             /
             <a href>삭제</a>
             /
-            <c:url var="teamcare" value="teamcare.do"/>
+            <c:url var="teamcare" value="teamcare.do">
+            	<c:param name="pId" value="${ p.pId }"/>
+            </c:url>
             <a href="${ teamcare }">팀관리</a>
         </section>
         <ul id="main_info">
-            <li>프로젝트명 : </li>
-            <li>책임자 정보(생성자) : </li>
-            <li>기간 : </li>
+            <li>프로젝트명 : ${ p.pTitle } </li>
+            <li>내용 : ${ p.pContent }
+            <li>책임자 정보(생성자) : ${ p.mName }</li>
+            <li>기간 : ${ p.pDate } ~ ${ p.deadLine }</li>
         </ul>
         
 
@@ -154,25 +161,14 @@ ul, li{
                 <th>팀원수</th>
                 <th>업무수</th>
                 <th>진행률</th>
-                <tr>
-                    <td>1팀</td>
-                    <td>3</td>
+                <c:forEach var="pt" items="${ pt }">
+                <tr>                
+                    <td>${ pt.ptTitle }</td>
+                    <td>${ pt.mCount }</td>
                     <td>5</td>
                     <td>30%</td>                    
                 </tr>
-                <tr>
-                        <td>2팀</td>
-                        <td>5</td>
-                        <td>3</td>
-                        <td>50%</td>                    
-                    </tr>
-              <tr>
-                        <td>3팀</td>
-                        <td>5</td>
-                        <td>3</td>
-                        <td>50%</td>                    
-                    </tr>
-
+              	</c:forEach>
             </table>
 
         </div>

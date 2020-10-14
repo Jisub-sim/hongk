@@ -106,7 +106,14 @@ textarea:focus, input:focus{
                 <th id="m1">대상자</th>
                 <th id="m2">선택목록</th>
             </table>
-            <div class="mem"></div>
+            <div class="mem">
+            <table>
+            	
+            <c:forEach var="m" items="${ m }">
+         		
+         	</c:forEach>
+            </table>
+            </div>
             <div class="plus"><a href="">+</a></div>
             <div class="minus"><a href="">-</a></div>
             <div class="choose"></div>

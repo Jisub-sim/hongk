@@ -87,7 +87,9 @@ textarea:focus, input:focus{
 
 	<div id="main">
 		<div id="button">
-			<ul><c:url var="teamadd" value="teamadd.do"/>
+			<ul><c:url var="teamadd" value="teamadd.do">
+				<c:param name="pId" value="${ pt[0].pId }"/>
+			</c:url>
 				<li><a href="project.do" id="back">뒤로가기</a> <a href="${ teamadd }" id="save">팀추가</a>
 				</li>
 
@@ -102,20 +104,15 @@ textarea:focus, input:focus{
 				<th id="tm">팀원</th>
 				<th id="tc">내용</th>
 				<th id="status">편집</th>
+				<c:forEach var="pt" items="${pt}">
 				<tr>
-					<td>1팀</td>
-					<td>팀장<br>팀원<br>팀원
+					<td>${ pt.ptTitle }</td>					
+					<td>${ pt.mList }
 					</td>
-					<td>파이널 프로젝트 팀관리 내용</td>
+					<td>${ pt.ptContent }</td>
 					<td class="status_btn"><a href="">수정</a> / <a href="">삭제</a></td>
 				</tr>
-				<tr>
-					<td>2팀</td>
-					<td>팀장<br>팀원<br>팀원
-					</td>
-					<td>파이널 프로젝트 팀관리 내용</td>
-					<td class="status_btn"><a href="">수정</a> / <a href="">삭제</a></td>
-				</tr>
+				</c:forEach>
 			</table>
 		</div>
 
