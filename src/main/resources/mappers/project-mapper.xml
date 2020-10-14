@@ -39,13 +39,70 @@
 		<result property="pId" column="PID"/>
 	</resultMap>
 	
+	<resultMap type="Project" id="projectResultSet2">
+		<id property="pId" column="PID"/>
+		<result property="pTitle" column="PTITLE"/>
+		<result property="pContent" column="PCONTENT"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="pDate" column="PDATE"/>
+		<result property="deadLine" column="DEADLINE"/>
+		<result property="pStatus" column="PSTATUS"/>
+		<result property="mName" column="MNAME"/>
+	</resultMap>
+	
+	<resultMap type="Pteam" id="PteamResultSet">
+		<id property="ptId" column="PT_ID"/>
+		<result property="ptTitle" column="PT_TITLE"/>
+		<result property="ptContent" column="PT_CONTENT"/>
+		<result property="ptStatus" column="PT_STATUS"/>
+		<result property="pId" column="PID"/>	
+		<result property="mCount" column="COUNT(MNO)"/>	
+	</resultMap>
+	
 	<select id="selectmyProject" parameterType="Project" resultMap="projectResultSet">
-		SELECT P.PID,PTITLE,PCONTENT,PROGRESS,PDATE,DEADLINE,PSTATUS,MANAGER
+		<!-- SELECT P.PID,PTITLE,PCONTENT,PROGRESS,PDATE,DEADLINE,PSTATUS,MANAGER
 		FROM PROJECT P, PMEMBER M
 		WHERE MNO = #{mNo}
 		AND P.PID = M.PID
-		ORDER BY PDATE
+		ORDER BY PDATE -->
 	
+	 
+        select *
+        from project 
+        where manager =#{mNo}
+        order by pdate
 	</select>
 	
+	<select id="projectDetail" parameterType="_int" resultMap="projectResultSet2">
+		SELECT P.PID, PTITLE, PCONTENT, PROGRESS, PDATE,DEADLINE, PSTATUS, MNAME
+		FROM PROJECT P, MEMBER
+		WHERE PID = #{pId}
+		AND PSTATUS='Y'
+        AND P.MANAGER = MNO		
+	</select>
+	
+	<select id="selectTeamList" parameterType="Pteam" resultMap="PteamResultSet">
+		SELECT PT_ID,PT_TITLE,PT_CONTENT, PT_STATUS,PID, COUNT(MNO)
+		FROM PTEAM 
+		JOIN PMEMBER USING (PID,PT_ID)
+		WHERE PID=#{pId}
+		GROUP BY PT_ID,PT_TITLE,PT_CONTENT,PT_STATUS,PID
+		ORDER BY PT_ID
+	</select>
+	
+	<select id="selectTmember" resultMap="memberResultSet">
+		SELECT JOB_CODE, MNAME
+		FROM MEMBER 
+		JOIN PMEMBER USING(MNO)
+		WHERE PT_ID=#{ptId}
+		ORDER BY JOB_CODE		
+	</select>
+	
+	<select id="selectProjectMember" resultMap="memberResultSet">
+		SELECT DISTINCT DEPT_CODE, JOB_CODE, MNAME
+		FROM MEMBER
+		JOIN PMEMBER USING(MNO)
+		WHERE PID = #{pId}
+		ORDER BY DEPT_CODE
+	</select>
 </mapper>

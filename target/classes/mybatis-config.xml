@@ -11,6 +11,7 @@
 		<typeAlias alias="Form" type="com.kh.hongk.approval.model.vo.Form"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Project" alias="Project"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Pteam" alias="Pteam"/>
 	
 	</typeAliases>
 

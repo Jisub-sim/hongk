@@ -11,6 +11,7 @@ public class Project {
 	private Date deadLine;
 	private String pStatus;
 	private int manager;
+	private String mName;
 	
 	public Project() {}
 	
@@ -26,6 +27,20 @@ public class Project {
 		this.pStatus = pStatus;
 		this.manager = manager;
 	}
+	
+	public Project(int pId, String pTitle, String pContent, String progress, Date pDate, Date deadLine, String pStatus,
+			String mName) {
+		super();
+		this.pId = pId;
+		this.pTitle = pTitle;
+		this.pContent = pContent;
+		this.progress = progress;
+		this.pDate = pDate;
+		this.deadLine = deadLine;
+		this.pStatus = pStatus;
+		this.mName = mName;
+	}
+
 	public int getpId() {
 		return pId;
 	}
@@ -35,7 +50,7 @@ public class Project {
 	public String getpTitle() {
 		return pTitle;
 	}
-	public void setpTtitle(String pTitle) {
+	public void setpTitle(String pTitle) {
 		this.pTitle = pTitle;
 	}
 	public String getpContent() {
@@ -74,11 +89,22 @@ public class Project {
 	public void setManager(int manager) {
 		this.manager = manager;
 	}
+	
+	public String getmName() {
+		return mName;
+	}
+
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+
 	@Override
 	public String toString() {
 		return "Project [pId=" + pId + ", pTitle=" + pTitle + ", pContent=" + pContent + ", progress=" + progress
-				+ ", pDate=" + pDate + ", deadLine=" + deadLine + ", pStatus=" + pStatus + ", manager=" + manager + "]";
+				+ ", pDate=" + pDate + ", deadLine=" + deadLine + ", pStatus=" + pStatus + ", manager=" + manager
+				+ ", mName=" + mName + "]";
 	}
-	
+
+
 	
 }
