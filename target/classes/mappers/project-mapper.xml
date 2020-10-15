@@ -99,7 +99,7 @@
 	</select>
 	
 	<select id="selectProjectMember" resultMap="memberResultSet">
-		SELECT DISTINCT DEPT_CODE, JOB_CODE, MNAME
+		SELECT DISTINCT MNO,DEPT_CODE, JOB_CODE, MNAME
 		FROM MEMBER
 		JOIN PMEMBER USING(MNO)
 		WHERE PID = #{pId}
