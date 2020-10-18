@@ -12,12 +12,14 @@
 		<typeAlias type="com.kh.hongk.project.model.vo.Project" alias="Project"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pteam" alias="Pteam"/>
-	
+		<typeAlias type="com.kh.hongk.board.model.vo.Board" alias="Board"/>
 	</typeAliases>
 
 	<mappers>
 		<mapper resource="mappers/project-mapper.xml"/>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/ea-mapper.xml"/>
+		<mapper resource="mappers/board-mapper.xml"/>
+
 	</mappers>
 </configuration>
