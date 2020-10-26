@@ -10,8 +10,61 @@ public class Approval {
 	private String approval_comment;
 	private int approver_no;
 	private int ea_no;
+	/////////////////
+	private String mName;
+	private String deptCode;
+	private String deptTitle;
+	private String job_Code;
+	private String job_Title;
 	
+
+	public String getmName() {
+		return mName;
+	}
+
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+
+	public String getDeptCode() {
+		return deptCode;
+	}
+
+	public void setDeptCode(String deptCode) {
+		this.deptCode = deptCode;
+	}
+
+	public String getDeptTitle() {
+		return deptTitle;
+	}
+
+	public void setDeptTitle(String deptTitle) {
+		this.deptTitle = deptTitle;
+	}
+
+	public String getJob_Code() {
+		return job_Code;
+	}
+
+	public void setJob_Code(String job_Code) {
+		this.job_Code = job_Code;
+	}
+
+	public String getJob_Title() {
+		return job_Title;
+	}
+
+	public void setJob_Title(String job_Title) {
+		this.job_Title = job_Title;
+	}
+
 	public Approval() {}
+
+	public Approval(int approval_lelvel, int approver_no) {
+		super();
+		this.approval_lelvel = approval_lelvel;
+		this.approver_no = approver_no;
+	}
 
 	public Approval(int ap_id, Date approval_date, int approval_lelvel, String approval_status, String approval_comment,
 			int approver_no, int ea_no) {
@@ -85,8 +138,11 @@ public class Approval {
 	public String toString() {
 		return "Approval [ap_id=" + ap_id + ", approval_date=" + approval_date + ", approval_lelvel=" + approval_lelvel
 				+ ", approval_status=" + approval_status + ", approval_comment=" + approval_comment + ", approver_no="
-				+ approver_no + ", ea_no=" + ea_no + "]";
+				+ approver_no + ", ea_no=" + ea_no + ", mName=" + mName + ", deptCode=" + deptCode + ", deptTitle="
+				+ deptTitle + ", job_Code=" + job_Code + ", job_Title=" + job_Title + "]";
 	}
+
+	
 	
 
 }

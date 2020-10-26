@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -226,7 +227,7 @@ a {
         </c:if>
       </header>
       <h3 id="sideTitle">게시판</h3>
-       
+       <!--   
       <ul>
         <li><a href="notice.html" style="color: orange">공지사항</a></li>
         <li><a href="propose.html">제안 게시판</a></li>
@@ -234,11 +235,14 @@ a {
         <li><a href="free.html">자유 게시판</a></li>
         <li><a href="myProject.do">내 프로젝트보기</a></li>
       </ul>
-          <!--    
-         <c:url var="formList" value="formList.do"/>
+      
+      -->
+           
+        <c:url var="formList" value="formList.do"/>
+<!--     formList  approverList    -->
         <c:url var="earequest" value="earequest.do"/>
         <c:url var="temporEAList" value="temporEAList.do"/>
-        <c:url var="waitingEAList" value="waitingEAList.do"/>
+        <c:url var="wEAList" value="wEAList.do"/>
         <c:url var="progressEAList" value="progressEAList.do"/>
         <c:url var="completeEAList" value="completeEAList.do"/>
         <c:url var="TBackEAList" value="TBackEAList.do"/>
@@ -251,17 +255,16 @@ a {
         <li><a href="${ earequest }">결재 요청함</a></li>
         <li><a href="${ temporEAList }">임시 저장함</a></li>
         <li><br><b>결재</b></li>
-        <li><a href="${ waitingEAList }">결재대기함</a></li>
+        <li><a href="${ wEAList }">결재대기함</a></li>
         <li><a href="${ progressEAList }">결재진행함</a></li>
         <li><a href="${ completeEAList }">완료문서함</a></li>
         <li><a href="${ TBackEAList }">반려문서함</a></li>
         <li><a href="${ referEAList }">참조문서함</a></li>
         <li><br><b>기타</b></li>
         <li><a href="${ sigList }">서명관리</a></li>
-        <!-- 양식 추가 가능한 권한은..? -->
         <li><a href="${ FormInsertPage }">양식 추가</a></li>
       </ul> 
-      -->
+      
     </div>
     
     <div id="icon_menu">

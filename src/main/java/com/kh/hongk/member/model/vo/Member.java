@@ -19,6 +19,8 @@ public class Member {
 	private String mStatus;
 	private String deptCode;
 	private String jobCode;
+	private String deptTitle;
+
 
 	public Member() {}
 
@@ -170,6 +172,13 @@ public class Member {
 
 	public void setJobCode(String jobCode) {
 		this.jobCode = jobCode;
+	}
+	public String getDeptTitle() {
+		return deptTitle;
+	}
+
+	public void setDeptTitle(String deptTitle) {
+		this.deptTitle = deptTitle;
 	}
 
 	@Override
