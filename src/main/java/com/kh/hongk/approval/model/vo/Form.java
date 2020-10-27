@@ -77,7 +77,7 @@ public class Form {
 		return mno;
 	}
 
-	public void setMmo(int mno) {
+	public void setMno(int mno) {
 		this.mno = mno;
 	}
 

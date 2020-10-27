@@ -12,6 +12,60 @@ public class Electronic_Approval {
 	private String ea_status;
 	private int drafter;
 	private int form_no;
+	private String deptCode;
+	private String deptTitle;
+	private String mName;
+	private String form_category;
+	private int ap_id;
+	private int re_no;
+	
+	public String getmName() {
+		return mName;
+	}
+
+	public String getForm_category() {
+		return form_category;
+	}
+
+	public void setForm_category(String form_category) {
+		this.form_category = form_category;
+	}
+
+	public int getAp_id() {
+		return ap_id;
+	}
+
+	public void setAp_id(int ap_id) {
+		this.ap_id = ap_id;
+	}
+
+	public int getRe_no() {
+		return re_no;
+	}
+
+	public void setRe_no(int re_no) {
+		this.re_no = re_no;
+	}
+
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+
+	public String getDeptCode() {
+		return deptCode;
+	}
+
+	public void setDeptCode(String deptCode) {
+		this.deptCode = deptCode;
+	}
+
+	public String getDeptTitle() {
+		return deptTitle;
+	}
+
+	public void setDeptTitle(String deptTitle) {
+		this.deptTitle = deptTitle;
+	}
 
 	public Electronic_Approval() {}
 
@@ -103,10 +157,11 @@ public class Electronic_Approval {
 
 	@Override
 	public String toString() {
-		return "electronic_approval [ea_no=" + ea_no + ", draftng_date=" + draftng_date + ", complete_date="
-				+ complete_date + ", ea_type=" + ea_type + ", ea_title=" + ea_title + ", ea_content=" + ea_content
-				+ ", ea_status=" + ea_status + ", drafter=" + drafter + ", form_no=" + form_no + "]";
+		return "Electronic_Approval [ea_no=" + ea_no + ", draftng_date=" + draftng_date + ", complete_date="
+				+ complete_date + ", ea_type=" + ea_type + ", ea_title=" + ea_title + 
+				 ", ea_status=" + ea_status + ", drafter=" + drafter + ", form_no=" + form_no + ", deptCode="
+				+ deptCode + ", deptTitle=" + deptTitle + ", mName=" + mName + "]";
 	}
-	
+
 	
 }

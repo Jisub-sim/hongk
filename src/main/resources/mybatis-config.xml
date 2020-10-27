@@ -7,8 +7,12 @@
 
 	<typeAliases>
 		<typeAlias type="com.kh.hongk.member.model.vo.Member" alias="Member"/>
+		<typeAlias alias="Files" type="com.kh.hongk.member.model.vo.Files"/>
 		<typeAlias alias="Electronic_Approval" type="com.kh.hongk.approval.model.vo.Electronic_Approval"/>
 		<typeAlias alias="Form" type="com.kh.hongk.approval.model.vo.Form"/>
+		<typeAlias alias="Sig_File" type="com.kh.hongk.approval.model.vo.Sig_File"/>
+		<typeAlias alias="Approval" type="com.kh.hongk.approval.model.vo.Approval"/>
+		<typeAlias alias="Referrer" type="com.kh.hongk.approval.model.vo.Referrer"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Project" alias="Project"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pteam" alias="Pteam"/>

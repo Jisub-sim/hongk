@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,18 +23,19 @@
    <div id="main">
       <br>
      <br>
+     <form action="CEAsearch.do">
     <div class="ea_search_div">
-        <label>기안자 </label>  <input type="text">
-        <label>문서제목 </label>  <input type="text">
-        <label> 양식명 </label>  <input type="text">
-        <button type="button" class="ea_bt" id="ea_search_bt"> 검색</button>
+        <label>기안자 </label>  <input type="search" name="searchDrafter">
+        <label>문서제목 </label>  <input type="search" name="searchTitle">
+        <label> 양식명 </label>  <input type="search" name="searchFormName">
+        <button type="submit" class="ea_bt" id="ea_search_bt"> 검색</button>
     </div>
+    </form>
     <br><br><p style="width:90%;margin:auto;">결재 완료함 </p>
 			 <hr style="width:90%"><br>
     <div>
         <table class="ea_table">
             <thead>
-            <th width="5%"><input type="checkbox"></th>
             <th width="5%">NO</th>
             <th width="7%">서식함</th>
             <th width="7%">유형</th>
@@ -40,21 +43,62 @@
             <th width="10%">기안자</th>
             <th width="10%">기안부서</th>
             <th width="10%">기안일</th>
-            <th width="10%">배정일</th>
         </thead>
+        <c:forEach var="ea" items="${ list }">
+        
             <tr>
-                <td><input type="checkbox"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>${ea.ea_no }</td>
+                <td>${ea.form_category }</td>
+                <td>${ea.ea_type }</td>
+                <td>
+	                <c:url var="eadetail" value="eadetail.do">
+		                <c:param name="ea_no" value="${ ea.ea_no }"/>
+		            </c:url>
+		                <a href="${ eadetail }">${ ea.ea_title }</a>
+                </td>
+                <td>${ ea.mName }</td>
+                <td>${ea.deptTitle }</td>
+                <td><fmt:formatDate var="draftng_date" type="date" value="${ea.draftng_date }" pattern="yyyy-MM-dd"/>
+							${draftng_date }</td>
             </tr>
-
-            
+           </c:forEach> 
+           
+           	<tr align="center">
+				<td colspan="7">
+				<!-- [이전] -->
+				<c:if test="${ pi.currentPage <= 1 }">
+					[이전] &nbsp;
+				</c:if>
+				<c:if test="${ pi.currentPage > 1 }">
+					<c:url var="before" value="completeEAList.do">
+						<c:param name="page" value="${ pi.currentPage - 1 }"/>
+					</c:url>
+					<a href="${ before }">[이전]</a> &nbsp;
+				</c:if>
+				<!-- 페이지 숫자 -->
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:if test="${ p eq pi.currentPage }">
+						<font color="red" size="4">[ ${ p } ]</font>
+					</c:if>
+					<c:if test="${ p ne pi.currentPage }">
+						<c:url var="pagination" value="completeEAList.do">
+							<c:param name="page" value="${ p }"/>
+						</c:url>
+						<a href="${ pagination }">${ p }</a> &nbsp;
+					</c:if>
+				</c:forEach>
+				<!-- [다음] -->
+				<c:if test="${ pi.currentPage >= pi.maxPage }">
+					[다음]
+				</c:if>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+					<c:url var="after" value="completeEAList.do">
+						<c:param name="page" value="${ pi.currentPage + 1 }"/>
+					</c:url>
+					<a href="${ after }">[다음]</a>
+				</c:if>
+				</td>
+			</tr>
         </table>
 
     </div>
