@@ -60,4 +60,5 @@
 		SET PSTATUS='Y', PROGRESS='I'
 		WHERE EA_NO = #{ ea_no }
 	</update>
+	
 </mapper>

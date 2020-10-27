@@ -24,7 +24,6 @@ public class Form {
 		this.form_category = form_category;
 		this.mno = mno;
 	}
-
 	public int getForm_no() {
 		return form_no;
 	}
@@ -87,5 +86,4 @@ public class Form {
 				+ ", form_create_date=" + form_create_date + ", form_type=" + form_type + ", form_category="
 				+ form_category + ", mno=" + mno + "]";
 	}
-	
 }

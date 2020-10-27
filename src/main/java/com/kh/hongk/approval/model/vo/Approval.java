@@ -10,7 +10,7 @@ public class Approval {
 	private String approval_comment;
 	private int approver_no;
 	private int ea_no;
-	/////////////////
+
 	private String mName;
 	private String deptCode;
 	private String deptTitle;

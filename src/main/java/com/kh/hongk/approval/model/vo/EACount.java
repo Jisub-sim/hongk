@@ -69,7 +69,4 @@ public class EACount {
 		return "EACount [countWp=" + countWp + ", countCp=" + countCp + ", countBp=" + countBp + ", countR=" + countR
 				+ ", countT=" + countT + ", countC=" + countC + ", countB=" + countB + "]";
 	}
-	
-	
-	
 }

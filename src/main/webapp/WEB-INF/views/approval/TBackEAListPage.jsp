@@ -22,7 +22,6 @@
         #ea_de_bt{
             float: right;
         }
-
         #menubar{
             width: 100%
         }

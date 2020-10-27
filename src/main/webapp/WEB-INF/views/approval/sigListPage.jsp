@@ -22,7 +22,6 @@
             width: 85%;
             margin: auto;
         }
-
         #select_sig_table{
             border: solid rgba(89, 118, 223, 0.184) 1px;
             width: 85%;

@@ -309,7 +309,6 @@
 					 
 					 parent.document.getElementById("ref").value = list ;
 
-					
 				window.close();
 			}); 
 		})

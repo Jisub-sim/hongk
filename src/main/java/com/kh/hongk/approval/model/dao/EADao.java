@@ -18,7 +18,8 @@ import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
 
-@Repository("eaDao") //DB와 접근하는 클래스에 부여하는 어노테이션
+//DB와 접근하는 클래스에 부여하는 어노테이션
+@Repository("eaDao") 
 public class EADao {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
@@ -31,7 +32,6 @@ public class EADao {
 	public ArrayList<Form> selectFormList(PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
 		return (ArrayList)sqlSession.selectList("eaMapper.selectFormList",null,rowBounds);
 	}
 	// 양식 선택

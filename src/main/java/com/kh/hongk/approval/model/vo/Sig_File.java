@@ -11,10 +11,8 @@ public class Sig_File {
 	private String reName_FileName;
 	private String original_FileName;
 	private Date save_Date;
-	
 
 	public Sig_File() {}
-
 
 	public Sig_File(int sig_no, int file_no, int mno, String sig_status, String reName_FileName,
 			String original_FileName, Date save_Date) {

@@ -43,6 +43,7 @@
 		<result property="form_category" column="FORM_CATEGORY"/>
 	</resultMap>
 	
+	
 	<resultMap type="Member" id="memResultSet">
 		<id property="mNo" column="MNO"/>
 		<result property="mId" column="MID"/>

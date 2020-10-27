@@ -298,7 +298,6 @@
 						   mlist.push($(item).val());
 					   });
 					   
-					
 					 parent.document.getElementById("approverbt").value = mlist ;
 					
 					  var list = new Array();

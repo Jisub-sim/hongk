@@ -227,7 +227,7 @@ a {
         </c:if>
       </header>
       <h3 id="sideTitle">게시판</h3>
-       <!--   
+        
       <ul>
         <li><a href="notice.html" style="color: orange">공지사항</a></li>
         <li><a href="propose.html">제안 게시판</a></li>
@@ -236,10 +236,10 @@ a {
         <li><a href="myProject.do">내 프로젝트보기</a></li>
       </ul>
       
-      -->
-           
+    
+    <!--         
         <c:url var="formList" value="formList.do"/>
-<!--     formList  approverList    -->
+     formList  approverList   
         <c:url var="earequest" value="earequest.do"/>
         <c:url var="temporEAList" value="temporEAList.do"/>
         <c:url var="wEAList" value="wEAList.do"/>
@@ -264,7 +264,7 @@ a {
         <li><a href="${ sigList }">서명관리</a></li>
         <li><a href="${ FormInsertPage }">양식 추가</a></li>
       </ul> 
-      
+       -->
     </div>
     
     <div id="icon_menu">

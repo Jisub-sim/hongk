@@ -111,7 +111,6 @@ public interface EAService {
 	int insertRefer(Referrer refer);
 	// 현재 로그인한 사용자 정보 ( 기안자 )
 	Member selectdrafter(int mno);
-	
 	// 검색용 Count
 	int EAsearchCount(Search search, int drafter);
 	int TEAsearchCount(Search search, int drafter);

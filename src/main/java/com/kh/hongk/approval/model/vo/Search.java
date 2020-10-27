@@ -11,13 +11,11 @@ public class Search {
 	public int getMno() {
 		return mno;
 	}
-
 	public void setMno(int mno) {
 		this.mno = mno;
 	}
 
 	public Search() {}
-
 	public Search(String searchCondition, String searchDrafter, String searchTitle, String searchFormName,
 			String existFile) {
 		super();

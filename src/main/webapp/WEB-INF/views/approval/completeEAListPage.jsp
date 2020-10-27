@@ -100,7 +100,6 @@
 				</td>
 			</tr>
         </table>
-
     </div>
 
     <script>

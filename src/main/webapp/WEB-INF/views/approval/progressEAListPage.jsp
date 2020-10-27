@@ -12,7 +12,6 @@
 <link rel="stylesheet"
    href="${pageContext.request.contextPath}/resources/css/approvalcss.css">
 <style>
-
 </style>
 </head>
 <body>

@@ -20,7 +20,6 @@
         font-size: 25px;
         font-weight: 500;
     }
-
      #ea_create_table{
          border-color:  rgba(183, 209, 241, 0.313);
          width: 80%;

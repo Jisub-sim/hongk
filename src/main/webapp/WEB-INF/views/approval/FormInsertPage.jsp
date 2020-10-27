@@ -56,7 +56,6 @@
 </head>
 <body>
    <jsp:include page="../common/include.jsp" />
-
    <div id="main">
       <br>
    <form action="forminsert.do" method="post">

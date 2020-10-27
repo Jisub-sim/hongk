@@ -6,13 +6,11 @@ public class Referrer {
 	private int ea_no;
 	
 	public Referrer() {}
-
 	public Referrer(int re_no, int ea_no) {
 		super();
 		this.re_no = re_no;
 		this.ea_no = ea_no;
 	}
-
 	public int getRe_no() {
 		return re_no;
 	}

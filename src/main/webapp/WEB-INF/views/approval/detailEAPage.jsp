@@ -13,7 +13,6 @@
 	crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/approvalcss.css">
-
 <!-- pdf 변환 관련 -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>

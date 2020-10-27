@@ -77,6 +77,4 @@ public class Files {
 				+ ", reName_FileName=" + reName_FileName + ", save_Date=" + save_Date + ", File_type=" + File_type
 				+ "]";
 	}
-	
-	
 }

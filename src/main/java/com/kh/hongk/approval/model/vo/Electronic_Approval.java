@@ -162,6 +162,5 @@ public class Electronic_Approval {
 				 ", ea_status=" + ea_status + ", drafter=" + drafter + ", form_no=" + form_no + ", deptCode="
 				+ deptCode + ", deptTitle=" + deptTitle + ", mName=" + mName + "]";
 	}
-
 	
 }

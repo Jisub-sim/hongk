@@ -36,7 +36,6 @@
 	padding-right: 0.6em;
 	color: white;
 }
-
 .pro_bt {
 	background: rgb(113, 175, 251);
 	border-radius: 5px;

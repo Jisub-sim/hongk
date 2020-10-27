@@ -143,7 +143,6 @@
 				} 
 			}); 
 		})
-		
 		$(function() { 
 			$("#tembutton").click(function() { 
 				oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
@@ -152,7 +151,6 @@
 				document.getElementById("insertEAForm").setAttribute('action','temeaform.do' );
 			}); 
 		})
-
         </script>
     <br>
     <br> <br>

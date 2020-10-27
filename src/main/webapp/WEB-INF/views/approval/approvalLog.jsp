@@ -32,7 +32,6 @@
 </style>
 </head>
 <body>
-
    <div id="main">
     <div>
 		<p class="ea_subtitle">결재 로그 </p>

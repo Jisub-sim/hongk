@@ -278,7 +278,6 @@ public class EAServiceImpl implements EAService {
 		return eaDao.selectdrafter(mno);
 	}
 	
-	
 	// 검색 용 Count
 	@Override
 	public int EAsearchCount(Search search, int drafter) {
@@ -354,13 +353,6 @@ public class EAServiceImpl implements EAService {
 	}
 
 
-	
-	
-	
-
-
-	
-	
 	
 	
 

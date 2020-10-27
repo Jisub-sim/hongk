@@ -64,7 +64,6 @@
         #sig_div ul{
             font-size: 15px;
         }
-
         #sig_bt_div{
             width: 90%;
             margin: auto;

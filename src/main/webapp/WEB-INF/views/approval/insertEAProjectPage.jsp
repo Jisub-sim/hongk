@@ -125,7 +125,6 @@
     <br> <br>
    </form>
    </div>
-   
 	<script>
 	  var oEditors = [];
       nhn.husky.EZCreator.createInIFrame({ 

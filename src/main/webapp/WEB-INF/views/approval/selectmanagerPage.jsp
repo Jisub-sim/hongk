@@ -197,7 +197,6 @@
     </div>
 	<input type="hidden" id="tm2" value="0"><input type="hidden" id="tm3" value="0">
 	<input type="hidden" id="tl2" value="0"><input type="hidden" id="tl3" value="0">
-	
     <div id="ea_control_bt_div">
         <button type="button" class="ea_bt" id="cancelSelectBt">취소</button> 
         <button type="submit" class="ea_bt" id="comSelectBt">완료</button>

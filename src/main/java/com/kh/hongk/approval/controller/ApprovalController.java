@@ -563,7 +563,6 @@ private EAService eaService;
 				
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10, 15); // 페이지 정보
 				
-		
 		ArrayList<Electronic_Approval> list = eaService.selectListrefea(re_no,pi);
 		
 		if(list != null) {
@@ -607,7 +606,6 @@ private EAService eaService;
 	public String formInsert(Form f, HttpServletRequest request, int mno) {
 		System.out.println("f : " + f);
 		int result = eaService.formInsert(f);
-		
 		if(result > 0) {
 			System.out.println("양식 등록 성공");
 			

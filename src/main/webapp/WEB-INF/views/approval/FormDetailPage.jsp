@@ -12,7 +12,6 @@
 <link rel="stylesheet"
    href="${pageContext.request.contextPath}/resources/css/approvalcss.css">
 <style>
-
         #form_title{
         text-align: center;
         font-size: 25px;

@@ -20,7 +20,6 @@
         #ea_de_bt{
             float: right;
         }
-
 </style>
 </head>
 <body>

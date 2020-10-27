@@ -15,9 +15,7 @@
  #form_insert_div{
             width: 90%;
             margin: auto;
-          
         }
-        
         #form_in_bt{
             float: right;
             margin-bottom: 1em;
