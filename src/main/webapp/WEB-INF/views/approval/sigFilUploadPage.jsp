@@ -74,23 +74,38 @@
 <body>
 
    <div id="main">
-       <div id="sig_title">&nbsp;&nbsp;이미지 업로드 <button id="cancelBt" type="button">X</button></div>
+   <form  id="sigForm" action="" method="post" enctype="multipart/form-data">
+       <div id="sig_title">&nbsp;&nbsp;이미지 업로드 <button id="cancelBt" type="button" onclick="closeFc();">X</button></div>
+  
     <div id="sig_div">
         <br>
-        <input type="file" id="imagefileupload">
+        <input type="file" id="imagefileupload" name="uploadFile" required>
         <br>
             <ul>
                 <li>파일 권장 용량 : 100Kbte</li>
                 <li>Image 파일 가로 길이 : 60Pixel</li>
             </ul>
         <div id="sig_bt_div">
-            <button class="ea_bt uploadBt Ybt"  >등록</button>
-            <button class="ea_bt uploadBt Nbt" >취소</button>
+            <button class="ea_bt uploadBt Ybt" type="submit" id="sigInsertBt" >등록</button>
+            <button class="ea_bt uploadBt Nbt" type="button" onclick="closeFc();">취소</button>
         </div>    
         <br>
     </div>
-   
+      </form>
    </div>
+   <script>
+   	function closeFc(){
+   		window.close();
+   	};
+   	
+   	
+   	$(function() { 
+		$("#sigInsertBt").click(function() { 
+			document.getElementById("sigForm").setAttribute('action','siginsert.do' );
+			
+		}); 
+	})
+   </script>
 
 </body>
 </html>

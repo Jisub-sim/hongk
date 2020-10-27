@@ -1,6 +1,6 @@
 package com.kh.hongk.project.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Project {
 	private int pId;
@@ -28,6 +28,16 @@ public class Project {
 		this.manager = manager;
 	}
 	
+	
+	public Project(String pTitle, String pContent, Date pDate, Date deadLine, int manager) {
+		super();
+		this.pTitle = pTitle;
+		this.pContent = pContent;
+		this.pDate = pDate;
+		this.deadLine = deadLine;
+		this.manager = manager;
+	}
+
 	public Project(int pId, String pTitle, String pContent, String progress, Date pDate, Date deadLine, String pStatus,
 			String mName) {
 		super();
