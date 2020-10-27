@@ -54,6 +54,7 @@
 			 #{deadLine}, 'W' , #{ manager } ,SEQ_EAID.CURRVAL
 		)
 	</insert>
+	
 	<!-- 프로젝트 생성(결재 완료 시 - 상태 Y로 정식 프로젝트 진행 ) -->
 	<update id="PEAupdateY" parameterType="_int">
 		UPDATE PROJECT

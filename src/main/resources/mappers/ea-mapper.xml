@@ -872,6 +872,5 @@
      	UPDATE SIG_FILE
      	SET SIG_STATUS = 'N'
      	WHERE MNO = #{mno}
-     
      </update>
 </mapper>

@@ -16,7 +16,6 @@
 		<typeAlias type="com.kh.hongk.approval.model.vo.Sig_File" alias="Sig_File"/>
 		<typeAlias type="com.kh.hongk.approval.model.vo.Approval" alias="Approval"/>
 		<typeAlias type="com.kh.hongk.approval.model.vo.Referrer" alias="Referrer"/>
-	
 	</typeAliases>
 
 	<mappers>

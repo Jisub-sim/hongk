@@ -235,7 +235,6 @@ a {
         <li><a href="free.html">자유 게시판</a></li>
         <li><a href="myProject.do">내 프로젝트보기</a></li>
       </ul>
-      
     
     <!--         
         <c:url var="formList" value="formList.do"/>
