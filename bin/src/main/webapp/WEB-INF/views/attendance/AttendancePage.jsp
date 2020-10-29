@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -110,7 +109,7 @@
         th,
         td {
             text-align: center;
-            padding: 3px;
+            padding: 24px;
         }
 
         tfoot tr {
@@ -167,7 +166,12 @@
 
         }
 
-       
+        #date {
+            float: left;
+            /* margin-left: 10px; */
+            margin-top: 30px;
+        }
+
 
 
         #normalcy {
@@ -210,59 +214,15 @@
         }
 
 
-  * {
-        box-sizing: border-box;
-    }
 
-  
-    .date {
-        position: relative;
-        width: 300px;
-        margin: 0 auto;
-        float: left;
-        margin-top: 30px;
-    }
-
-   
-
-    .date input {
-        width: 100%;
-        height: 42px;
-        padding-left: 10px;
-        border: 2px solid #7BA7AB;
-        border-radius: 5px;
-        outline: none;
-        background: #F9F0DA;
-        color: #9E9C9C;
-    }
-
-    .date button {
-        position: absolute;
-        top: 0;
-        right: 0px;
-        width: 42px;
-        height: 42px;
-        border: none;
-        background: #7BA7AB;
-        border-radius: 0 5px 5px 0;
-        cursor: pointer;
-    }
-
-    .date button:before {
-        content: "\f002";
-        font-family: FontAwesome;
-        font-size: 16px;
-        color: #F9F0DA;
-    }
 
 </style>
 </head>
 <body>
 
    <jsp:include page="../common/include.jsp" />
-   <div id="main">
 
-   
+   <div id="main">
       <br>
    <section class="workmain">
 
@@ -270,15 +230,14 @@
         <br>
         <div id="allwork">
             <h2>전체</h2>
-            ${ ac.listCount}건
         </div>
         <div id="getwork">
             <h2>정상근로일</h2>
-            ${ ac.workCount }건
+            <a>17건</a>
         </div>
         <div id="tardy">
             <h2>지각</h2>
-            ${ ac.overtimeCount }건
+            <a>6건</a>
         </div>
         <div id="untreated">
             <h2>미처리</h2>
@@ -296,15 +255,12 @@
     </select>
 
 
-  
-    <div class="date">
+    <div id="date">
+        <input type="date" id="datecalnder"> &nbsp; - &nbsp;<input type="date" id="datecalnder">
 
-        <input type="date" id="datecalnder">
-        <button type="submit"></button>
 
     </div>
-        <input type="date" id="datecalnder"> &nbsp; 
-
+    &nbsp;&nbsp;<button type="button" class="btn btn-info btclick">검색</button>
     <br><br>
 
 
@@ -314,41 +270,51 @@
 
             <tr>
                 <td>출퇴근 체크 구분</td>
-                <td style="width: 300px;">출근시간</td>
-                <td style="width: 300px;">퇴근시간</td>
-                <td>처리상태</td>
+                <td style="width: 400px;">시각</td>
+                <td>출퇴근 체크방법</td>
+                <td>근로상태</td>
+                <td>
+                    처리상태
+                </td>
             </tr>
         </thead>
         <tbody>
-        	<c:forEach var="att" items="${ list }">
             <tr>
-                <td><c:if test="${att.attendance_type eq '2'|| att.attendance_type eq '3'}">
-                	정상출근
-                </c:if>
-                 <c:if test="${att.attendance_type eq '1' }">
-                	미퇴근
-                </c:if>
+                <td>출근</td>
+                <td>2020/08/09-AM09:00</td>
+                <td>PC 출근</td>
+                <td>지각</td>
+                <td>
+                    <p id="normalcy">정상처리</p>
                 </td>
+
+            </tr>
+            <tr>
+                <td>퇴근</td>
+                <td>2020/08/09-PM18:00</td>
+                <td>PC 퇴근</td>
+                <td></td>
                 <td>
-                <fmt:formatDate var="work_on" type="date" value="${att.work_on }" pattern="yyyy-MM-dd"/>
-                    ${work_on }</td>
-                <td><fmt:formatDate var="work_off" type="date" value="${att.work_off }" pattern="yyyy-MM-dd"/>
-                    ${work_off }</td></td>
-                <td>
-                <c:if test="${att.attendance_type eq '2' }">
-                	지각
-                </c:if>
-                </td>
-                <td>
-                    <c:if test="${att.work_off == null}"> 
-                    <a id="untreated_st">미처리 </a></c:if>
-                    <c:if test="${att.work_off != null}">
-                    <p id="normalcy">정상처리</p> 
-                    </c:if>
+                    <p id="untreated_st">미처리</p>
                 </td>
             </tr>
-            
-            </c:forEach>
+            <tr>
+                <td>출근</td>
+                <td>2020/08/10-AM09:04</td>
+                <td>PC 출근</td>
+                <td></td>
+                <td>
+                    <p id="normalcy">정상처리</p>
+                </td>
+            </tr>
+            <td>퇴근</td>
+            <td>2020/08/12-PM18:30</td>
+            <td>PC 퇴근</td>
+            <td></td>
+            <td>
+                <p id="normalcy">정상처리</p>
+            </td>
+            </tr>
         </tbody>
     </table>
     <br><br>
@@ -362,8 +328,7 @@
         <a href="#">&raquo;</a>
     </div>
 
-   
-  </div>
+   </div>
 
 </body>
 </html>
