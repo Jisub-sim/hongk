@@ -1,6 +1,7 @@
 package com.kh.hongk.project.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
@@ -15,7 +16,16 @@ public interface ProjectService {
 	public Project projectDetail(int pId);
 	// Project에 맞는 Team list 가져오는 메소드
 	public ArrayList<Pteam> selectTeamlist(int pId);
-	// team 에 맞는 사원 정보 가져오기
+	// team 에 맞는 사원 정보 가져오는 메소드
 	public ArrayList<Member> selectTmemberlist(int ptId);
+	// team 삽입 하는 메소드
+	public int insertPteam(Pteam pt);
+	// 전체 조직도 가져오는 메소드
+	public ArrayList<Member> selectMember();
+	// Project 인원 편성 메소드
+	public int insertPMember(Project p);
+	// Pmember 수정 (team 추가)
+	public int updatePMember(Pteam pt);
+	
 
 }

@@ -1,6 +1,7 @@
 package com.kh.hongk.project.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,26 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public ArrayList<Member> selectTmemberlist(int ptId) {
 		return pDao.selectTmemberlist(ptId);
+	}
+
+	@Override
+	public int insertPteam(Pteam pt) {
+		return pDao.insertPteam(pt);
+	}
+
+	@Override
+	public ArrayList<Member> selectMember() {
+		return pDao.selectMember();
+	}
+
+	@Override
+	public int insertPMember(Project p) {
+		return pDao.insertPMember(p);
+	}
+
+	@Override
+	public int updatePMember(Pteam pt) {
+		return pDao.updatePMember(pt);
 	}
 
 }

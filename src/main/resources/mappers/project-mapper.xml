@@ -105,4 +105,28 @@
 		WHERE PID = #{pId}
 		ORDER BY DEPT_CODE
 	</select>
+	
+	<insert id="insertPteam" parameterType="Pteam">
+		INSERT INTO PTEAM VALUES(SEQ_PTID.NEXTVAL,#{ptTitle},#{ptContent},'Y',#{pId})
+	</insert>
+	
+	<select id="selectMember" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE M_STATUS='Y'
+	</select>
+	
+	<update id="updatePMember" parameterType="Pmember">
+		UPDATE PMEMBER
+	    SET PT_ID = SEQ_PTID.CURRVAL
+	    WHERE MNO = #{obj}
+	</update>
+	
+	<insert id="insertPMember" parameterType="Project">
+		INSERT ALL 
+		<foreach collection="mList" item="item" index="index">
+			INTO PMEMBER VALUES (#{item},null,'Y',null,#{pId})
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
 </mapper>

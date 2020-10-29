@@ -9,32 +9,13 @@ public class Pteam {
 	private String ptStatus;
 	private int pId;
 	private int mCount;
-	private String mList;
+	private String mList; // teamcare memberList 가져오기 위한 임의 변수
+	private List TmList;
 	
 	public Pteam() {}
 
-	public Pteam(int ptId, String ptTitle, String ptContent, String ptStatus, int pId) {
-		super();
-		this.ptId = ptId;
-		this.ptTitle = ptTitle;
-		this.ptContent = ptContent;
-		this.ptStatus = ptStatus;
-		this.pId = pId;
-	}
-	
-
-	public Pteam(int ptId, String ptTitle, String ptContent, String ptStatus, int pId, int mCount) {
-		super();
-		this.ptId = ptId;
-		this.ptTitle = ptTitle;
-		this.ptContent = ptContent;
-		this.ptStatus = ptStatus;
-		this.pId = pId;
-		this.mCount = mCount;
-	}
-	
-
-	public Pteam(int ptId, String ptTitle, String ptContent, String ptStatus, int pId, int mCount, String mList) {
+	public Pteam(int ptId, String ptTitle, String ptContent, String ptStatus, int pId, int mCount, String mList,
+			List tmList) {
 		super();
 		this.ptId = ptId;
 		this.ptTitle = ptTitle;
@@ -43,6 +24,7 @@ public class Pteam {
 		this.pId = pId;
 		this.mCount = mCount;
 		this.mList = mList;
+		TmList = tmList;
 	}
 
 	public int getPtId() {
@@ -101,14 +83,21 @@ public class Pteam {
 		this.mList = mList;
 	}
 
+	public List getTmList() {
+		return TmList;
+	}
+
+	public void setTmList(List tmList) {
+		TmList = tmList;
+	}
+
 	@Override
 	public String toString() {
 		return "Pteam [ptId=" + ptId + ", ptTitle=" + ptTitle + ", ptContent=" + ptContent + ", ptStatus=" + ptStatus
-				+ ", pId=" + pId + ", mCount=" + mCount + ", mList=" + mList + "]";
+				+ ", pId=" + pId + ", mCount=" + mCount + ", mList=" + mList + ", TmList=" + TmList + "]";
 	}
-
 	
-
 	
-
+	
 }
+

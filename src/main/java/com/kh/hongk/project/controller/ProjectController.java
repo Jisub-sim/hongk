@@ -1,6 +1,8 @@
 package com.kh.hongk.project.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.hongk.member.model.vo.Member;
@@ -79,6 +82,8 @@ public class ProjectController {
 		}
 
 		System.out.println(ptlist);
+		
+		mv.addObject("pId",pId);
 		if (ptlist != null) {
 			mv.addObject("pt", ptlist);
 			mv.setViewName("project/team/teamCare");
@@ -94,9 +99,33 @@ public class ProjectController {
 		System.out.println(m);
 		if(m != null) {
 			mv.addObject("m",m);
+			mv.addObject("pId", pId);
 			mv.setViewName("project/team/teamAdd");
 		}
 		return mv;
+	}
+	@RequestMapping("teaminsert.do")
+	public String teamInsert(Pteam pt,
+			@RequestParam(name="memberList", required=false) String memberList,HttpServletRequest request) {
+		List<String> TmList = Arrays.asList(memberList.split(","));
+		List<Integer> mList = new ArrayList<Integer>();
+		for(String s : TmList) {
+			mList.add(Integer.valueOf(s));
+		}
+
+		pt.setTmList(TmList);
+		System.out.println(pt);
+		int result = pService.insertPteam(pt);// team 생성
+		int update = 0;
+		if(result>0) {
+			update = pService.updatePMember(pt);
+		}
+		if(update>0) {
+			return "redirect:teamcare.do?pId="+pt.getpId();
+		}else {
+			throw new ProjectException("xx");
+		}
+		
 	}
 
 	@RequestMapping("taskadd.do")
@@ -120,8 +149,52 @@ public class ProjectController {
 		return "project/popup/progressUpdate";
 	}
 
+	@RequestMapping("proUpdateFrom.do")
+	public ModelAndView projectUpdateForm(int pId,ModelAndView mv) {
+		// 프로젝트 MEMBER 조직도 가져오기
+		System.out.println(pId);
+		ArrayList<Member> m = pService.selectMember();
+		System.out.println("update Member " + m);
+		ArrayList<Member> pm = pService.selectProjectMember(pId);
+		Project project = pService.projectDetail(pId);
+		System.out.println("update Project " + project);
+		System.out.println("update ProjectMember " + pm);
+
+			
+		
+		
+		if(m != null && project != null) {
+			mv.addObject("pm",pm);
+			mv.addObject("m",m);
+			mv.addObject("pId", pId);
+			mv.addObject("p",project);
+			mv.setViewName("project/projectUpdate");
+		}
+		return mv;
+	}
+	
 	@RequestMapping("proUpdate.do")
-	public String projectUpdate() {
-		return "project/projectUpdate";
+	public String proUpdate(Project p,
+			@RequestParam(name="memberList", required=false) String memberList,HttpServletRequest request) {
+		List<String> mlist = Arrays.asList(memberList.split(","));
+		System.out.println(mlist);
+		List<Integer> mList = new ArrayList<Integer>();
+		for(String s : mlist) {
+			mList.add(Integer.valueOf(s));
+		}
+
+			
+		p.setmList(mList);
+		System.out.println(p.getmList());
+		int result = pService.insertPMember(p);
+		
+		if(result >0) {
+			return "redirect:project.do?pId="+p.getpId();
+					
+		}else {
+			throw new ProjectException("xx");
+		}
+		
+
 	}
 }
