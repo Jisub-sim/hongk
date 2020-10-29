@@ -35,6 +35,31 @@ public class ProjectDao {
 	public ArrayList<Member> selectTmemberlist(int ptId) {
 		return (ArrayList)sqlSession.selectList("projectMapper.selectTmember",ptId);
 	}
+
+	public int insertPteam(Pteam pt) {
+		return sqlSession.insert("projectMapper.insertPteam",pt);
+	}
+
+	public ArrayList<Member> selectMember() {
+		return (ArrayList)sqlSession.selectList("projectMapper.selectMember");
+	}
+
+	public int insertPMember(Project p) {	
+		return sqlSession.insert("projectMapper.insertPMember",p);
+	}
+
+	public int updatePMember(Pteam pt) {
+		List list = pt.getTmList();
+		int count = 0;
+		for(Object obj : list) {
+			sqlSession.update("projectMapper.updatePMember",obj);
+			count++;
+		}
+		if(count == list.size())
+			return 1;
+		else
+			return 0;
+	}
 	
 	
 

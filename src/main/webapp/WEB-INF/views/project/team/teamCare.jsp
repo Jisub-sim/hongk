@@ -88,7 +88,12 @@ textarea:focus, input:focus{
 	<div id="main">
 		<div id="button">
 			<ul><c:url var="teamadd" value="teamadd.do">
+			<c:if test="${ !empty pt }">
 				<c:param name="pId" value="${ pt[0].pId }"/>
+			</c:if>
+			<c:if test="${ empty pt }">
+				<c:param name="pId" value="${pId}"/>
+			</c:if>
 			</c:url>
 				<li><a href="project.do" id="back">뒤로가기</a> <a href="${ teamadd }" id="save">팀추가</a>
 				</li>

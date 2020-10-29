@@ -1,6 +1,8 @@
 package com.kh.hongk.project.model.vo;
 
 import java.util.Date;
+import java.util.List;
+
 
 public class Project {
 	private int pId;
@@ -12,6 +14,9 @@ public class Project {
 	private String pStatus;
 	private int manager;
 	private String mName;
+	
+	private String memberList;
+	private List mList;
 	
 	public Project() {}
 	
@@ -49,6 +54,22 @@ public class Project {
 		this.deadLine = deadLine;
 		this.pStatus = pStatus;
 		this.mName = mName;
+	}
+
+	public Project(int pId, String pTitle, String pContent, String progress, Date pDate, Date deadLine, String pStatus,
+			int manager, String mName, String memberList, List mList) {
+		super();
+		this.pId = pId;
+		this.pTitle = pTitle;
+		this.pContent = pContent;
+		this.progress = progress;
+		this.pDate = pDate;
+		this.deadLine = deadLine;
+		this.pStatus = pStatus;
+		this.manager = manager;
+		this.mName = mName;
+		this.memberList = memberList;
+		this.mList = mList;
 	}
 
 	public int getpId() {
@@ -107,14 +128,31 @@ public class Project {
 	public void setmName(String mName) {
 		this.mName = mName;
 	}
+	
+
+	public String getMemberList() {
+		return memberList;
+	}
+
+	public void setMemberList(String memberList) {
+		this.memberList = memberList;
+	}
+
+	
+	public List getmList() {
+		return mList;
+	}
+
+	public void setmList(List mList) {
+		this.mList = mList;
+	}
 
 	@Override
 	public String toString() {
 		return "Project [pId=" + pId + ", pTitle=" + pTitle + ", pContent=" + pContent + ", progress=" + progress
 				+ ", pDate=" + pDate + ", deadLine=" + deadLine + ", pStatus=" + pStatus + ", manager=" + manager
-				+ ", mName=" + mName + "]";
+				+ ", mName=" + mName + ", memberList=" + memberList + ", mList=" + mList + "]";
 	}
-
 
 	
 }

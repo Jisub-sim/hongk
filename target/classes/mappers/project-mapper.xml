@@ -105,4 +105,42 @@
 		WHERE PID = #{pId}
 		ORDER BY DEPT_CODE
 	</select>
+	
+		<!-- 프로젝트 임시 생성(결재 등록 시 - 결재 완료 전까지 상태 W 로 내용 저장) -->
+	<insert id="inserteaP" parameterType="Project">
+		INSERT INTO PROJECT VALUES(
+			SEQ_PID.NEXTVAL, #{pTitle} , #{ pContent }, 'W', #{ pDate },
+			 #{deadLine}, 'W' , #{ manager } ,SEQ_EAID.CURRVAL
+		)
+	</insert>
+	<!-- 프로젝트 생성(결재 완료 시 - 상태 Y로 정식 프로젝트 진행 ) -->
+	<update id="PEAupdateY" parameterType="_int">
+		UPDATE PROJECT
+		SET PSTATUS='Y', PROGRESS='I'
+		WHERE EA_NO = #{ ea_no }
+	</update>
+	
+	<insert id="insertPteam" parameterType="Pteam">
+		INSERT INTO PTEAM VALUES(SEQ_PTID.NEXTVAL,#{ptTitle},#{ptContent},'Y',#{pId})
+	</insert>
+	
+	<select id="selectMember" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE M_STATUS='Y'
+	</select>
+	
+	<update id="updatePMember" parameterType="Pmember">
+		UPDATE PMEMBER
+	    SET PT_ID = SEQ_PTID.CURRVAL
+	    WHERE MNO = #{obj}
+	</update>
+	
+	<insert id="insertPMember" parameterType="Project">
+		INSERT ALL 
+		<foreach collection="mList" item="item" index="index">
+			INTO PMEMBER VALUES (#{item},null,'Y',null,#{pId})
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
 </mapper>

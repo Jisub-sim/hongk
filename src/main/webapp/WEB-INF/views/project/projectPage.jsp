@@ -134,7 +134,10 @@ ul, li{
             		window.open("progress.do","a","width=400,height=150,left=100, top=50");
             	}
             </script>
-            <a href="proUpdate.do">수정</a>
+            <c:url var="proUpdateForm" value="proUpdateFrom.do">
+            	<c:param name="pId" value="${p.pId}"/>
+            </c:url>
+            <a href="${proUpdateForm}">수정</a>
             /
             <a href>삭제</a>
             /
