@@ -106,7 +106,7 @@
 		ORDER BY DEPT_CODE
 	</select>
 	
-		<!-- 프로젝트 임시 생성(결재 등록 시 - 결재 완료 전까지 상태 W 로 내용 저장) -->
+	<!-- 프로젝트 임시 생성(결재 등록 시 - 결재 완료 전까지 상태 W 로 내용 저장) -->
 	<insert id="inserteaP" parameterType="Project">
 		INSERT INTO PROJECT VALUES(
 			SEQ_PID.NEXTVAL, #{pTitle} , #{ pContent }, 'W', #{ pDate },
@@ -143,4 +143,5 @@
 		</foreach>
 		SELECT * FROM DUAL
 	</insert>
+
 </mapper>

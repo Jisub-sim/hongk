@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+/* 결재관련 테이블 */
+.ea_table{
+    width: 90%;
+    margin: auto;
+    text-align: center;
+    border-top: 2px solid rgb(118, 123, 132);
+    border-collapse: collapse;
+}
+.ea_table tr, td, th{
+    border-bottom: 1px solid rgb(229, 230, 231);
+    height: 30px;
+
+  
+}
+.ea_table thead{
+    background: rgba(183, 209, 241, 0.313);
+    color: rgb(90, 90, 90);
+}
+
+/* 결재 관련 기본 버튼 */
+.ea_bt{
+    font-size: 15px;
+    padding-left: 0.7em;
+    padding-right: 0.7em;
+    border-radius: 5px;
+    background:  rgb(105, 136, 199);
+    color: white;
+    border: 2px solid rgb(105, 136, 199);
+}
+
+.ea_bt:hover{
+    background: none;
+    border: 2px solid rgb(105, 136, 199);
+    color: rgb(105, 136, 199);
+    cursor: pointer;
+}
+
+/* 결재 관련 검색 */
+.ea_search_div{
+    width:85%;
+    margin: auto;
+    background: rgba(183, 209, 241, 0.313);
+    padding: 1em;
+    border-radius: 10px;
+}
+
+.ea_search_div input{
+    margin-right: 2em;
+    margin-left: 0.5em;
+}
+
+/* 결재자, 참조자 지정 */
+.ea_line:hover{
+    cursor: pointer;
+    outline: 1px solid gray;
+}
