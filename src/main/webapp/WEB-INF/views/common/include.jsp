@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,11 @@
     <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
+    <script
+  src="https://code.jquery.com/jquery-3.5.1.min.js"
+  integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+  crossorigin="anonymous"></script>
     <!-- <link rel="stylesheet" href="gw.css"> -->
     <script src="https://kit.fontawesome.com/5218f6fd6d.js" crossorigin="anonymous"></script>
     <!--아이콘 참조 사이트 font awesome-->
@@ -109,7 +115,6 @@ a {
 
 .sidebar ul a {
   display: block;
-  height: 100%;
   padding: 15px;
   color: black;
   padding-left: 10px;
@@ -140,16 +145,45 @@ a {
 #icon_menu{
     width:80px;
     height:200px;
-    border:2px solid skyblue;
+    border:3px solid skyblue;
     margin-left:91%;
     position:fixed;
     top:200px;
+    border-radius:20px;
+    background-color:bisque;
+    
     
     
 }
+#icon_menu i{
+	font-size:50px;
+	color:white;
+	padding-left:12px;
+	padding-top:15px;
+}
+#login_area{
+	margin-left:0;
+}
+#find_idpwd{
+	font-size:12px;
+	width:60%;
+	margin-left:0;
+	padding:0;
+}
+#login_btn{
+	font-size:12px;
+	width:40%;	
+}
     </style>
+
 </head>
 <body>
+	<c:if test="${ !empty msg }">
+		<script>alert('${msg}');</script>
+		<c:remove var="msg"/>
+	</c:if>	
+
+
     <nav id="header">
         <div id="logo_div">
             <i class="fab fa-accusoft"></i>
@@ -167,8 +201,30 @@ a {
 
    <div class="sidebar">
       <header>
-        <img src="/img/pro.jpg" width="140px" height="140px" />
-        <h4>이다희/ 과장 / 인사과</h4>
+      <c:if test="${ empty sessionScope.loginUser }">
+     	<form action="login.do" method="post">
+        <table id="login_area">
+        	<tr>
+        		<td>I  D</td>
+        		<td><input type="text" size="13" name="mId"></td>
+        	</tr>
+        	<tr>
+        		<td>PWD</td>
+        		<td><input type="password" size="13" name="mPwd"></td>
+        	</tr>
+        	<tr>
+        		<td colspan="2"><a href="" id="find_idpwd">아이디/비밀번호 찾기</a>
+        		 <a href="" onclick="document.forms[0].submit();return false;" id="login_btn">로그인</a></td>
+        	</tr>
+        </table>
+        </form>
+        </c:if>
+        <c:if test="${ !empty sessionScope.loginUser }">
+        	<img src="/img/pro.jpg" width="140px" height="140px" />
+        <h4>${ loginUser.mName } / ${ loginUser.jobCode } / ${ loginUser.deptCode }</h4>
+        <c:url var="logout" value="logout.do"/>
+       	<a href="${logout}">로그아웃</button>
+        </c:if>
       </header>
       <h3 id="sideTitle">게시판</h3>
       <ul>
@@ -176,11 +232,13 @@ a {
         <li><a href="propose.html">제안 게시판</a></li>
         <li><a href="department.html">부서 게시판</a></li>
         <li><a href="free.html">자유 게시판</a></li>
+        <li><a href="myProject.do">내 프로젝트보기</a></li>
+       
       </ul>
     </div>
     
     <div id="icon_menu">
-
+			<i class="fas fa-comments"></i>
         </div>
     <!-- <div id="main">
 

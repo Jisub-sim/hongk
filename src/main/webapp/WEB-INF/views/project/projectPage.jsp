@@ -38,7 +38,6 @@
     text-align:center;
     padding-top : 7px;
     font-weight: 700;
-    color:white;
     background-color:skyblue;
     margin-left:0;
 }
@@ -57,8 +56,8 @@ ul, li{
   list-style-type:none;  
 }
 #main_info{
-    padding-top: 40px;
-    padding-left:50px;
+    padding-top: 20px;
+    padding-left:80px;
 }
 #main_info li{
     padding-top:10px;
@@ -97,11 +96,15 @@ ul, li{
     padding-right:5px;
 }
 .task_name{
-    width:65%;
+    width:50%;
 }
 .task_mana{
     width:15%;
     text-align:center;
+}
+.task_status{
+	width:15%;
+	text-align:center;
 }
 .task_date{
     width:20%;
@@ -110,25 +113,52 @@ ul, li{
 #main div{
 	border: 1px solid skyblue;
 }
+#pg{
+	color:white;
+}
 </style>
 </head>
 <body>
 		<jsp:include page="../common/include.jsp"/>
 		
 		 <div id="main">
+		 <form name="data" id="data" method="post">
+		 	<input type="hidden" name="pId" id="pId" value="${p.pId}"/>
+		 </form>
         <div class="project" id="project_info">
-            <div id="progress">진행률</div>
+            <div id="progress"><a href="#" onClick="clickfunction();" id="pg">
+            	<c:if test="${ p.progress eq 'I'}">진행중</c:if>
+				<c:if test="${ p.progress eq 'S'}">보류</c:if>
+				<c:if test="${ p.progress eq 'C'}">완료</c:if>
+            </a></div>
+            <c:url var="progress" value="progress.do">
+            	<c:param name="pId" value="${ p.pId }"/>
+            </c:url>
+            
             <section id="update">
-            <a href>수정</a>
+            <script>
+            	function clickfunction(){            		
+            		window.open("${progress}","a","width=400,height=150,left=100, top=50");
+            		
+            		var frm = document.data;            		
+            		/* frm.submit(); */
+            	}
+            </script>
+            <c:url var="proUpdateForm" value="proUpdateFrom.do">
+            	<c:param name="pId" value="${p.pId}"/>
+            </c:url>
+            <a href="${proUpdateForm}">수정</a>
             /
-            <a href>삭제</a>
-            /
-            <a href>팀관리</a>
+            <c:url var="teamcare" value="teamcare.do">
+            	<c:param name="pId" value="${ p.pId }"/>
+            </c:url>
+            <a href="${ teamcare }">팀관리</a>
         </section>
         <ul id="main_info">
-            <li>프로젝트명 : </li>
-            <li>책임자 정보(생성자) : </li>
-            <li>기간 : </li>
+            <li>프로젝트명 : ${ p.pTitle } </li>
+            <li>내용 : ${ p.pContent }
+            <li>책임자 정보(생성자) : ${ p.mName }</li>
+            <li>기간 : ${ p.pDate } ~ ${ p.deadLine }</li>
         </ul>
         
 
@@ -142,56 +172,73 @@ ul, li{
                 <th>팀원수</th>
                 <th>업무수</th>
                 <th>진행률</th>
-                <tr>
-                    <td>1팀</td>
-                    <td>3</td>
+                <c:forEach var="pt" items="${ pt }">
+                <tr>                
+                    <td>${ pt.ptTitle }</td>
+                    <td>${ pt.mCount }</td>
                     <td>5</td>
                     <td>30%</td>                    
                 </tr>
-                <tr>
-                        <td>2팀</td>
-                        <td>5</td>
-                        <td>3</td>
-                        <td>50%</td>                    
-                    </tr>
-              <tr>
-                        <td>3팀</td>
-                        <td>5</td>
-                        <td>3</td>
-                        <td>50%</td>                    
-                    </tr>
-
+              	</c:forEach>
             </table>
 
         </div>
+        <c:url var="taskaddForm" value="taskaddForm.do">
+        		<c:param name="pId" value="${p.pId}"/>
+        </c:url>
         <div class="project" id="task">
             <table id="task_style">
-                <th colspan="3">업무목록<a href="" class="plus">+</a></th>
-                
-                <tr>
-                    <td class="task_name">업무명</td>
-                    <td class="task_mana">담당자</td>
-                    <td class="task_date">게시일</td>
+                <th colspan="4">업무목록<a href="${taskaddForm}" class="plus">+</a></th>
+                <c:forEach var="tl" items="${tl}">
+                <c:if test="${tl.twStatus eq 'Y'}">
+                <tr>                
+                    <td class="task_name"><a href="taskclick.do">${tl.twTitle}</a></td>
+                    <c:if test="${tl.manager ne null}">
+                    <td class="task_mana">${tl.manager}</td>
+                    </c:if>
+                    <c:if test="${tl.manager eq null }">
+                    <td class="task_mana"></td>
+                    </c:if>
+					<td class="task_status">미완료</td>
+                    <td class="task_date">${tl.twEnd}</td>
                 </tr>
-                <tr>
+                </c:if>
+                <c:if test="${tl.twStatus eq 'N' }">
+                  <tr>                
+                    <td class="task_name"><a href="taskclick.do">${tl.twTitle}</a></td>
+                    <c:if test="${tl.manager ne null}">
+                    <td class="task_mana">${tl.manager}</td>
+                    </c:if>
+                    <c:if test="${tl.manager eq null }">
+                    <td class="task_mana"></td>
+                    </c:if>
+					<td class="task_status">완료</td>
+                    <td class="task_date">${tl.twEnd}</td>
+                </tr>
+                </c:if>
+                </c:forEach>
+             <!--    <tr>
                         <td class="task_name">오늘까지 이거해라</td>
                         <td class="task_mana">담당자</td>
+                        <td class="task_status">상태</td>
                         <td class="task_date">2020-10-03</td>
-                    </tr>
+                    </tr> -->
             </table>
         </div>
         <div class="project" id="ask">
                 <table id="ask_style">
-                        <th colspan="3">요청사항<a href="" class="plus">+</a></th>
+                        <th colspan="4">요청사항<a href="askadd.do" class="plus">+</a></th>
                         
                         <tr>
                             <td class="task_name">업무명</td>
                             <td class="task_mana">담당자</td>
+							<td class="task_status">상태</td>
                             <td class="task_date">게시일</td>
                         </tr>
                         <tr>
                                 <td class="task_name">오늘까지 이거해주세요</td>
                                 <td class="task_mana">담당자</td>
+                                <td class="task_status">상태</td>
                                 <td class="task_date">2020-10-03</td>
                             </tr>
                     </table>
