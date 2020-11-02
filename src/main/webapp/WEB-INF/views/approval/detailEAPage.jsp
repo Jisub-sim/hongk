@@ -45,7 +45,7 @@
 	height: auto;
 }
 
-#ea_content span {
+#eat {
 	font-size: 30px;
 	font-weight: 500;
 	display: inline-block;
@@ -258,7 +258,7 @@
 		</script>
   		
 		<div id="ea_content">
-			<span>기안서 작성</span>
+			<span id="eat">기안서 작성</span>
 			
 			<table id="approver_table" border="1">
 				<tr>
@@ -347,8 +347,8 @@
 							${ r.mName } &nbsp;
 						</c:forEach>
 					</td>
-					<td style="border-bottom: 1px solid gray;">구분</td>
-					<td>${ ea.ea_type }</td>
+					<td style="border-bottom: 1px solid gray;">결재 번호</td>
+					<td>${ ea.ea_no }</td>
 				</tr>
 				<tr>
 					<td style="border-bottom: 1px solid gray;">제목</td>
@@ -361,10 +361,7 @@
 					<td colspan="4"
 						style="background: white; border-bottom: 1px solid gray;">
 						<div id="form_content_div">
-							<pre style="text-align: left; width: 90%; margin: auto;">
-						${ ea.ea_content }
-							</pre>
-
+							<pre style="text-align: left; width: 90%; margin: auto;">${ ea.ea_content }</pre>
 						</div>
 					</td>
 				</tr>
