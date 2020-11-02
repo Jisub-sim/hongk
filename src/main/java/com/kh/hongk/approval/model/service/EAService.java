@@ -2,6 +2,7 @@ package com.kh.hongk.approval.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.approval.model.vo.Approval;
 import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.approval.model.vo.Form;
@@ -55,6 +56,8 @@ public interface EAService {
 	int eaupdateN(int ea_no);
 	// 반려 함
 	ArrayList<Electronic_Approval> selectREAList(int drafter ,PageInfo pi);
+	// 참조자 리스트
+	ArrayList<Referrer> reList(int ea_no);
 	//결재기록
 	ArrayList<Approval> apList(int ea_no);
 	// 결재자의 서명파일 
@@ -134,6 +137,26 @@ public interface EAService {
 	ArrayList<Sig_File> selectSigList(int mno);
 	// sig파일 status N
 	int sigN(int mno);
+	// 결재 파일 등록
+	int Fileinsert(Files f);
+	// 결재시 파일 등록
+	int apFileinsert(Files f);
+	// 첨부파일 불러오기
+	Files selectFile(int ea_no);
+	// 서명 변경
+	int sigUpdate(int sig_no);
+	// 서명 삭제
+	int delfiles(int sig_no);
+	int delSig(int sig_no);
+	// 사원명 조회
+	ArrayList<Member> searchMname(String searchName);
+	// 휴가 승인 완료
+	int annupdateY(int ea_no);
+	// 휴가 정보가져오기
+	Annual selectAnn(int ea_no);
+	//휴여 잔여 변여
+	int amupdateY(Annual ann);
+	
 	
 	
 	

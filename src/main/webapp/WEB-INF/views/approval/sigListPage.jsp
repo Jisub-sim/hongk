@@ -108,9 +108,11 @@
     
         <thead>
             <th width="10%">NO</th>
-            <th width="55%">서명이미지</th>
+            <th width="35%">서명이미지</th>
             <th width="25%">등록일</th>
             <th width="10%">기본사용</th>
+            <th width="10%"></th>
+             <th width="10%"></th>
         </thead>
         <c:forEach var="list" items="${ list }">
         <c:set var="Status" value="${ list.sig_status }"/>
@@ -123,9 +125,28 @@
 			</td>
 			<c:if test="${Status eq 'Y' }" >				
             <td>사용중</td>
+            <td></td>
+                <c:url var="delSig" value="delSig.do">
+					<c:param name="sig_no" value="${ list.sig_no}"/>
+				</c:url>
+              <td>
+              	<button class="ea_bt" onclick="location.href='${delSig}'">삭제</button>
+              </td>
             </c:if>
             <c:if test="${Status ne 'Y' }" >				
             <td></td>
+		            <c:url var="useSig" value="useSig.do">
+							<c:param name="sig_no" value="${ list.sig_no}"/>
+					</c:url>
+             <td>
+             	<button class="ea_bt" onclick="location.href='${useSig}'">사용</button>
+             </td>
+		             <c:url var="delSig" value="delSig.do">
+						<c:param name="sig_no" value="${ list.sig_no}"/>
+					</c:url>
+              <td>
+              	<button class="ea_bt" onclick="location.href='${delSig}'">삭제</button>
+              </td>
             </c:if>
         </tr>
         </c:forEach>

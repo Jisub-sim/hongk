@@ -52,11 +52,13 @@
 		<result property="deptCode" column="DEPT_CODE"/>
 		<result property="jobCode" column="JOB_CODE"/>	
 		<result property="deptTitle" column="DEPT_TITLE"/>	
+		<result property="jobTitle" column="JOB_TITLE"/>	
 	</resultMap>
 	
 	<resultMap type="Referrer" id="referResultSet">
 		<id property="re_no" column="RE_NO"/>
 		<result property="ea_no" column="EA_NO"/>
+		<result property="mName" column="MNAME"/>
 	</resultMap>
 	
 	<resultMap type="Sig_File" id="sigResultSet">
@@ -67,6 +69,15 @@
 		<result property="reName_FileName" column="RENAME_FILENAME"/>
 		<result property="original_FileName" column="ORIGINAL_FILENAME"/>
 		<result property="save_Date" column="SAVE_DATE"/>
+	</resultMap>
+	
+	<resultMap type="Files" id="fileResultSet">
+		<id property="file_no" column="FILE_NO"/>
+		<result property="ref_no" column="REF_FNO"/>
+		<result property="original_FileName" column="ORIGINAL_FILENAME"/>
+		<result property="reName_FileName" column="RENAME_FILENAME"/>
+		<result property="save_Date" column="SAVE_DATE"/>
+		<result property="File_type" column="FILE_TYPE"/>
 	</resultMap>
 	
 	<insert id="formInsert" parameterType="Form">
@@ -186,7 +197,8 @@
 	<select id="approverList" resultMap="memResultSet">
 		SELECT *
 		FROM MEMBER
-        join DEPT using(dept_code)
+        JOIN DEPT using(dept_code)
+        JOIN JOB using(JOB_CODE)
 		WHERE M_STATUS = 'Y'
 	</select>
 	
@@ -198,6 +210,8 @@
 	<select id="addapprover" resultMap="memResultSet">
 		SELECT *
 		FROM MEMBER
+        JOIN DEPT USING(DEPT_CODE)
+        JOIN JOB USING(JOB_CODE)
 		WHERE MNO=#{ap_no}
 	</select>
 	
@@ -241,8 +255,15 @@
         ORDER BY EA_NO DESC
 	</select>
 	
+	<select id="reList" resultMap="referResultSet">
+		SELECT *
+		FROM REFERRER
+        JOIN MEMBER ON(REFERRER_NO = MNO)
+		WHERE EA_NO =#{ ea_no }
+	</select>
+	
 	<select id="apList" resultMap="ApprovalResultSet">
-	  	select *
+	  	SELECT *
         FROM APPROVER
         JOIN MEMBER ON (mno = appover_no)
         JOIN JOB USING(job_code)
@@ -872,6 +893,59 @@
      	UPDATE SIG_FILE
      	SET SIG_STATUS = 'N'
      	WHERE MNO = #{mno}
+     </update>
+     <!-- 결재 파일 등록 -->
+     <insert id="Fileinsert"  parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, SEQ_EAID.CURRVAL, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'EA'
+     	)
+     </insert>
      
+     <insert id="apFileinsert"  parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, SEQ_APPID.CURRVAL, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'AP'
+     	)
+     </insert>
+     
+     <select id="selectFile" resultMap="fileResultSet">
+     	SELECT *
+     	FROM FILES
+     	WHERE REF_FNO = #{ ea_no }
+     </select>
+     
+     <update id="sigUpdate" parameterType="_int">
+     	UPDATE SIG_FILE
+     	SET SIG_STATUS = 'Y'
+     	WHERE SIG_NO = #{ sig_no }
+     </update>
+     
+     <delete id="delfiles" parameterType="_int">
+     	DELETE 
+     	FROM FILES
+     	WHERE FILE_TYPE='SIG'
+     	AND REF_FNO = #{ sig_no }
+     </delete>
+     
+     <delete id="delSig" parameterType="_int">
+     	DELETE 
+     	FROM SIG_FILE
+     	WHERE SIG_NO=#{ sig_no }
+     </delete>
+     
+     <!-- 사원명 조회 -->
+     <select id="searchMname" parameterType="String" resultMap="memResultSet">
+     	SELECT *
+     	FROM MEMBER
+     	JOIN DEPT USING(DEPT_CODE)
+		WHERE MNAME LIKE '%'|| #{searchName} ||'%'
+     </select>
+     
+     <!-- 휴가 승인 완료 -->
+     <update id="annupdateY" parameterType="_int">
+     	UPDATE ANNUAL
+     	SET ANN_STATUS = 'Y'
+     	WHERE EA_NO = #{ ea_no }
      </update>
 </mapper>
