@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="attendanceMapper">
+	<resultMap type="Attendance" id="attendanceResultSet">
+		<id property="attendance_no" column="ATTENDANCE_NO"/>
+		<result property="work_on" column="WORK_ON"/>
+		<result property="work_off" column="WORK_OFF"/>
+		<result property="attendance_type" column="ATTENDANCE_TYPE"/>
+		<result property="wk_status" column="WK_STATUS"/>
+	</resultMap>
+	
+	<insert id="insertattendance" parameterType="_int">
+	INSERT INTO ATTENDANCE VALUES(
+		SEQ_ATTNO.NEXTVAL, #{ mno }, SYSDATE, NULL, 1
+	)
+	
+	</insert>
+	
+	<select id="selectattendance" parameterType="_int" resultMap="attendanceResultSet">
+	 	SELECT *
+	 	FROM ATTENDANCE
+	 	WHERE MNO=#{mno}
+	</select>
+	
+	<update id="updateattendance" parameterType="_int">
+		UPDATE ATTENDANCE
+		SET WORK_OFF=SYSDATE
+		WHERE MNO=#{mno}	
+	</update>
+	
+	<select id="selectcheckattendance" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM ATTENDANCE
+		WHERE MNO=#{mno}
+		AND TO_CHAR(WORK_ON,'YYYYMMDD')=TO_CHAR(SYSDATE,'YYYYMMDD')
+	</select>
+	
+	<insert id="insertattendanceover" parameterType="_int">
+	INSERT INTO ATTENDANCE VALUES(
+		SEQ_ATTNO.NEXTVAL, #{ mno }, SYSDATE, NULL, 2
+	)
+	
+	</insert>
+	
+	<!-- 지각한 개수 select 현재날짜와 비교 이번달 인것만 개수 가져오기 -->
+	<select id="selectOvertimeCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM ATTENDANCE
+		WHERE ATTENDANCE_TYPE = 2
+		AND MNO=#{mno}
+		AND TO_CHAR(work_off, 'yyyyMM') = to_char(sysdate, 'yyyyMM')
+	</select>
+	
+	  <select id="selectworkCount" resultType="_int">
+	  	SELECT COUNT(*)
+	  	FROM ATTENDANCE
+		WHERE ATTENDANCE_TYPE = 3
+		AND MNO=#{mno}
+		AND TO_CHAR(work_off, 'yyyyMM') = to_char(sysdate, 'yyyyMM')
+	  </select>
+	  
+	  <select id="selectListCount" resultType="_int">
+	  SELECT COUNT(*)
+	  	FROM ATTENDANCE
+		WHERE MNO=#{mno}
+		AND TO_CHAR(work_off, 'yyyyMM') = to_char(sysdate, 'yyyyMM')
+	  
+	  </select>
+	  
+	  <select id="selectList" resultMap="attendanceResultSet">
+	  	SELECT *
+	  	FROM ATTENDANCE
+	  </select>
+	
+	
+</mapper>
