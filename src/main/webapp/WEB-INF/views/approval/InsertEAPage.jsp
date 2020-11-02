@@ -103,7 +103,7 @@
     </tr>
     <tr></tr>
     <tr><td colspan="4" style="text-align: left;"> &nbsp; 파일 업로드 </td></tr>
-    <tr><td colspan="4" style=" background: white"><input type="file" name="uploadFile"></td></tr>
+    <tr><td colspan="4" style=" background: white"><input type="file" id="fileupload" name="uploadFile"></td></tr>
     </table>
     <br>
     

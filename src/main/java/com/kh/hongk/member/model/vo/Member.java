@@ -19,7 +19,8 @@ public class Member {
 	private String mStatus;
 	private String deptCode;
 	private String jobCode;
-
+	private String deptTitle;
+	private String jobTitle;
 	public Member() {}
 
 	public Member(int mNo, String mId, String mPwd, String mName, int age, String gender, String email, String address,
@@ -42,6 +43,23 @@ public class Member {
 		this.mStatus = mStatus;
 		this.deptCode = deptCode;
 		this.jobCode = jobCode;
+	}
+
+	
+	public String getJobTitle() {
+		return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
+	}
+
+	public String getDeptTitle() {
+		return deptTitle;
+	}
+
+	public void setDeptTitle(String deptTitle) {
+		this.deptTitle = deptTitle;
 	}
 
 	public int getmNo() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.approval.model.dao.EADao;
 import com.kh.hongk.approval.model.vo.Approval;
 import com.kh.hongk.approval.model.vo.Electronic_Approval;
@@ -118,6 +119,11 @@ public class EAServiceImpl implements EAService {
 	@Override
 	public ArrayList<Electronic_Approval> selectREAList(int drafter,PageInfo pi) {
 		return eaDao.selectREAList(drafter, pi );
+	}
+	// 참조자 리스트
+	@Override
+	public ArrayList<Referrer> reList(int ea_no) {
+		return eaDao.reList(ea_no);
 	}
 	// 결재기록
 	@Override
@@ -352,6 +358,56 @@ public class EAServiceImpl implements EAService {
 	public int sigN(int mno) {
 		return eaDao.sigN(mno);
 	}
+	// 결재 파일 등록
+	@Override
+	public int Fileinsert(Files f) {
+		return eaDao.Fileinsert(f);
+	}
+	// 결재시 파일 등록
+	@Override
+	public int apFileinsert(Files f) {
+		return eaDao.apFileinsert(f);
+	}
+	// 첨부파일 불러오기
+	@Override
+	public Files selectFile(int ea_no) {
+		return eaDao.selectFile(ea_no);
+	}
+	// 서명 변경
+	@Override
+	public int sigUpdate(int sig_no) {
+		return eaDao.sigUpdate(sig_no);
+	}
+	// 서명삭제
+	@Override
+	public int delfiles(int sig_no) {
+		return eaDao.delfiles(sig_no);
+	}
+	@Override
+	public int delSig(int sig_no) {
+		return eaDao.delSig(sig_no);
+	}
+	// 사원명 조회
+	@Override
+	public ArrayList<Member> searchMname(String searchName) {
+		return eaDao.searchMname(searchName);
+	}
+	// 휴가 승인 완료
+	@Override
+	public int annupdateY(int ea_no) {
+		return eaDao.annupdateY(ea_no);
+	}
+	// 휴가정보 가져오기
+	@Override
+	public Annual selectAnn(int ea_no) {
+		return eaDao.selectAnn(ea_no);
+	}
+	@Override
+	public int amupdateY(Annual ann) {
+		return eaDao.amupdateY(ann);
+	}
+	
+	
 
 
 	

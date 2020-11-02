@@ -332,15 +332,23 @@
 				</tr>
 				<tr>
 					<td>결재자</td>
-					<td class="ea_line"></td>
+					<td > 
+						<c:forEach var="a" items="${ ap }">
+							${ a.mName } &nbsp;
+						</c:forEach>
+					</td>
 					<td>기안부서</td>
 					<td>${ ea.deptTitle }</td>
 				</tr>
 				<tr>
 					<td>참조자</td>
-					<td class="ea_line"></td>
+					<td >
+						<c:forEach var="r" items="${ ref }">
+							${ r.mName } &nbsp;
+						</c:forEach>
+					</td>
 					<td style="border-bottom: 1px solid gray;">구분</td>
-					<td></td>
+					<td>${ ea.ea_type }</td>
 				</tr>
 				<tr>
 					<td style="border-bottom: 1px solid gray;">제목</td>
@@ -358,6 +366,15 @@
 							</pre>
 
 						</div>
+					</td>
+				</tr>
+				<tr></tr>
+				<tr>
+				<td>첨부파일</td>
+					<td colspan="3">
+						<c:if test="${ !empty f.original_FileName }">
+							<a href="${ contextPath }/resources/EAFileUpload/${ f.reName_FileName }" download="${ f.original_FileName }">${ f.original_FileName }</a>
+						</c:if>
 					</td>
 				</tr>
 			</table>
@@ -388,7 +405,7 @@
 				</tr>
 				<tr>
 					<td>파일</td>
-					<td><input type="file" name="ap_file"></td>
+					<td><input type="file" name="uploadFile"></td>
 				</tr>
 				<tr>
 					<td colspan="2">
