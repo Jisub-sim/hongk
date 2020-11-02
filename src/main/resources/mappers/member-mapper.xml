@@ -18,6 +18,8 @@
 		<result property="mStatus" column="M_STATUS"/>
 		<result property="deptCode" column="DEPT_CODE"/>
 		<result property="jobCode" column="JOB_CODE"/>	
+		<result property="deptTitle" column="DEPT_TITLE"/>	
+		<result property="jobTitle" column="JOB_TITLE"/>
 	</resultMap>
 	
 	<select id="selectOne" parameterType="Member" resultMap="memberResultSet">
@@ -31,4 +33,35 @@
 		AND MPWD = #{mPwd}
 		AND M_STATUS = 'Y'
 	</select>
+	
+	<select id="jobList" resultMap="memberResultSet">
+		SELECT *
+		FROM JOB
+	</select>
+	
+	<select id="deptList" resultMap="memberResultSet">
+		SELECT *
+		FROM DEPT
+	</select>
+	
+	
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE MID=#{id}
+	</select>
+	
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES (SEQ_MNO.NEXTVAL, #{mId}, #{mPwd}, #{mName}, #{age},#{gender}, #{email},
+		#{address},  #{phone}, #{exNumber},SYSDATE, null, #{mLevel},DEFAULT,#{deptCode},#{jobCode}
+		)
+	</insert>
+	
+	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER
+		SET MNAME=#{mName}, GENDER=#{gender}, EMAIL=#{email}, AGE=#{age},
+		    PHONE=#{phone}, ADDRESS=#{address}, MPWD =#{ mPwd }
+		WHERE MID=#{mId}
+	</update>
 </mapper>

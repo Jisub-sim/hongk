@@ -64,7 +64,7 @@
      <br>
    <div id="includedContent"></div>
     <br>
-    <p id="form_title">프로젝트</p>
+    <p id="form_title">${ form.form_name }</p>
     <br><Br>
     <table class="ea_table" border="1" id="ea_create_table" >
     <tr>

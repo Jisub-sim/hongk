@@ -124,7 +124,7 @@ private EAService eaService;
 		Form form = eaService.selectForm(fid);
 
 		if(form != null) {
-			if(form.getForm_name().equals("프로젝트")) {
+			if(form.getForm_name().contains("프로젝트")) {
 			mv.addObject("form",form)
 			.addObject("member", member)
 			.setViewName("approval/insertEAProjectPage");
@@ -1044,8 +1044,13 @@ private EAService eaService;
 	public ModelAndView updateEaPage(ModelAndView mv, int ea_no) {
 		Electronic_Approval list = eaService.updateEaPage(ea_no);
 		
+		ArrayList<Approval> ap = eaService.apList(ea_no);
+		ArrayList<Referrer> ref = eaService.reList(ea_no);
+		
 		if( list != null ) {
 			mv.addObject("list", list)
+			.addObject("ap",ap)
+			.addObject("ref",ref)
 			.setViewName("approval/updateEAPage");
 			return mv;
 		}else {
