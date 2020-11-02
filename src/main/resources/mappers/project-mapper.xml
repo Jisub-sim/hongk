@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="projectMapper">
+	<resultMap type="Member" id="memberResultSet">
+		<id property="mNo" column="MNO"/>
+		<result property="mId" column="MID"/>
+		<result property="mPwd" column="MPWD"/>
+		<result property="mName" column="MNAME"/>
+		<result property="age" column="AGE"/>
+		<result property="gender" column="GENDER"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="exNumber" column="EXNUMBER"/>
+		<result property="hireDate" column="HIRE_DATE"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="mLevel" column="M_LEVEL"/>
+		<result property="mStatus" column="M_STATUS"/>
+		<result property="deptCode" column="DEPT_CODE"/>
+		<result property="jobCode" column="JOB_CODE"/>	
+	</resultMap>
+	
+	<resultMap type="Project" id="projectResultSet">
+		<id property="pId" column="PID"/>
+		<result property="pTitle" column="PTITLE"/>
+		<result property="pContent" column="PCONTENT"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="pDate" column="PDATE"/>
+		<result property="deadLine" column="DEADLINE"/>
+		<result property="pStatus" column="PSTATUS"/>
+		<result property="manager" column="MANAGER"/>
+	</resultMap>
+	
+	<resultMap type="Pmember" id="pmemberResultSet">
+		<id property="mNo" column="MNO"/>
+		<result property="pKinds" column="P_KINDS"/>
+		<result property="pmStatus" column="PM_STATUS"/>
+		<result property="ptId" column="PT_ID"/>
+		<result property="pId" column="PID"/>
+	</resultMap>
+	
+	<resultMap type="Project" id="projectResultSet2">
+		<id property="pId" column="PID"/>
+		<result property="pTitle" column="PTITLE"/>
+		<result property="pContent" column="PCONTENT"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="pDate" column="PDATE"/>
+		<result property="deadLine" column="DEADLINE"/>
+		<result property="pStatus" column="PSTATUS"/>
+		<result property="mName" column="MNAME"/>
+	</resultMap>
+	
+	<resultMap type="Pteam" id="PteamResultSet">
+		<id property="ptId" column="PT_ID"/>
+		<result property="ptTitle" column="PT_TITLE"/>
+		<result property="ptContent" column="PT_CONTENT"/>
+		<result property="ptStatus" column="PT_STATUS"/>
+		<result property="pId" column="PID"/>	
+		<result property="mCount" column="COUNT(MNO)"/>	
+	</resultMap>
+	<resultMap type="Task" id="TaskResultSet">
+		<id property="twId" column="TW_ID"/>
+		<result property="twTitle" column="TW_TITLE"/>
+		<result property="twContent" column="TW_CONTENT"/>
+		<result property="twStatus" column="TW_STATUS"/>
+		<result property="twDate" column="TW_DATE"/>
+		<result property="twEnd" column="TW_END"/>
+		<result property="ptId" column="PT_ID"/>
+		<result property="twWriter" column="TW_WRITER"/>
+		<result property="twManager" column="TW_MANAGER"/>
+	</resultMap>
+	<select id="selectmyProject" parameterType="Project" resultMap="projectResultSet">
+		<!-- SELECT P.PID,PTITLE,PCONTENT,PROGRESS,PDATE,DEADLINE,PSTATUS,MANAGER
+		FROM PROJECT P, PMEMBER M
+		WHERE MNO = #{mNo}
+		AND P.PID = M.PID
+		ORDER BY PDATE -->
+	
+	 
+        select *
+        from project 
+        where manager =#{mNo}
+        order by pdate
+	</select>
+	
+	<select id="projectDetail" parameterType="_int" resultMap="projectResultSet2">
+		SELECT P.PID, PTITLE, PCONTENT, PROGRESS, PDATE,DEADLINE, PSTATUS, MNAME
+		FROM PROJECT P, MEMBER
+		WHERE PID = #{pId}
+		AND PSTATUS='Y'
+        AND P.MANAGER = MNO		
+	</select>
+	
+	<select id="selectTeamList" parameterType="Pteam" resultMap="PteamResultSet">
+		SELECT PT_ID,PT_TITLE,PT_CONTENT, PT_STATUS,PID, COUNT(MNO)
+		FROM PTEAM 
+		JOIN PMEMBER USING (PID,PT_ID)
+		WHERE PID=#{pId}
+		AND PT_STATUS='Y'
+		GROUP BY PT_ID,PT_TITLE,PT_CONTENT,PT_STATUS,PID
+		ORDER BY PT_ID
+	</select>
+	
+	<select id="selectTmember" resultMap="memberResultSet">
+		SELECT MNO, JOB_CODE, MNAME
+		FROM MEMBER 
+		JOIN PMEMBER USING(MNO)
+		WHERE PT_ID=#{ptId}
+		AND PM_STATUS='Y'
+		ORDER BY JOB_CODE		
+	</select>
+	
+	<select id="selectProjectMember" resultMap="memberResultSet">
+		SELECT DISTINCT MNO,DEPT_CODE, JOB_CODE, MNAME
+		FROM MEMBER
+		JOIN PMEMBER USING(MNO)
+		WHERE PID = #{pId}
+		AND PM_STATUS='Y'
+		ORDER BY DEPT_CODE
+	</select>
+	
+		<!-- 프로젝트 임시 생성(결재 등록 시 - 결재 완료 전까지 상태 W 로 내용 저장) -->
+	<insert id="inserteaP" parameterType="Project">
+		INSERT INTO PROJECT VALUES(
+			SEQ_PID.NEXTVAL, #{pTitle} , #{ pContent }, 'W', #{ pDate },
+			 #{deadLine}, 'W' , #{ manager } ,SEQ_EAID.CURRVAL
+		)
+	</insert>
+	<!-- 프로젝트 생성(결재 완료 시 - 상태 Y로 정식 프로젝트 진행 ) -->
+	<update id="PEAupdateY" parameterType="_int">
+		UPDATE PROJECT
+		SET PSTATUS='Y', PROGRESS='I'
+		WHERE EA_NO = #{ ea_no }
+	</update>
+	
+	<insert id="insertPteam" parameterType="Pteam">
+		INSERT INTO PTEAM VALUES(SEQ_PTID.NEXTVAL,#{ptTitle},#{ptContent},'Y',#{pId})
+	</insert>
+	
+	<select id="selectMember" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		WHERE M_STATUS='Y'
+	</select>
+	
+	<update id="updatePMember" parameterType="Pmember"> 
+		UPDATE PMEMBER
+	    SET PT_ID = SEQ_PTID.CURRVAL
+	    WHERE MNO IN 
+	    <foreach collection="TmList" item="item" open="(" close=")" separator=",">
+	    #{item}
+	    </foreach>
+	    AND PID=#{pId}	    
+        AND PM_STATUS='Y'
+	</update>
+	
+	<insert id="insertPMember" parameterType="Project">
+		INSERT ALL 
+		<foreach collection="mList" item="item" index="index">
+			INTO PMEMBER VALUES (#{item},null,'Y',null,#{pId})
+		</foreach>
+		SELECT * FROM DUAL
+	</insert>
+	
+	<select id="selectPTeam" resultMap="PteamResultSet">
+		SELECT *
+		FROM PTEAM
+		WHERE PT_ID= #{ptId}
+		AND PT_STATUS='Y'
+	</select>
+	
+	<update id="deleteTMember" parameterType="_int">
+		UPDATE PMEMBER
+        SET PT_ID = null
+        WHERE PT_ID= #{ptId}
+        AND PM_STATUS = 'Y'
+	</update>
+	
+	<update id="updateTMember" parameterType="_int">
+		  update pmember 
+        set PT_ID = #{ptId}
+        where mno IN 
+        <foreach collection="TmList" item="item" open="(" close=")" separator=",">
+        #{item}
+        </foreach>
+        AND PM_STATUS = 'Y'
+	</update>
+	
+	<update id="deletePMember" parameterType="_int">
+		UPDATE PMEMBER
+		SET PM_STATUS='N'
+		WHERE MNO IN 
+		<foreach collection="mList" item="item" open="(" close=")" separator=",">
+		#{item}
+		</foreach>
+		AND PID=#{pId}
+	</update>
+	
+	<update id="deleteTeam" parameterType="_int">
+		UPDATE PTEAM
+		SET PT_STATUS='N'
+		WHERE PT_ID=#{ptId}
+	
+	</update>
+	<update id="updateProgress" parameterType="_int">
+		UPDATE PROJECT
+		SET PROGRESS=#{ progress }
+		WHERE PID=#{pId}
+	
+	</update>
+	
+	<select id="selectMemberTeam" resultMap="pmemberResultSet">
+		SELECT *
+	    FROM PMEMBER 
+	    WHERE PM_STATUS='Y'
+	    AND MNO=#{mNo}
+	    AND PID=#{pId}	
+	</select>
+	
+	<insert id="insertTask" parameterType="Task">
+		INSERT INTO TWORK VALUES(SEQ_TWID.NEXTVAL,#{twTitle},#{twContent},
+		DEFAULT,SYSDATE,#{twEnd},#{ptId},#{twWriter},#{twManager})
+	</insert>
+	
+	<select id="selectTaskList" resultMap="TaskResultSet">
+		SELECT * 
+        FROM TWORK 
+        WHERE PT_ID =(SELECT PT_ID
+            FROM PTEAM 
+            JOIN PMEMBER USING(PT_ID,PID)
+            WHERE MNO=#{mNo}
+            AND PID=#{pId}
+            AND PM_STATUS='Y'
+            AND PT_STATUS='Y')
+	</select>
+	
+	<select id="selectWriter" resultMap="memberResultSet">
+		SELECT MNAME
+		FROM MEMBER
+		WHERE MNO=#{m}
+	</select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>	
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="com.kh.hongk.member.model.vo.Member" alias="Member"/>
+		<typeAlias alias="Files" type="com.kh.hongk.member.model.vo.Files"/>
+		<typeAlias alias="Electronic_Approval" type="com.kh.hongk.approval.model.vo.Electronic_Approval"/>
+		<typeAlias alias="Form" type="com.kh.hongk.approval.model.vo.Form"/>
+		<typeAlias alias="Sig_File" type="com.kh.hongk.approval.model.vo.Sig_File"/>
+		<typeAlias alias="Approval" type="com.kh.hongk.approval.model.vo.Approval"/>
+		<typeAlias alias="Referrer" type="com.kh.hongk.approval.model.vo.Referrer"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Project" alias="Project"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Pteam" alias="Pteam"/>
+		<typeAlias type="com.kh.hongk.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Task" alias="Task"/>
+	</typeAliases>
+
+	<mappers>
+		<mapper resource="mappers/project-mapper.xml"/>
+		<mapper resource="mappers/member-mapper.xml"/>
+		<mapper resource="mappers/ea-mapper.xml"/>
+		<mapper resource="mappers/board-mapper.xml"/>
+
+	</mappers>
+</configuration>

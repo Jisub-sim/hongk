@@ -1,0 +1,951 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="eaMapper">
+	<resultMap type="Electronic_Approval" id="eaResultSet">
+		<id property="ea_no" column="EA_NO"/>
+		<result property="draftng_date" column="DRAFTING_DATE"/>
+		<result property="complete_date" column="COMPLETE_DATE"/>
+		<result property="ea_type" column="EA_TYPE"/>
+		<result property="ea_title" column="EA_TITLE"/>
+		<result property="ea_content" column="EA_CONTENT"/>
+		<result property="ea_status" column="EA_STATUS"/>
+		<result property="drafter" column="DRAFTER"/>
+		<result property="deptCode" column="DEPT_CODE"/>
+		<result property="deptTitle" column="DEPT_TITLE"/>
+		<result property="mName" column="MNAME"/>
+		<result property="re_no" column="RE_NO"/>
+		<result property="ap_id" column="AP_ID"/>
+		<result property="form_category" column="FORM_CATEGORY"/>
+	</resultMap>
+
+	<resultMap type="Approval" id="ApprovalResultSet">
+		<id property="ap_id" column="AP_ID"/>
+		<result property="approval_date" column="APPOVAL_DATE"/>
+		<result property="approval_lelvel" column="APPROVAL_LEVEL"/>
+		<result property="approval_status" column="APPROVAL_STATUS"/>
+		<result property="approval_comment" column="APPROVAL_COMMENT"/>
+		<result property="approver_no" column="APPOVER_NO"/>
+		<result property="ea_no" column="EA_NO"/>
+		<result property="mName" column="MNAME"/>
+		<result property="deptCode" column="DEPT_CODE"/>
+		<result property="deptTitle" column="DEPT_TITLE"/>
+		<result property="job_Code" column="JOB_CODE"/>
+		<result property="job_Title" column="JOB_TITLE"/>
+	</resultMap>
+    
+	<resultMap type="Form" id="formResultSet">
+		<id property="form_no" column="FORM_NO"/>
+		<result property="form_name" column="FORM_NAME"/>
+		<result property="form_content" column="FORM_CONTENT"/>
+		<result property="mno" column="MNO"/>
+		<result property="form_create_date" column="FORM_CREATE_DATE"/>
+		<result property="form_type" column="FORM_TYPE"/>
+		<result property="form_category" column="FORM_CATEGORY"/>
+	</resultMap>
+	
+	<resultMap type="Member" id="memResultSet">
+		<id property="mNo" column="MNO"/>
+		<result property="mId" column="MID"/>
+		<result property="mName" column="MNAME"/>
+		<result property="mLevel" column="M_LEVEL"/>
+		<result property="mStatus" column="M_STATUS"/>
+		<result property="deptCode" column="DEPT_CODE"/>
+		<result property="jobCode" column="JOB_CODE"/>	
+		<result property="deptTitle" column="DEPT_TITLE"/>	
+		<result property="jobTitle" column="JOB_TITLE"/>	
+	</resultMap>
+	
+	<resultMap type="Referrer" id="referResultSet">
+		<id property="re_no" column="RE_NO"/>
+		<result property="ea_no" column="EA_NO"/>
+		<result property="mName" column="MNAME"/>
+	</resultMap>
+	
+	<resultMap type="Sig_File" id="sigResultSet">
+		<id property="sig_no" column="SIG_NO"/>
+		<result property="file_no" column="FILE_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="sig_status" column="SIG_STATUS"/>
+		<result property="reName_FileName" column="RENAME_FILENAME"/>
+		<result property="original_FileName" column="ORIGINAL_FILENAME"/>
+		<result property="save_Date" column="SAVE_DATE"/>
+	</resultMap>
+	
+	<resultMap type="Files" id="fileResultSet">
+		<id property="file_no" column="FILE_NO"/>
+		<result property="ref_no" column="REF_FNO"/>
+		<result property="original_FileName" column="ORIGINAL_FILENAME"/>
+		<result property="reName_FileName" column="RENAME_FILENAME"/>
+		<result property="save_Date" column="SAVE_DATE"/>
+		<result property="File_type" column="FILE_TYPE"/>
+	</resultMap>
+	
+	<insert id="formInsert" parameterType="Form">
+		INSERT INTO FORM VALUES(
+			SEQ_fORMID.NEXTVAL, #{form_name}, #{form_content}, #{ mno }, SYSDATE,
+			#{form_type}, #{form_category}
+		)
+	</insert>
+	
+	<select id="selectFormList" resultMap="formResultSet">
+		SELECT *
+		FROM FORM
+		ORDER BY FORM_NO DESC
+	</select>
+	
+	<select id="selectForm" resultMap="formResultSet">
+		SELECT *
+		FROM FORM
+		WHERE FORM_no=#{ fid }
+	</select>
+	
+	<insert id="temeaform" parameterType="Electronic_Approval">
+		INSERT INTO Electronic_Approval VALUES(
+			SEQ_EAID.NEXTVAL, SYSDATE, NULL , #{ ea_type }, #{ea_title}
+			, #{ea_content}, 'T', #{drafter}, #{form_no}
+		)
+	</insert>
+	
+	<delete id="teadelete" parameterType="_int">
+		DELETE 
+		FROM Electronic_Approval
+		WHERE EA_NO = #{ea_no}
+	</delete>
+	
+	<update id="teaupdate" parameterType="_int">
+		UPDATE Electronic_Approval
+		SET EA_STATUS='W'
+		WHERE EA_NO = #{ea_no}
+	</update>
+	
+	<insert id="insertea" parameterType="Electronic_Approval">
+		INSERT INTO Electronic_Approval VALUES(
+			SEQ_EAID.NEXTVAL, SYSDATE, NULL , #{ ea_type }, #{ea_title}
+			, #{ea_content}, 'W', #{drafter}, #{form_no}
+		)
+	</insert>
+	<select id="selectListTem" resultMap="eaResultSet">
+	 	SELECT *
+		FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT USING(dept_code)
+		JOIN FORM USING(FORM_NO)
+		WHERE EA_STATUS='T'
+		AND DRAFTER = #{drafter}
+		ORDER BY EA_NO DESC
+	</select>
+	
+	<select id="selectListreq" resultMap="eaResultSet">
+		SELECT *
+		FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT USING(dept_code)
+		JOIN FORM USING(FORM_NO)
+		WHERE drafter = #{drafter}
+		AND EA_STATUS in( 'R', 'W', 'B','C')
+		ORDER BY EA_NO DESC
+	</select>
+	
+	<select id="selectEAdetail" resultMap="eaResultSet">
+		SELECT *
+		FROM Electronic_Approval
+		join MEMBER on(drafter = mno)
+        join DEPT using(dept_code)
+		WHERE EA_NO = #{ ea_no }
+	
+	</select>
+	
+	<select id="searchList" resultMap="formResultSet">
+		<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+		SELECT *
+		FROM FORM
+		WHERE FORM_NAME LIKE #{sf}
+	</select>
+	
+	<select id="EAsearch" resultMap="eaResultSet">
+		SELECT *
+		FROM ELECTRONIC_APPROVAL
+		JOIN MEMBER on(drafter = mno)
+        JOIN FORM USING(FORM_NO)
+        
+		<where>
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+			<if test="searchCondition != null">
+			<choose>
+				<when test="searchCondition == 'all'">
+						AND EA_STATUS in( 'R', 'W', 'B','C')
+				</when>
+				<otherwise>
+					AND EA_STATUS = #{searchCondition}
+				</otherwise>
+			</choose>
+			</if>
+		</where>
+	</select>
+	
+	<select id="approverList" resultMap="memResultSet">
+		SELECT *
+		FROM MEMBER
+        JOIN DEPT using(dept_code)
+        JOIN JOB using(JOB_CODE)
+		WHERE M_STATUS = 'Y'
+	</select>
+	
+	<select id="deptList" resultMap="memResultSet">
+		SELECT *
+        FROM DEPT
+	</select>
+	
+	<select id="addapprover" resultMap="memResultSet">
+		SELECT *
+		FROM MEMBER
+        JOIN DEPT USING(DEPT_CODE)
+        JOIN JOB USING(JOB_CODE)
+		WHERE MNO=#{ap_no}
+	</select>
+	
+	<select id="selectListW"  resultMap="eaResultSet">
+		SELECT *
+        FROM  ELECTRONIC_APPROVAL
+        join  APPROVER using(ea_no)
+        JOIN MEMBER on(drafter = mno)
+        JOIN DEPT USING(dept_code)
+        JOIN FORM USING(FORM_NO)
+        WHERE APPOVER_NO = #{mno}
+        AND APPROVAL_STATUS='W'
+        ORDER BY EA_NO DESC
+	</select>
+	
+	<update id="appro" parameterType="Approval">
+		UPDATE APPROVER
+        SET 
+	        APPROVAL_STATUS= #{approval_status}, 
+	        APPROVAL_COMMENT = #{approval_comment} , 
+	        APPOVAL_DATE = SYSDATE
+        WHERE EA_NO = #{ ea_no }
+        AND APPOVER_NO = #{ approver_no }
+	</update>
+	<update id="eaupdateN" parameterType="_int">
+		UPDATE ELECTRONIC_APPROVAL
+		SET EA_STATUS='B'
+		WHERE EA_NO = #{ ea_no}
+	</update>
+	
+	<!--  반려 리스트 ( 내가 한 결재 ) -->
+	<select id="selectREAList" resultMap="eaResultSet">
+		 SELECT EA_NO,DRAFTING_DATE,EA_TYPE,EA_TITLE,DEPT_TITLE,FORM_CATEGORY,APPROVAL_LEVEL,APPROVAL_STATUS,APPOVER_NO
+		FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+        JOIN DEPT USING(dept_code)
+        JOIN APPROVER using(ea_no)
+        JOIN FORM USING(FORM_NO)
+		WHERE EA_STATUS='B'
+        AND APPOVER_NO = #{ drafter }
+        ORDER BY EA_NO DESC
+	</select>
+	
+	<select id="reList" resultMap="referResultSet">
+		SELECT *
+		FROM REFERRER
+        JOIN MEMBER ON(REFERRER_NO = MNO)
+		WHERE EA_NO =#{ ea_no }
+	</select>
+	
+	<select id="apList" resultMap="ApprovalResultSet">
+	  	SELECT *
+        FROM APPROVER
+        JOIN MEMBER ON (mno = appover_no)
+        JOIN JOB USING(job_code)
+        JOIN DEPT USING(dept_code)
+		WHERE EA_NO =#{ ea_no }
+<!-- 		AND APPROVAL_STATUS IN ('Y', 'N') -->
+	</select>
+	
+	<select id="sigList" resultMap="sigResultSet">
+	  	select *
+        FROM APPROVER
+        JOIN SIG_FILE s on(s.MNO = appover_no)
+        JOIN FILES USING(FILE_NO)
+		WHERE EA_NO = #{ ea_no }
+        AND SIG_STATUS = 'Y'
+	</select>
+	
+	<!-- 다음 결재자 존재 하는가  -->
+	<select id="selectNextapprover" resultMap="ApprovalResultSet">
+		SELECT APPOVER_NO
+		FROM APPROVER
+		WHERE APPROVAL_LEVEL = #{approval_lelvel} + 1
+		AND EA_NO = #{ea_no}
+	</select>
+	<!-- 이전  결재자가 결재를 하였는가  -->
+	<select id="selectPrevapprover" resultMap="ApprovalResultSet">
+		SELECT APPOVER_NO, approval_status
+		FROM APPROVER
+		WHERE APPROVAL_LEVEL = #{approval_lelvel} - 1
+		AND EA_NO = #{ea_no}
+	</select>
+	
+	<update id="EAupdateY" parameterType="_int">
+		UPDATE ELECTRONIC_APPROVAL
+		SET EA_STATUS='C', COMPLETE_DATE = SYSDATE
+		WHERE EA_NO = #{ ea_no }
+	</update>
+	
+	<select id="selectCurapprover" resultMap="ApprovalResultSet">
+		SELECT  APPROVAL_LEVEL, EA_NO
+		FROM APPROVER
+		WHERE APPOVER_NO = #{approver_no} 
+		AND EA_NO = #{ea_no}
+	</select>
+	<!--결재 완료 리스트 ( 내가 한 결재) -->
+	<select id="selectListComEA" resultMap="eaResultSet">
+		SELECT EA_NO,MNAME,DRAFTING_DATE,EA_TYPE,EA_TITLE,DEPT_TITLE,FORM_CATEGORY,APPROVAL_LEVEL,APPROVAL_STATUS,APPOVER_NO
+		FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT using(dept_code)
+        join  APPROVER using(ea_no)
+		JOIN FORM USING(FORM_NO)
+		WHERE APPOVER_NO = #{ drafter }
+		AND EA_STATUS ='C'
+		ORDER BY EA_NO DESC
+     </select>
+     
+     <select id="selecListPEA" resultMap="eaResultSet">
+     	SELECT EA_NO,EA_TYPE,EA_TITLE,MNAME,DEPT_TITLE,DRAFTING_DATE, APPROVAL_STATUS,FORM_CATEGORY
+     	FROM Electronic_Approval
+        JOIN APPROVER using(ea_no)
+     	JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT using(dept_code)
+		JOIN FORM USING(FORM_NO)
+		WHERE APPOVER_NO = #{approver_no}
+        AND APPROVAL_STATUS='Y'
+        AND EA_STATUS='W'
+        ORDER BY EA_NO DESC
+     </select>
+     
+     <select id="selectListrefea" resultMap="eaResultSet">
+	    SELECT  EA_NO,EA_TYPE,EA_TITLE,MNAME,DEPT_TITLE,DRAFTING_DATE,MNAME,DEPT_TITLE, FORM_CATEGORY
+	    FROM ELECTRONIC_APPROVAL
+	    JOIN REFERRER USING(EA_NO)
+	    JOIN MEMBER on(drafter = mno)
+	    JOIN DEPT using(dept_code)
+	    JOIN FORM USING(FORM_NO)
+	    WHERE REFERRER_NO = #{ re_no }
+	    ORDER BY EA_NO DESC
+     </select>
+<!-- 첫번째 결재자 결재 하였는가  -->
+     <select id="selectFirstApproval" resultMap="ApprovalResultSet">
+     SELECT *
+     	FROM APPROVER
+     	WHERE APPROVAL_LEVEL = 1
+     	AND APPROVAL_STATUS = 'W'
+     	AND EA_NO = #{ ea_no }
+     </select>
+     
+     <update id="takeBack"  parameterType="_int">
+     	UPDATE ELECTRONIC_APPROVAL
+     	SET EA_STATUS = 'R'
+     	WHERE EA_NO = #{ ea_no }
+     </update>
+     
+     <update id="updateEa" parameterType="Electronic_Approval">
+     	UPDATE ELECTRONIC_APPROVAL
+     	SET EA_CONTENT=#{ea_content}, EA_TITLE = #{ ea_title}
+     	WHERE EA_NO = #{ ea_no }
+     </update>
+     
+     <select id="updateEaPage" resultMap="eaResultSet">
+     	SELECT *
+     	FROM ELECTRONIC_APPROVAL
+     	JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT using(dept_code)
+		JOIN FORM USING(FORM_NO)
+     	WHERE EA_NO = #{ ea_no }
+     </select>
+     
+   <!-- 각 문서함 문서 갯수 -->
+   	<select id="countWp" resultType="_int" >
+   	 	SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        JOIN  APPROVER using(ea_no)
+        WHERE EA_STATUS='W'
+        AND APPOVER_NO = #{mno}
+        AND APPROVAL_STATUS='W' 
+   	</select> 
+   	
+   	<select id="countCp" resultType="_int" >
+   		SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        JOIN APPROVER using(ea_no)
+        WHERE EA_STATUS='C'
+        AND APPOVER_NO = #{mno}
+     </select>
+     
+     <select id="countBp"  resultType="_int">
+    	SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        JOIN APPROVER using(ea_no)
+        WHERE EA_STATUS='B'
+        AND APPOVER_NO = #{mno}
+     </select>
+     
+     <select id="countR" resultType="_int">
+     	SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        WHERE DRAFTER = #{ mno }
+     </select>
+     
+      <select id="countT" resultType="_int">
+     	SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        WHERE DRAFTER = #{ mno }
+        AND EA_STATUS='T' 
+     </select>
+     
+     <select id="countC" resultType="_int">
+     	 SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        JOIN APPROVER using(ea_no)
+        WHERE APPOVER_NO = #{ mno }
+        AND EA_STATUS='C' 
+     </select>
+     
+     <select id="selectRequestListCount" resultType="_int">
+     	SELECT COUNT(*)
+		FROM Electronic_Approval
+		WHERE drafter = #{drafter}
+		AND EA_STATUS in( 'R', 'W', 'B','C')
+     </select>
+     
+     <select id="countB" resultType="_int">
+     	 SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        JOIN APPROVER using(ea_no)
+        WHERE APPOVER_NO = #{ mno }
+        AND EA_STATUS='B'  
+     </select>
+     
+     <select id="countProg" resultType="_int">
+      	SELECT count(*)
+     	FROM Electronic_Approval
+        JOIN APPROVER using(ea_no)
+		WHERE APPOVER_NO = #{approver_no}
+        AND APPROVAL_STATUS='Y'
+        AND EA_STATUS='W'
+     </select>
+     
+     <select id="countRef" resultType="_int">
+      	SELECT  count(*)
+	    FROM ELECTRONIC_APPROVAL
+	    JOIN REFERRER USING(EA_NO)
+	    WHERE REFERRER_NO = #{ re_no }
+     </select>
+     
+     <select id="countformList" resultType="_int">
+     	SELECT count(*)
+   		FROM FORM
+     </select>
+   	
+   	<select id="listWp" resultMap="eaResultSet">
+   		SELECT *
+   		FROM ( 	SELECT *
+		        FROM  ELECTRONIC_APPROVAL
+		        join  APPROVER using(ea_no)
+		        JOIN MEMBER on(drafter = mno)
+		        JOIN DEPT USING(dept_code)
+		        JOIN FORM USING(FORM_NO)
+		        WHERE APPOVER_NO = #{mno}
+		        AND APPROVAL_STATUS='W'
+   					)
+   		WHERE ROWNUM <![CDATA[<=]]> 5
+   	</select>
+   	
+   	<select id="listref" resultMap="eaResultSet">
+   		SELECT *
+   		FROM ( 	SELECT *
+			    FROM ELECTRONIC_APPROVAL
+			    JOIN REFERRER USING(EA_NO)
+			    JOIN MEMBER on(drafter = mno)
+			    JOIN DEPT using(dept_code)
+			    JOIN FORM USING(FORM_NO)
+			    WHERE RE_NO = #{ re_no }
+   					)
+   		WHERE ROWNUM <![CDATA[<=]]> 5
+   	</select>
+   	
+   	<select id="approvalLog" resultMap="ApprovalResultSet">
+   		SELECT MNAME,DEPT_TITLE, APPROVAL_STATUS,APPOVAL_DATE, APPROVAL_LEVEL
+        FROM APPROVER
+        JOIN MEMBER on (MNO = APPOVER_NO)
+        JOIN DEPT USING(DEPT_CODE)
+        WHERE EA_NO = #{ ea_no }
+   	</select>
+   	
+   	<update id="retryEA" parameterType="_int">
+   		UPDATE ELECTRONIC_APPROVAL
+   		SET EA_STATUS = 'W'
+   		WHERE EA_NO = #{ ea_no }
+   	</update>
+   	
+   	<update id="deleteEA" parameterType="_int">
+   		UPDATE ELECTRONIC_APPROVAL
+   		SET EA_STATUS = 'N'
+   		WHERE EA_NO = #{ ea_no }
+   	</update>
+   	
+   	<update id="initialAPP" parameterType="_int">
+   		UPDATE APPROVER
+   		SET APPOVAL_DATE = NULL, APPROVAL_STATUS='W', APPROVAL_COMMENT= NULL
+   		WHERE EA_NO = #{ ea_no }
+   	</update>
+   	
+   	<!-- 결재자 등록 -->
+   	<insert id="insertApprover" parameterType="Approval">
+   		INSERT INTO APPROVER VALUES(
+			SEQ_APPID.NEXTVAL,  NULL , #{ approval_lelvel }, DEFAULT, NULL, #{approver_no}
+			, SEQ_EAID.CURRVAL
+		)
+   	</insert>
+   	
+   	<insert id="insertRefer" parameterType="Referrer">
+   		INSERT INTO REFERRER VALUES(
+   			SEQ_REID.NEXTVAL,SEQ_EAID.CURRVAL , #{ re_no }  
+   		)
+   	</insert>
+   	
+   	<select id="selectdrafter" resultMap="memResultSet">
+   		SELECT * 
+   		FROM MEMBER
+   		JOIN DEPT USING(dept_code)
+   		WHERE MNO = #{ mno }
+   	</select>
+   	
+   	
+   	
+   	<select id="EAsearchCount"   resultType="_int">
+   		SELECT COUNT(*)
+		FROM ELECTRONIC_APPROVAL
+		JOIN MEMBER on(drafter = mno)
+        JOIN FORM USING(FORM_NO)
+		<where>
+				drafter = #{mno}
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+			<choose>
+				<when test="searchCondition == 'all'">
+						AND EA_STATUS in( 'R', 'W', 'B','C')
+				</when>
+				<otherwise>
+					AND EA_STATUS = #{searchCondition}
+				</otherwise>
+			</choose>
+		</where>
+		</select>
+		
+      <select id="TEAsearchCount" resultType="_int">
+     	SELECT count(*)
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        	<where>
+				 drafter = #{mno}
+				  AND EA_STATUS='T' 
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+			<choose>
+				<when test="searchCondition == 'all'">
+						AND EA_STATUS in( 'R', 'W', 'B','C')
+				</when>
+				<otherwise>
+					AND EA_STATUS = #{searchCondition}
+				</otherwise>
+			</choose>
+		</where>
+     </select>
+     
+     <select id="WEAsearchCount" resultType="_int">
+     	SELECT count(*)
+      	FROM  ELECTRONIC_APPROVAL
+        JOIN APPROVER using(ea_no)
+        JOIN MEMBER on(drafter = mno)
+        JOIN DEPT USING(dept_code)
+        JOIN FORM USING(FORM_NO)
+        <where>
+				APPOVER_NO = #{mno}
+       		 	AND APPROVAL_STATUS='W'
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     
+     <select id="PEAsearchCount" resultType="_int">
+     	SELECT count(*)
+    	FROM Electronic_Approval
+        JOIN APPROVER using(ea_no)
+     	JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT using(dept_code)
+		JOIN FORM USING(FORM_NO)
+         <where>
+		       	APPOVER_NO = #{mno}
+		        AND APPROVAL_STATUS='Y'
+		        AND EA_STATUS='W'
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     
+     <select id="CEAsearchCount" resultType="_int">
+     	SELECT count(*)
+    	FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT using(dept_code)
+        join  APPROVER using(ea_no)
+		JOIN FORM USING(FORM_NO)
+		<where>
+		        APPOVER_NO = #{ mno }
+				AND EA_STATUS ='C'
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     
+     <select id="BEAsearchCount" resultType="_int">
+     	SELECT count(*)
+   		FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+        JOIN DEPT USING(dept_code)
+        JOIN APPROVER using(ea_no)
+        JOIN FORM USING(FORM_NO)
+        	<where>
+				EA_STATUS='B'
+       			AND APPOVER_NO = #{ mno }
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     
+     <select id="RFEAsearchCount" resultType="_int">
+      	SELECT count(*)
+     	FROM ELECTRONIC_APPROVAL
+	    JOIN REFERRER USING(EA_NO)
+	    JOIN MEMBER on(drafter = mno)
+	    JOIN DEPT using(dept_code)
+	    JOIN FORM USING(FORM_NO)
+	    <where>
+				REFERRER_NO = #{ mno }
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     
+     <select id="TEAsearch" resultMap="eaResultSet">
+     	SELECT *
+        FROM ELECTRONIC_APPROVAL
+        JOIN MEMBER on(drafter = mno)
+        JOIN DEPT USING(dept_code)
+		JOIN FORM USING(FORM_NO)
+        	<where>
+				drafter = #{mno}
+				 AND EA_STATUS='T' 
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+		</where>
+     </select>
+     
+     <select id="WEAsearch" resultMap="eaResultSet">
+		SELECT *
+        FROM  ELECTRONIC_APPROVAL
+        JOIN APPROVER using(ea_no)
+        JOIN MEMBER on(drafter = mno)
+        JOIN DEPT USING(dept_code)
+        JOIN FORM USING(FORM_NO)
+        <where>
+				APPOVER_NO = #{mno}
+       		 	AND APPROVAL_STATUS='W'
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     
+     <select id="PEAsearch" resultMap="eaResultSet">
+		SELECT EA_NO,EA_TYPE,EA_TITLE,MNAME,DEPT_TITLE,DRAFTING_DATE, APPROVAL_STATUS,FORM_CATEGORY
+     	FROM Electronic_Approval
+        JOIN APPROVER using(ea_no)
+     	JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT using(dept_code)
+		JOIN FORM USING(FORM_NO)
+         <where>
+		       	APPOVER_NO = #{mno}
+		        AND APPROVAL_STATUS='Y'
+		        AND EA_STATUS='W'
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     	
+     <select id="CEAsearch" resultMap="eaResultSet">
+		SELECT EA_NO,MNAME,DRAFTING_DATE,EA_TYPE,EA_TITLE,DEPT_TITLE,FORM_CATEGORY,APPROVAL_LEVEL,APPROVAL_STATUS,APPOVER_NO
+		FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+		JOIN DEPT using(dept_code)
+        JOIN  APPROVER using(ea_no)
+		JOIN FORM USING(FORM_NO)
+		<where>
+		        APPOVER_NO = #{ mno }
+				AND EA_STATUS ='C'
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     	
+     <select id="BEAsearch" resultMap="eaResultSet">
+		SELECT EA_NO,DRAFTING_DATE,EA_TYPE,EA_TITLE,DEPT_TITLE,FORM_CATEGORY,APPROVAL_LEVEL,APPROVAL_STATUS,APPOVER_NO
+		FROM Electronic_Approval
+		JOIN MEMBER on(MNO = drafter)
+        JOIN DEPT USING(dept_code)
+        JOIN APPROVER using(ea_no)
+        JOIN FORM USING(FORM_NO)
+        	<where>
+				EA_STATUS='B'
+       			AND APPOVER_NO = #{ mno }
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     	
+     <select id="RFEAsearch" resultMap="eaResultSet">
+		SELECT  EA_NO,EA_TYPE,EA_TITLE,MNAME,DEPT_TITLE,DRAFTING_DATE,MNAME,DEPT_TITLE, FORM_CATEGORY
+	    FROM ELECTRONIC_APPROVAL
+	    JOIN REFERRER USING(EA_NO)
+	    JOIN MEMBER on(drafter = mno)
+	    JOIN DEPT using(dept_code)
+	    JOIN FORM USING(FORM_NO)
+	    <where>
+				REFERRER_NO = #{ mno }
+			<if test="searchDrafter != null">
+				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
+				AND MNAME LIKE #{ sd }
+			</if>
+			<if test="searchTitle != null">
+				<bind name="st" value="'%' + _parameter.getSearchTitle() + '%'"/>
+				AND EA_TITLE LIKE #{ st }
+			</if>
+			<if test="searchFormName != null">
+			<bind name="sf" value="'%' + _parameter.getSearchFormName() + '%'"/>
+				AND FORM_NAME LIKE #{ sf }
+			</if>
+		</where>
+     </select>
+     
+     <!--  서명 등록 -->
+     <insert id="sigFileinsert" parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, null, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'SIG'
+     	)
+     </insert>
+     
+     <insert id="siginsert" parameterType="_int">
+     		INSERT INTO SIG_FILE VALUES(
+     		SEQ_SIGID.NEXTVAL, SEQ_FID.CURRVAL, #{ mno } , 'Y'
+     	)
+     </insert>
+     
+     <!-- 서명 리스트 -->
+     <select id="selectSigList" resultMap="sigResultSet">
+      	SELECT *
+        FROM FILES
+        JOIN SIG_FILE USING(FILE_NO)
+        WHERE MNO = #{ mno }
+        AND FILE_TYPE = 'SIG'
+     </select>
+     
+     <update id="sigN">
+     	UPDATE SIG_FILE
+     	SET SIG_STATUS = 'N'
+     	WHERE MNO = #{mno}
+     </update>
+     <!-- 결재 파일 등록 -->
+     <insert id="Fileinsert"  parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, SEQ_EAID.CURRVAL, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'EA'
+     	)
+     </insert>
+     
+     <insert id="apFileinsert"  parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, SEQ_APPID.CURRVAL, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'AP'
+     	)
+     </insert>
+     
+     <select id="selectFile" resultMap="fileResultSet">
+     	SELECT *
+     	FROM FILES
+     	WHERE REF_FNO = #{ ea_no }
+     </select>
+     
+     <update id="sigUpdate" parameterType="_int">
+     	UPDATE SIG_FILE
+     	SET SIG_STATUS = 'Y'
+     	WHERE SIG_NO = #{ sig_no }
+     </update>
+     
+     <delete id="delfiles" parameterType="_int">
+     	DELETE 
+     	FROM FILES
+     	WHERE FILE_TYPE='SIG'
+     	AND REF_FNO = #{ sig_no }
+     </delete>
+     
+     <delete id="delSig" parameterType="_int">
+     	DELETE 
+     	FROM SIG_FILE
+     	WHERE SIG_NO=#{ sig_no }
+     </delete>
+     
+     <!-- 사원명 조회 -->
+     <select id="searchMname" parameterType="String" resultMap="memResultSet">
+     	SELECT *
+     	FROM MEMBER
+     	JOIN DEPT USING(DEPT_CODE)
+		WHERE MNAME LIKE '%'|| #{searchName} ||'%'
+     </select>
+     
+     <!-- 휴가 승인 완료 -->
+     <update id="annupdateY" parameterType="_int">
+     	UPDATE ANNUAL
+     	SET ANN_STATUS = 'Y'
+     	WHERE EA_NO = #{ ea_no }
+     </update>
+</mapper>

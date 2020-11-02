@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
     <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <!DOCTYPE html>
 <html>
@@ -175,6 +177,7 @@ a {
 	font-size:12px;
 	width:40%;	
 }
+
 	/* 출퇴근 기록 */
 .workstart {
   width: 50px;
@@ -199,13 +202,15 @@ a {
   background-color: rgb(255, 0, 0);
 }
 
+
     </style>
+
 </head>
 <body>
 	<c:if test="${ !empty msg }">
 		<script>alert('${msg}');</script>
 		<c:remove var="msg"/>
-	</c:if>
+
 
 
     <nav id="header">
@@ -245,11 +250,12 @@ a {
         	</tr>
         </table>
         </form>
-        
+
         </c:if>
         <c:if test="${ !empty sessionScope.loginUser }">
         	<img src="/img/pro.jpg" width="140px" height="140px" />
         <h4>${ loginUser.mName } / ${ loginUser.jobCode } / ${ loginUser.deptCode }</h4>
+
         <div class="timeckeck">
         <div class="timestar">
         
@@ -278,6 +284,11 @@ a {
         
         
         
+
+        <c:url var="logout" value="logout.do"/>
+       	<a href="${logout}">로그아웃</button>
+        </c:if>
+
       </header>
      <!--  <h3 id="sideTitle">게시판</h3>
        
@@ -287,6 +298,7 @@ a {
         <li><a href="department.html">부서 게시판</a></li>
         <li><a href="free.html">자유 게시판</a></li>
         <li><a href="myProject.do">내 프로젝트보기</a></li>
+
       </ul>
        -->
       
