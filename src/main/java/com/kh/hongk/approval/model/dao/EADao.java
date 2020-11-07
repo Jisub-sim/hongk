@@ -18,6 +18,7 @@ import com.kh.hongk.approval.model.vo.Sig_File;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
+import com.kh.hongk.work.model.vo.Work;
 
 @Repository("eaDao") //DB와 접근하는 클래스에 부여하는 어노테이션
 public class EADao {
@@ -375,7 +376,16 @@ public class EADao {
 	public int amupdateY(Annual ann) {
 		return sqlSession.update("annualMapper.amupdateY", ann);
 	}
-	
+	public int wkupdateY(int ea_no) {
+	   return sqlSession.update("eaMapper.wkupdateY",ea_no );
+	 }
+	public Work selectwk(int ea_no) {
+	  return sqlSession.selectOne("workMapper.selectwk", ea_no);
+	 }
+	// 퇴근시간 변경
+	public int updatewkend(Work wk) {
+		return sqlSession.update("workMapper.updatewkend", wk);
+	}
 	
 	
 

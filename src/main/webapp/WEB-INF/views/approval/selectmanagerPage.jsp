@@ -106,7 +106,10 @@
 #lidept{
 	font-weight : bold;
 	font-size:18px;
-	margin-bottom:0.5em;}
+	margin-bottom:0.5em;
+}
+	
+	
 </style>
 </head>
 <body>

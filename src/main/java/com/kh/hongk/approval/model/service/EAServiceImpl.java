@@ -17,6 +17,7 @@ import com.kh.hongk.approval.model.vo.Sig_File;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
+import com.kh.hongk.work.model.vo.Work;
 
 @Service("EAService")
 public class EAServiceImpl implements EAService {
@@ -405,6 +406,18 @@ public class EAServiceImpl implements EAService {
 	@Override
 	public int amupdateY(Annual ann) {
 		return eaDao.amupdateY(ann);
+	}
+	@Override
+	public int wkupdateY(int ea_no) {
+	   return eaDao.wkupdateY(ea_no);
+	 }
+	@Override
+	 public Work selectwk(int ea_no) {
+	    return eaDao.selectwk(ea_no);
+	}
+	@Override
+	public int updatewkend(Work wk) {
+		return eaDao.updatewkend(wk);
 	}
 	
 	

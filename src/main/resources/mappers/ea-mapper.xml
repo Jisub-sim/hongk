@@ -169,6 +169,7 @@
         JOIN FORM USING(FORM_NO)
         
 		<where>
+			DRAFTER = #{mno}
 			<if test="searchDrafter != null">
 				<bind name="sd" value="'%' + _parameter.getSearchDrafter() + '%'"/>
 				AND MNAME LIKE #{ sd }
@@ -224,6 +225,7 @@
         JOIN FORM USING(FORM_NO)
         WHERE APPOVER_NO = #{mno}
         AND APPROVAL_STATUS='W'
+        AND EA_STATUS = 'W'
         ORDER BY EA_NO DESC
 	</select>
 	
@@ -492,7 +494,7 @@
    	</select>
    	
    	<select id="approvalLog" resultMap="ApprovalResultSet">
-   		SELECT MNAME,DEPT_TITLE, APPROVAL_STATUS,APPOVAL_DATE, APPROVAL_LEVEL
+   		SELECT MNAME,DEPT_TITLE, APPROVAL_STATUS,APPOVAL_DATE, APPROVAL_LEVEL,APPROVAL_COMMENT
         FROM APPROVER
         JOIN MEMBER on (MNO = APPOVER_NO)
         JOIN DEPT USING(DEPT_CODE)
@@ -870,7 +872,7 @@
      <insert id="sigFileinsert" parameterType="Files">
      	INSERT INTO FILES VALUES(
      		SEQ_FID.NEXTVAL, null, #{original_FileName}, #{reName_FileName},
-     			SYSDATE, 'SIG'
+     			SYSDATE, 'SIG', null
      	)
      </insert>
      
@@ -885,7 +887,7 @@
       	SELECT *
         FROM FILES
         JOIN SIG_FILE USING(FILE_NO)
-        WHERE MNO = #{ mno }
+        WHERE SIG_FILE.MNO = #{ mno }
         AND FILE_TYPE = 'SIG'
      </select>
      
@@ -898,14 +900,14 @@
      <insert id="Fileinsert"  parameterType="Files">
      	INSERT INTO FILES VALUES(
      		SEQ_FID.NEXTVAL, SEQ_EAID.CURRVAL, #{original_FileName}, #{reName_FileName},
-     			SYSDATE, 'EA'
+     			SYSDATE, 'EA', null
      	)
      </insert>
      
      <insert id="apFileinsert"  parameterType="Files">
      	INSERT INTO FILES VALUES(
      		SEQ_FID.NEXTVAL, SEQ_APPID.CURRVAL, #{original_FileName}, #{reName_FileName},
-     			SYSDATE, 'AP'
+     			SYSDATE, 'AP', null
      	)
      </insert>
      
@@ -948,4 +950,13 @@
      	SET ANN_STATUS = 'Y'
      	WHERE EA_NO = #{ ea_no }
      </update>
+     
+     <!-- 외근 승인 완료 -->
+      <update id="wkupdateY" parameterType="_int">
+        UPDATE WORK
+        SET WK_STATUS='Y'
+        WHERE EA_NO=#{ea_no}
+     </update>
+     
+     
 </mapper>

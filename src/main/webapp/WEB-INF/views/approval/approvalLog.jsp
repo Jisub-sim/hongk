@@ -38,9 +38,10 @@
 		<p class="ea_subtitle">결재 로그 </p>
         <table class="ea_table" style="width:100%;">
             <thead>
-            <th width="20%">부서명</th>
-            <th width="20%">사원명</th>
-            <th width="20%">결재상태</th>
+            <th width="15%">부서명</th>
+            <th width="15%">사원명</th>
+            <th width="10%">결재상태</th>
+            <th width="40%">내용</th>
             <th width="20%">결재일</th>
         </thead>
         <c:forEach var="list" items="${ list }">
@@ -54,6 +55,7 @@
                  <c:if test="${ stauts eq 'N' }">
             		<td  style="color: darkred;">반려</td>
             	</c:if>
+            	<td>${ list.approval_comment }</td>
                 <td><fmt:formatDate var="approval_date" type="date" value="${list.approval_date }" pattern="yyyy-MM-dd"/>
 							${approval_date }</td>
             </tr>

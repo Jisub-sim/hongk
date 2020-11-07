@@ -36,6 +36,7 @@ import com.kh.hongk.approval.model.vo.Sig_File;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
+import com.kh.hongk.work.model.vo.Work;
 
 @Controller
 public class ApprovalController {
@@ -543,10 +544,16 @@ private EAService eaService;
 									int result3 =  eaService.EAupdateY(ea_no);
 									
 									int resultP =  eaService.PEAupdateY(ea_no);
+									
 									int resultann = eaService.annupdateY(ea_no);
 									Annual ann = eaService.selectAnn(ea_no);
-									
 									int resultam = eaService.amupdateY(ann);
+									
+									int resultwk = eaService.wkupdateY(ea_no);
+			                        Work wk = eaService.selectwk(ea_no);
+			                        
+			                        int resultend = eaService.updatewkend(wk);
+			                        
 									
 									
 									if(result3 > 0) {
@@ -797,7 +804,7 @@ private EAService eaService;
 		int currentPage = page != null ? page : 1; // 현재 페이지 계산
 				
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10, 15); // 페이지 
-		
+		search.setMno(drafter);
 		
 		
 		ArrayList<Electronic_Approval> searchList = eaService.EAsearch(search,pi);
