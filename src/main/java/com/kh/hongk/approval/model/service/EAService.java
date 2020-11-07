@@ -13,6 +13,7 @@ import com.kh.hongk.approval.model.vo.Sig_File;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
+import com.kh.hongk.work.model.vo.Work;
 
 public interface EAService {
 	
@@ -156,6 +157,12 @@ public interface EAService {
 	Annual selectAnn(int ea_no);
 	//휴여 잔여 변여
 	int amupdateY(Annual ann);
+	// 외근승인 된 정보 업데이트
+	int wkupdateY(int ea_no);
+	// 외근 정보 가져오기
+	Work selectwk(int ea_no);
+	// 퇴근시간 업데이트
+	int updatewkend(Work wk);
 	
 	
 	
