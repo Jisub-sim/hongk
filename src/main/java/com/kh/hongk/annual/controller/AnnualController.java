@@ -35,6 +35,7 @@ public class AnnualController {
 
 		Annual ann = annService.selectmyann(mNo);
 		Member member = annService.selectmember(mNo);
+		
 
 		mv.addObject("ann", ann)
 		  .addObject("member", member)
@@ -43,6 +44,8 @@ public class AnnualController {
 
 		return mv;
 	}
+	
+	
 
 	// 휴가신청 클릭 시 
 	@RequestMapping("annTypeSelect.do")
@@ -58,7 +61,9 @@ public class AnnualController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
 		ann.setMno(mNo);
-
+		
+		
+		// 전자결재
 		ea.setDrafter(mNo);
 		ea.setEa_title(ann.getAnnual_title());
 		ea.setEa_content(ann.getAnnual_content());
@@ -69,9 +74,17 @@ public class AnnualController {
 		appro.setEa_no(ea.getEa_no());
 
 		int result1 = annService.insertApprover(appro);
-
-
-		int result = annService.Annualinsert(ann);
+		
+		
+		int result = 0;
+		
+		if(atype == 4) {
+			result = annService.halfTimeinsert(ann);
+			
+		}else {
+			result = annService.Annualinsert(ann);
+		}
+		
 
 		if(result > 0) {
 			return "redirect:annList.do";
@@ -89,6 +102,7 @@ public class AnnualController {
 		int mNo = loginUser.getmNo();
 
 		int listCount = annService.selectListCount(mNo);
+		Annual ann = annService.selectmyann(mNo);
 
 		int currentPage = page != null ? page : 1;
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount , 10, 5);
@@ -99,6 +113,7 @@ public class AnnualController {
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
+			mv.addObject("ann", ann);
 			mv.setViewName("annual/annualList");
 			System.out.println("list : " + list);
 		} else {
@@ -118,6 +133,7 @@ public class AnnualController {
 	int mNo = loginUser.getmNo();
 
 	int listCount = annService.selectListendCount(mNo);
+	Annual ann = annService.selectmyann(mNo);
 
 	int currentPage = page != null ? page : 1;
 	PageInfo pi = Pagination.getPageInfo(currentPage, listCount , 10, 5);
@@ -128,6 +144,7 @@ public class AnnualController {
 	if(list != null) {
 		mv.addObject("list", list);
 		mv.addObject("pi", pi);
+		mv.addObject("ann", ann);
 		mv.setViewName("annual/annualUseListView");
 		System.out.println("list : " + list);
 	} else {

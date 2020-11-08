@@ -1,201 +1,223 @@
 package com.kh.hongk.member.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Member {
-	private int mNo;
-	private String mId;
-	private String mPwd;
-	private String mName;
-	private int age;
-	private String gender;
-	private String email;
-	private String address;
-	private String phone;
-	private String exNumber;
-	private Date hireDate;
-	private Date entDate;
-	private String mLevel;
-	private String mStatus;
-	private String deptCode;
-	private String jobCode;
-	private String deptTitle;
-	private String jobTitle;
-	public Member() {}
+   private int mNo;
+   private String mId;
+   private String mPwd;
+   private String mName;
+   private int age;
+   private String gender;
+   private String email;
+   private String address;
+   private String phone;
+   private String exNumber;
+   private Date hireDate;
+   private Date entDate;
+   private String mLevel;
+   private String mStatus;
+   private String deptCode;
+   private String jobCode;
+   private String deptTitle;
+   private String jobTitle;
+   private Date work_on;
+   private Date work_off;
+   
+   
+   public Date getWork_on() {
+	return work_on;
+}
 
-	public Member(int mNo, String mId, String mPwd, String mName, int age, String gender, String email, String address,
-			String phone, String exNumber, Date hireDate, Date entDate, String mLevel, String mStatus, String deptCode,
-			String jobCode) {
-		super();
-		this.mNo = mNo;
-		this.mId = mId;
-		this.mPwd = mPwd;
-		this.mName = mName;
-		this.age = age;
-		this.gender = gender;
-		this.email = email;
-		this.address = address;
-		this.phone = phone;
-		this.exNumber = exNumber;
-		this.hireDate = hireDate;
-		this.entDate = entDate;
-		this.mLevel = mLevel;
-		this.mStatus = mStatus;
-		this.deptCode = deptCode;
-		this.jobCode = jobCode;
-	}
+public void setWork_on(Date work_on) {
+	this.work_on = work_on;
+}
 
-	
-	public String getJobTitle() {
-		return jobTitle;
-	}
+public Date getWork_off() {
+	return work_off;
+}
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
+public void setWork_off(Date work_off) {
+	this.work_off = work_off;
+}
 
-	public String getDeptTitle() {
-		return deptTitle;
-	}
+public Member() {}
 
-	public void setDeptTitle(String deptTitle) {
-		this.deptTitle = deptTitle;
-	}
+   public Member(int mNo, String mId, String mPwd, String mName, int age, String gender, String email, String address,
+         String phone, String exNumber, Date hireDate, Date entDate, String mLevel, String mStatus, String deptCode,
+         String jobCode) {
+      super();
+      this.mNo = mNo;
+      this.mId = mId;
+      this.mPwd = mPwd;
+      this.mName = mName;
+      this.age = age;
+      this.gender = gender;
+      this.email = email;
+      this.address = address;
+      this.phone = phone;
+      this.exNumber = exNumber;
+      this.hireDate = hireDate;
+      this.entDate = entDate;
+      this.mLevel = mLevel;
+      this.mStatus = mStatus;
+      this.deptCode = deptCode;
+      this.jobCode = jobCode;
+   }
 
-	public int getmNo() {
-		return mNo;
-	}
+   
+   public String getJobTitle() {
+      return jobTitle;
+   }
 
-	public void setmNo(int mNo) {
-		this.mNo = mNo;
-	}
+   public void setJobTitle(String jobTitle) {
+      this.jobTitle = jobTitle;
+   }
 
-	public String getmId() {
-		return mId;
-	}
+   public String getDeptTitle() {
+      return deptTitle;
+   }
 
-	public void setmId(String mId) {
-		this.mId = mId;
-	}
+   public void setDeptTitle(String deptTitle) {
+      this.deptTitle = deptTitle;
+   }
 
-	public String getmPwd() {
-		return mPwd;
-	}
+   public int getmNo() {
+      return mNo;
+   }
 
-	public void setmPwd(String mPwd) {
-		this.mPwd = mPwd;
-	}
+   public void setmNo(int mNo) {
+      this.mNo = mNo;
+   }
 
-	public String getmName() {
-		return mName;
-	}
+   public String getmId() {
+      return mId;
+   }
 
-	public void setmName(String mName) {
-		this.mName = mName;
-	}
+   public void setmId(String mId) {
+      this.mId = mId;
+   }
 
-	public int getAge() {
-		return age;
-	}
+   public String getmPwd() {
+      return mPwd;
+   }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+   public void setmPwd(String mPwd) {
+      this.mPwd = mPwd;
+   }
 
-	public String getGender() {
-		return gender;
-	}
+   public String getmName() {
+      return mName;
+   }
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+   public void setmName(String mName) {
+      this.mName = mName;
+   }
 
-	public String getEmail() {
-		return email;
-	}
+   public int getAge() {
+      return age;
+   }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+   public void setAge(int age) {
+      this.age = age;
+   }
 
-	public String getAddress() {
-		return address;
-	}
+   public String getGender() {
+      return gender;
+   }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
+   public void setGender(String gender) {
+      this.gender = gender;
+   }
 
-	public String getPhone() {
-		return phone;
-	}
+   public String getEmail() {
+      return email;
+   }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
-	public String getExNumber() {
-		return exNumber;
-	}
+   public String getAddress() {
+      return address;
+   }
 
-	public void setExNumber(String exNumber) {
-		this.exNumber = exNumber;
-	}
+   public void setAddress(String address) {
+      this.address = address;
+   }
 
-	public Date getHireDate() {
-		return hireDate;
-	}
+   public String getPhone() {
+      return phone;
+   }
 
-	public void setHireDate(Date hireDate) {
-		this.hireDate = hireDate;
-	}
+   public void setPhone(String phone) {
+      this.phone = phone;
+   }
 
-	public Date getEntDate() {
-		return entDate;
-	}
+   public String getExNumber() {
+      return exNumber;
+   }
 
-	public void setEntDate(Date entDate) {
-		this.entDate = entDate;
-	}
+   public void setExNumber(String exNumber) {
+      this.exNumber = exNumber;
+   }
 
-	public String getmLevel() {
-		return mLevel;
-	}
+   public Date getHireDate() {
+      return hireDate;
+   }
 
-	public void setmLevel(String mLevel) {
-		this.mLevel = mLevel;
-	}
+   public void setHireDate(Date hireDate) {
+      this.hireDate = hireDate;
+   }
 
-	public String getmStatus() {
-		return mStatus;
-	}
+   public Date getEntDate() {
+      return entDate;
+   }
 
-	public void setmStatus(String mStatus) {
-		this.mStatus = mStatus;
-	}
+   public void setEntDate(Date entDate) {
+      this.entDate = entDate;
+   }
 
-	public String getDeptCode() {
-		return deptCode;
-	}
+   public String getmLevel() {
+      return mLevel;
+   }
 
-	public void setDeptCode(String deptCode) {
-		this.deptCode = deptCode;
-	}
+   public void setmLevel(String mLevel) {
+      this.mLevel = mLevel;
+   }
 
-	public String getJobCode() {
-		return jobCode;
-	}
+   public String getmStatus() {
+      return mStatus;
+   }
 
-	public void setJobCode(String jobCode) {
-		this.jobCode = jobCode;
-	}
+   public void setmStatus(String mStatus) {
+      this.mStatus = mStatus;
+   }
 
-	@Override
-	public String toString() {
-		return "Member [mNo=" + mNo + ", mId=" + mId + ", mPwd=" + mPwd + ", mName=" + mName + ", age=" + age
-				+ ", gender=" + gender + ", email=" + email + ", address=" + address + ", phone=" + phone
-				+ ", exNumber=" + exNumber + ", hireDate=" + hireDate + ", entDate=" + entDate + ", mLevel=" + mLevel
-				+ ", mStatus=" + mStatus + ", deptCode=" + deptCode + ", jobCode=" + jobCode + "]";
-	}
-	
+   public String getDeptCode() {
+      return deptCode;
+   }
+
+   public void setDeptCode(String deptCode) {
+      this.deptCode = deptCode;
+   }
+
+   public String getJobCode() {
+      return jobCode;
+   }
+
+   public void setJobCode(String jobCode) {
+      this.jobCode = jobCode;
+   }
+
+@Override
+public String toString() {
+	return "Member [mNo=" + mNo + ", mId=" + mId + ", mPwd=" + mPwd + ", mName=" + mName + ", age=" + age + ", gender="
+			+ gender + ", email=" + email + ", address=" + address + ", phone=" + phone + ", exNumber=" + exNumber
+			+ ", hireDate=" + hireDate + ", entDate=" + entDate + ", mLevel=" + mLevel + ", mStatus=" + mStatus
+			+ ", deptCode=" + deptCode + ", jobCode=" + jobCode + ", deptTitle=" + deptTitle + ", jobTitle=" + jobTitle
+			+ ", work_on=" + work_on + ", work_off=" + work_off + "]";
+}
+
+   
 }

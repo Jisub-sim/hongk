@@ -18,6 +18,11 @@
 		<result property="mStatus" column="M_STATUS"/>
 		<result property="deptCode" column="DEPT_CODE"/>
 		<result property="jobCode" column="JOB_CODE"/>	
+		<result property="deptTitle" column="DEPT_TITLE"/>
+		<result property="jobTitle" column="JOB_TITLE"/>	
+		
+		<result property="work_on" column="WORK_ON"/>
+		<result property="work_off" column="WORK_OFF"/>
 	</resultMap>
 	
 	<select id="selectOne" parameterType="Member" resultMap="memberResultSet">
@@ -27,8 +32,23 @@
 		AND M_STATUS='Y' -->
 		SELECT *
 		FROM MEMBER
+		JOIN DEPT USING (dept_code)
+		JOIN JOB USING (job_code)
 		WHERE MID = #{mId}
 		AND MPWD = #{mPwd}
 		AND M_STATUS = 'Y'
+	</select>
+	
+	<select id="selectattmember"  parameterType="Member" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		JOIN ATTENDANCE USING (mno) 
+		JOIN DEPT USING (dept_code)
+		JOIN JOB USING (job_code)
+		WHERE MID =  #{mId}
+		AND MPWD =  #{mPwd}
+		AND M_STATUS = 'Y'
+        AND TO_CHAR(WORK_ON, 'YYYYMMDD')= TO_CHAR(SYSDATE ,'YYYYMMDD')
+		
 	</select>
 </mapper>

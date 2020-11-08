@@ -137,23 +137,21 @@
             <h2>전체</h2>
            ${ann.annual_day_count } 건
         </div>
-        <div class="annualAll">
-            <h2>발생연차</h2>
-            건
-        </div>
+       
         <div class="annualAll">
             <h2>잔여연차</h2>
           ${ann.annual_day_remain } 건
         </div>
         <div class="annualAll">
             <h2>사용연차</h2>
-            ${ annual_day_use}건
+           <c:set var="ann_use" value="${ann.annual_day_count-ann.annual_day_remain}"/>
+            	${ ann_use }건
         </div>
 
 
     </section>
     <br><br>
-    <h2 class="List">신청내역</h2>
+    <h2 class="List">사용내역</h2>
 <table class="type1">
         <thead>
             <tr>
@@ -168,10 +166,9 @@
                 <th scope="row">휴가구분</th>
                 <th scope="row">시작일</th>
                 <th scope="row">종료일</th>
-                <th scope="row">사용일</th>
-                <th scope="row">휴가사유</th>
-                <th scope="row">구분</th>
-                <th scope="row">승인자</th>
+                <th scope="row">사용신청일</th>
+                <th scope="row">제목</th>
+                <th scope="row">신청날짜</th>
                 <th scope="row">자세히보기</th>
                 
 
@@ -193,9 +190,9 @@
                <td><fmt:formatDate var="annual_end" type="date" value="${ ann.annual_end }" pattern="yyyy-MM-dd"/>
                     ${ annual_end }</td>
                 <td>${ann.annual_day_use }</td>
-                <td>${ann.annual_content }</td>
-                <td>완료</td>
-                <td>관리자</td>
+               <%--  <td>${ann.annual_content }</td> --%>
+                <td>${ann.annual_title }</td>
+                <td>${ann.annual_signupday }</td>
                 <c:url var="annupView" value="annupView.do">
                 	<c:param name="annual_no" value="${ ann.annual_no }"/>
 					<c:param name="page" value="${ pi.currentPage }"/>

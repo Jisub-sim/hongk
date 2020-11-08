@@ -1,6 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="EUC-KR"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<jsp:useBean id="nowDate" class="java.util.Date" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +21,8 @@
    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
    crossorigin="anonymous"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
 
 <!--    
    // jQuery UI CSS파일 
@@ -167,12 +171,13 @@
         </tr>
         <tr>
             <th scope="row">기안일</th>
-            <td>${ ann.annual_signupday}</td>
+            <td><fmt:formatDate value="${nowDate}" pattern="yyyy-MM-dd" /></td>
+
         </tr>
-        <tr>
+        <%-- <tr>
             <th scope="row">문서 번호</th>
-            <td></td>
-        </tr>
+            <td>${ann.annual_no }</td>
+        </tr> --%>
     </table>
     <form action="annTypeSelect.do" >
     <table class="type02">
@@ -206,13 +211,9 @@
         <tr>
             <th scope="row">반차 여부</th>
             <td>
-
-               
-                    
                     <p> <input type="radio" name="annual_halftime" value="am" > <span class="up">오전</span>&nbsp;
                         <input type="radio" name="annual_halftime" value="pm" > <span class="up">오후</span></p>
                          <input type="radio" name="annual_halftime" value="none" > <span class="up">없음</span></p>
-
             </td>
         </tr>
         <tr>
@@ -226,7 +227,7 @@
         <tr>
             <th scope="row">휴가 사유</th>
             <td>
-                <textarea type="text" style="width: 700px; height: 150px;" name="annual_content"></textarea>
+                <textarea style="width: 700px; height: 150px;" name="annual_content"></textarea>
             </td>
         </tr>
         

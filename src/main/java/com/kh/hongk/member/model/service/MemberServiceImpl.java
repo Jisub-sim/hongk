@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kh.hongk.attendance.model.vo.Attendance;
 import com.kh.hongk.member.model.dao.MemberDao;
 import com.kh.hongk.member.model.vo.Member;
 
@@ -26,6 +27,14 @@ public class MemberServiceImpl implements MemberService{
 			loginUser = null;
 		}
 		return loginUser;
+	}
+	@Override
+	public Attendance AttendancenceSelect(int mNo) {
+		return mDao.AttendancenceSelect(mNo);
+	}
+	@Override
+	public Member selectattmember(Member m) {
+		return mDao.selectattmember(m);
 	}
 
 }

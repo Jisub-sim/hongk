@@ -21,6 +21,11 @@ public class AnnualDao {
 	public int insertAnnual(Annual ann) {
 		return sqlSession.insert("annualMapper.insertannual", ann);
 	}
+	
+	public int halfTimeinsert(Annual ann) {
+		return sqlSession.insert("annualMapper.halfTimeinsert", ann);
+	}
+
 
 
 	public ArrayList<Annual> selectList(int mNo,PageInfo pi ) {
@@ -80,6 +85,8 @@ public class AnnualDao {
 		return sqlSession.insert("eaMapper.insertApprover", appro);
 	}
 
+
+	
 
 
 
