@@ -133,6 +133,10 @@ private EAService eaService;
 				mv.addObject("form",form)
 				.addObject("member", member)
 				.setViewName("annual/annualInserForm");
+			}else if(form.getForm_name().contains("외근")) {
+				mv.addObject("form",form)
+				.addObject("member", member)
+				.setViewName("work/workInsertForm");
 			}else {
 				mv.addObject("form",form)
 				.addObject("member", member)
