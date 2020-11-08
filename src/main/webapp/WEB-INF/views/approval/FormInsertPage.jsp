@@ -71,17 +71,33 @@
         <td width="15%">양식명</td>
         <td width="35%"><input type="text" name="form_name" required ></td>
         <td width="15%">서식함</td>
-        <td width="35%"><input type="text" name="form_category" required ></td>
+        <td width="35%">
+         <select name="form_category" style="width:100%; height:100%;">
+        	<option value= "공통">공통</option>
+        	<option value= "인사">인사</option>
+        	<option value= "총무">총무</option>
+        	<option value= "회계">회계</option>
+        	<option value= "영업">영업</option>
+        	<option value= "프로젝트">프로젝트</option>
+        </select>
+        </td>
     </tr>
     <tr>
         <td>양식유형</td>
-        <td><input type="text" name="form_type" required ></td>
+        <td>
+<!--         	<input type="text" name="form_type" required > -->
+        <select name="form_type" style="width:100%; height:100%;">
+        	<option value= "결재">결재</option>
+        	<option value= "협조">협조</option>
+        </select>
+        </td>
 		
     </tr>
     <tr></tr>
     <tr>
         <td colspan="4" style="background: white">
             <textarea name="smartEditor" id="smartEditor" rows="10" cols="100"></textarea>
+             <input type="hidden" name="mno" value="${ loginUser.mNo }">
         </td>
     </tr>
     <tr></tr>
@@ -89,7 +105,7 @@
     <tr><td colspan="4" style=" background: white"></td></tr>
     </table>
     <br>
-    <input type="hidden" name="mno" value="${ loginUser.mNo }">
+   
    
     <div id="ea_control_bt_div">
         <button type="button" class="ea_bt">취소</button> 
@@ -147,9 +163,9 @@
 					oEditors.getById["smartEditor"].exec("FOCUS"); //포커싱 
 					return; 
 					} //이 부분은 스마트에디터 유효성 검사 부분이니 참고하시길 바랍니다. 
-					var result = confirm("발행 하시겠습니까?"); 
+					var result = confirm("새 양식을 등록 하시겠습니까?"); 
 					if(result){ 
-						alert("발행 완료!"); 
+						alert("등록 완료!"); 
 						//$("#noticeWriteForm").submit(); 
 					}else{ 
 						return; 

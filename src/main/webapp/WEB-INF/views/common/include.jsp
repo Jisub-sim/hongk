@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <!DOCTYPE html>
 <html>
 <head>
@@ -173,13 +177,40 @@ a {
 	font-size:12px;
 	width:40%;	
 }
+
+	/* 출퇴근 기록 */
+.workstart {
+  width: 50px;
+  height: 30px;
+  border-radius: 5px;
+ /*  border:1px soid White; */
+  border: none;
+  font-weight: bold;
+  font-size: 20px;
+  background-color: rgb(42, 226, 42);
+}
+
+.workend {
+  width: 50px;
+  height: 30px;
+  border-radius: 5px;
+  border: none;
+  border:1px soid White;
+  font-weight: bold;
+  font-size: 20px;
+  color: White;
+  background-color: rgb(255, 0, 0);
+}
+
+
     </style>
+
 </head>
 <body>
 	<c:if test="${ !empty msg }">
 		<script>alert('${msg}');</script>
 		<c:remove var="msg"/>
-	</c:if>
+
 
 
     <nav id="header">
@@ -189,10 +220,12 @@ a {
         </div>
         	<c:url var="approval" value="app.do"/>
             <c:url var="project" value="project.do"/>
+            <c:url var="attlist" value="attlist.do"/>
         <ul id="navi_font">
             <li><a href="${ approval }"class="navi_font">전자결재</a></li>
             <li><a href="${ project }" class="navi_font">프로젝트</a></li>
             <li><a href="" class="navi_font">일정관리</a></li>
+            <li><a href="${ attlist }" class="navi_font">근태관리</a></li>
             <li><a href="" class="navi_font">게시판</a></li>
             <li><a href="" class="navi_font">마이페이지</a></li>
         </ul>    
@@ -217,15 +250,47 @@ a {
         	</tr>
         </table>
         </form>
+
         </c:if>
         <c:if test="${ !empty sessionScope.loginUser }">
         	<img src="/img/pro.jpg" width="140px" height="140px" />
         <h4>${ loginUser.mName } / ${ loginUser.jobCode } / ${ loginUser.deptCode }</h4>
+
+        <div class="timeckeck">
+        <div class="timestar">
+        
+         <%--  <c:url var="attselect" value="attselect.do"/>  --%>
+         <c:url var="attinsert" value="attinsert.do"/>
+         <c:url var="attupdate" value="attupdate.do"/>
+         <a>출근시간</a><br>
+        	<p><fmt:formatDate value="${ att.work_on }" pattern="HH:mm" type="time"/></p>
+        </div>
+        <div class="timeend">
+          <a>퇴근시간</a><br>
+          <p><fmt:formatDate value="${ att.work_off }" pattern="HH:mm" type="time"/></p>
+        </div>
+      </div>
+
+        <div class="timebtn">
+          <div class="workbutton">
+          <button class="workstart" onclick="location.href='${ attinsert }'">출근</button>
+          <button class="workend" onclick="location.href='${ attupdate }'">퇴근</button>
+        </div>
+        </div>
         <c:url var="logout" value="logout.do"/>
        	<a href="${logout}">로그아웃</button>
         </c:if>
+        
+        
+        
+        
+
+        <c:url var="logout" value="logout.do"/>
+       	<a href="${logout}">로그아웃</button>
+        </c:if>
+
       </header>
-      <h3 id="sideTitle">게시판</h3>
+     <!--  <h3 id="sideTitle">게시판</h3>
        
       <ul>
         <li><a href="notice.html" style="color: orange">공지사항</a></li>
@@ -233,7 +298,21 @@ a {
         <li><a href="department.html">부서 게시판</a></li>
         <li><a href="free.html">자유 게시판</a></li>
         <li><a href="myProject.do">내 프로젝트보기</a></li>
+
       </ul>
+       -->
+      
+     <%--  <h3 id="sideTitle">근태</h3>
+       <c:url var="anninsert" value="anninsert.do"/>
+       <c:url var="annList" value="annList.do"/>
+       <c:url var="wkinsert" value="wkinsert.do"/>
+       <c:url var="wkList" value="wkList.do"/>
+      <ul>
+        <li><a href="${ anninsert }">휴가신청</a></li>
+        <li><a href="${ annList }">휴가신청 조회</a></li>
+        <li><a href="${ wkinsert }">근무신청</a></li>
+        <li><a href="${ wkList }">근무신청 조회</a></li>
+      </ul> --%>
           <!--    
          <c:url var="formList" value="formList.do"/>
         <c:url var="earequest" value="earequest.do"/>
@@ -259,11 +338,12 @@ a {
         <li><br><b>기타</b></li>
         <li><a href="${ sigList }">서명관리</a></li>
         <!-- 양식 추가 가능한 권한은..? -->
-        <li><a href="${ FormInsertPage }">양식 추가</a></li>
-      </ul> 
-      -->
-    </div>
-    
+<%--          <li><a href="${ FormInsertPage }">양식 추가</a></li>  --%>
+<!--       </ul>   -->
+     
+    <!--   </div>  -->
+      </div>
+   
     <div id="icon_menu">
 			<i class="fas fa-comments"></i>
         </div>

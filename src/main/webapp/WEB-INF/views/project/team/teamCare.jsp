@@ -88,9 +88,17 @@ textarea:focus, input:focus{
 	<div id="main">
 		<div id="button">
 			<ul><c:url var="teamadd" value="teamadd.do">
+			<c:if test="${ !empty pt }">
 				<c:param name="pId" value="${ pt[0].pId }"/>
+			</c:if>
+			<c:if test="${ empty pt }">
+				<c:param name="pId" value="${pId}"/>
+			</c:if>
 			</c:url>
-				<li><a href="project.do" id="back">뒤로가기</a> <a href="${ teamadd }" id="save">팀추가</a>
+			<c:url var="project" value="project.do">
+				<c:param name="pId" value="${pId}"/>
+			</c:url>
+				<li><a href="${ project }" id="back">뒤로가기</a> <a href="${ teamadd }" id="save">팀추가</a>
 				</li>
 
 			</ul>
@@ -110,11 +118,29 @@ textarea:focus, input:focus{
 					<td>${ pt.mList }
 					</td>
 					<td>${ pt.ptContent }</td>
-					<td class="status_btn"><a href="">수정</a> / <a href="">삭제</a></td>
+					<c:url var="teamUpdate" value="teamUpdateForm.do">
+						<c:param name="ptId" value="${pt.ptId}"/>
+					</c:url>
+					<c:url var="deleteTeam" value="deleteTeam.do">
+						<c:param name="ptId" value="${pt.ptId }"/>
+						<c:param name="pId" value="${pId }"/>
+					</c:url>
+					<td class="status_btn"><a href="${ teamUpdate }">수정</a> / <a href="#" onclick="deleteTeam();">삭제</a></td>
+					<script>
+						function deleteTeam(){
+							if(confirm("삭제하시겠습니까?")){
+								location.href="${ deleteTeam }";
+								return true;
+							}else{
+								return false;
+							}
+						}
+					</script>
 				</tr>
 				</c:forEach>
 			</table>
 		</div>
+		
 
 
 

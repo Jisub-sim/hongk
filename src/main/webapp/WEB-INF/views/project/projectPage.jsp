@@ -122,21 +122,32 @@ ul, li{
 		<jsp:include page="../common/include.jsp"/>
 		
 		 <div id="main">
+		 <form name="data" id="data" method="post">
+		 	<input type="hidden" name="pId" id="pId" value="${p.pId}"/>
+		 </form>
         <div class="project" id="project_info">
-            <div id="progress"><a href="javascript:clickfunction();" id="pg">
+            <div id="progress"><a href="#" onClick="clickfunction();" id="pg">
             	<c:if test="${ p.progress eq 'I'}">진행중</c:if>
 				<c:if test="${ p.progress eq 'S'}">보류</c:if>
 				<c:if test="${ p.progress eq 'C'}">완료</c:if>
             </a></div>
+            <c:url var="progress" value="progress.do">
+            	<c:param name="pId" value="${ p.pId }"/>
+            </c:url>
+            
             <section id="update">
             <script>
-            	function clickfunction(){
-            		window.open("progress.do","a","width=400,height=150,left=100, top=50");
+            	function clickfunction(){            		
+            		window.open("${progress}","a","width=400,height=150,left=100, top=50");
+            		
+            		var frm = document.data;            		
+            		/* frm.submit(); */
             	}
             </script>
-            <a href="proUpdate.do">수정</a>
-            /
-            <a href>삭제</a>
+            <c:url var="proUpdateForm" value="proUpdateFrom.do">
+            	<c:param name="pId" value="${p.pId}"/>
+            </c:url>
+            <a href="${proUpdateForm}">수정</a>
             /
             <c:url var="teamcare" value="teamcare.do">
             	<c:param name="pId" value="${ p.pId }"/>
@@ -172,24 +183,46 @@ ul, li{
             </table>
 
         </div>
+        <c:url var="taskaddForm" value="taskaddForm.do">
+        		<c:param name="pId" value="${p.pId}"/>
+        </c:url>
         <div class="project" id="task">
             <table id="task_style">
-                <th colspan="4">업무목록<a href="taskadd.do" class="plus">+</a></th>
-                
-                <tr>
-                    <td class="task_name"><a href="taskclick.do">업무명</a></td>
-                    <td class="task_mana">담당자</td>
-					<td class="task_status">상태</td>
-                    <td class="task_date">게시일</td>
-                                       
-                    
+                <th colspan="4">업무목록<a href="${taskaddForm}" class="plus">+</a></th>
+                <c:forEach var="tl" items="${tl}">
+                <c:if test="${tl.twStatus eq 'Y'}">
+                <tr>                
+                    <td class="task_name"><a href="taskclick.do">${tl.twTitle}</a></td>
+                    <c:if test="${tl.manager ne null}">
+                    <td class="task_mana">${tl.manager}</td>
+                    </c:if>
+                    <c:if test="${tl.manager eq null }">
+                    <td class="task_mana"></td>
+                    </c:if>
+					<td class="task_status">미완료</td>
+                    <td class="task_date">${tl.twEnd}</td>
                 </tr>
-                <tr>
+                </c:if>
+                <c:if test="${tl.twStatus eq 'N' }">
+                  <tr>                
+                    <td class="task_name"><a href="taskclick.do">${tl.twTitle}</a></td>
+                    <c:if test="${tl.manager ne null}">
+                    <td class="task_mana">${tl.manager}</td>
+                    </c:if>
+                    <c:if test="${tl.manager eq null }">
+                    <td class="task_mana"></td>
+                    </c:if>
+					<td class="task_status">완료</td>
+                    <td class="task_date">${tl.twEnd}</td>
+                </tr>
+                </c:if>
+                </c:forEach>
+             <!--    <tr>
                         <td class="task_name">오늘까지 이거해라</td>
                         <td class="task_mana">담당자</td>
                         <td class="task_status">상태</td>
                         <td class="task_date">2020-10-03</td>
-                    </tr>
+                    </tr> -->
             </table>
         </div>
         <div class="project" id="ask">

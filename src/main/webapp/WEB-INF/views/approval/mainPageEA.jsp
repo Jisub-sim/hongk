@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +18,6 @@
             width: 90%;
             margin: auto;
             padding: 0.5em;
-           
         }
 
        .ea_mainP_t1 {
@@ -24,13 +25,11 @@
             border: 1px solid rgb(118, 123, 132);
             text-align: center;
             height: 110px;
-
         }
 
        .ea_mainP_t1 th {
             background: rgba(183, 209, 241, 0.313);
             color: rgb(90, 90, 90);
-           
         }
 </style>
 </head>
@@ -48,15 +47,15 @@
             <table class="ea_mainP_t1">
                 <tr>
                     <th width="60%;">미결재 문서</th>
-                    <td> 건</td>
+                    <td> ${eaC.countWp }건</td>
                 </tr>
                 <tr>
                     <th>결재 완료문서</th>
-                    <td> 건</td>
+                    <td>${eaC.countCp } 건</td>
                 </tr>
                 <tr>
                     <th>반려 문서</th>
-                    <td> 건</td>
+                    <td> ${eaC.countBp }건</td>
                 </tr>
             </table>
         </div>
@@ -66,15 +65,15 @@
             <table class="ea_mainP_t1">
                 <tr>
                     <th width="28%;">상신 문서</th>
-                    <td width="20%;"> 건</td>
+                    <td width="20%;"> ${eaC.countR }건</td>
                     <th width="28%;">결재완료 문서</th>
-                    <td width="20%;"> 건</td>
+                    <td width="20%;"> ${eaC.countC }건</td>
                 </tr>
                 <tr>
                     <th width="28%;">임시 보관</th>
-                    <td  width="20%;"> 건</td>
+                    <td  width="20%;"> ${eaC.countT }건</td>
                     <th width="28%;">반려 문서</th>
-                    <td  width="20%;"> 건</td>
+                    <td  width="20%;"> ${eaC.countB }건</td>
                 </tr>
                
             </table>
@@ -92,15 +91,29 @@
                 <th width="10%">기안일</th>
                 <th width="10%">상태</th>
             </thead>
+            <c:forEach var ="listWp" items="${ listWp }">
+            <c:set var="status1" value="${listWp.ea_status }"/>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>${listWp.ea_no }</td>
+                <td>${listWp.ea_type }</td>
+                <td>${listWp.ea_title }</td>
+                <td>${listWp.mName }</td>
+                <td><fmt:formatDate var="draftng_date" type="date" value="${listWp.draftng_date }" pattern="yyyy-MM-dd"/>
+					${draftng_date }</td>
+			<c:if test="${ status1 eq 'W' } ">
+			  <td>진행</td>
+			</c:if>	
+			<c:if test="${ status1 eq 'C' }">
+			  <td>완료</td>
+			</c:if>
+			<c:if test="${ status1 eq 'B' }">
+			  	<td>반려</td>
+			</c:if>
+			<c:if test="${ status1 eq 'R' }">
+			  	<td>회수</td>
+			</c:if>	
             </tr>
-
+			</c:forEach>
         </table>
 
     </div>
@@ -116,14 +129,29 @@
                 <th width="10%">기안일</th>
                 <th width="10%">상태</th>
             </thead>
+              <c:forEach var ="listref" items="${ listref }">
+              <c:set var="status2" value="${listref.ea_status }"/>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>${listref.ea_no }</td>
+                <td>${listref.ea_type }</td>
+                <td>${listref.ea_title }</td>
+                <td>${listref.mName }</td>
+                <td><fmt:formatDate var="draftng_date" type="date" value="${listref.draftng_date }" pattern="yyyy-MM-dd"/>
+					${draftng_date }</td>
+                <c:if test="${ status2 eq 'W' }">
+			  		<td>진행</td>
+				</c:if>	
+				<c:if test="${ status2 eq 'C' }">
+			  		<td>완료</td>
+				</c:if>
+				<c:if test="${ status2 eq 'B' }">
+			  		<td>반려</td>
+				</c:if>
+				<c:if test="${ status2 eq 'R' }">
+			  		<td>회수</td>
+				</c:if>
             </tr>
+			</c:forEach>
 
         </table>
 

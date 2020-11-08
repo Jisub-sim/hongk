@@ -29,13 +29,14 @@
    <div id="main">
       <br>
       <br>
+   <form action="TeaSearch.do">
    <div class="ea_search_div">
-        <label>기안자 </label>  <input type="text">
-        <label>문서제목 </label>  <input type="text">
+        <label>문서제목 </label>  <input type="search" name="searchTitle">
        
         &nbsp;  &nbsp;
-        <button type="button" class="ea_bt"> 검색</button>
+        <button type="submit" class="ea_bt"> 검색</button>
     </div>
+    </form>
     <br>
     <br>
     <p style="width:90%;margin:auto;">임시 저장함 </p>
@@ -49,30 +50,83 @@
             <th>문서제목</th>
             <th>기안자</th>
             <th>기안부서</th>
-            <th>첨부파일</th>
-            <th>상태</th>
         </thead>
         <c:forEach var="ea" items="${list}">
             <tr>
                 <td>${ea.ea_no }</td>
-                <td>서식함</td>
+                <td>${ea.form_category }</td>
                 <td>${ea.ea_type }</td>
-                <td>${ea.ea_title }</td>
-                <td>기안자..</td>
-                <td>기안부서</td>
-                <td>◎</td>
-                <td></td>
+                <td><c:url var="eadetail" value="eadetail.do">
+	                			<c:param name="ea_no" value="${ ea.ea_no }"/>
+	                		</c:url>
+	                		<a href="${ eadetail }">${ ea.ea_title }</a></td>
+                <td>${ ea.mName }</td>
+                <td>${ ea.deptTitle } </td>
             </tr>
           </c:forEach>
-          <!-- 페이징  
-          <tr>
-          	<td colspan="8">
-          		<c:if test="${ pi.currentPage <= 1 }">
-          			이전
-          		</c:if>
-          	</td>
-          </tr>
-          -->
+       	<tr align="center">
+				<td colspan="8">
+				<!-- [이전] -->
+				<c:if test="${ pi.currentPage <= 1 }">
+					[이전] &nbsp;
+				</c:if>
+				<c:if test="${ pi.currentPage > 1 }">
+					<c:if test="${ search == null }">
+						<c:url var="before" value="temporEAList.do">
+							<c:param name="page" value="${ pi.currentPage - 1 }"/>
+						</c:url>
+					<a href="${ before }">[이전]</a> &nbsp;
+					</c:if>
+					<c:if test="${ search != null }">
+						<c:url var="before" value="TeaSearch.do">
+							<c:param name="page" value="${ pi.currentPage - 1 }"/>
+							<c:param name="searchTitle" value="${search.searchTitle}"/>
+						</c:url>
+					<a href="${ before }">[이전]</a> &nbsp;
+					</c:if>
+				</c:if>
+				<!-- 페이지 숫자 -->
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:if test="${ p eq pi.currentPage }">
+						<font color="red" size="4">[ ${ p } ]</font>
+					</c:if>
+					<c:if test="${ p ne pi.currentPage }">
+						<c:if test="${ search == null }">
+							<c:url var="pagination" value="temporEAList.do">
+								<c:param name="page" value="${ p }"/>
+							</c:url>
+							<a href="${ pagination }">${ p }</a> &nbsp;
+						</c:if>
+						<c:if test="${ search != null }">
+							<c:url var="pagination" value="TeaSearch.do">
+								<c:param name="page" value="${ p }"/>
+								<c:param name="searchTitle" value="${search.searchTitle}"/>
+							</c:url>
+							<a href="${ pagination }">${ p }</a> &nbsp;
+						</c:if>
+					</c:if>
+				</c:forEach>
+				<!-- [다음] -->
+				<c:if test="${ pi.currentPage >= pi.maxPage }">
+					[다음]
+				</c:if>
+				<c:if test="${ pi.currentPage < pi.maxPage }">
+					<c:if test="${ search == null }">
+						<c:url var="after" value="temporEAList.do">
+							<c:param name="page" value="${ pi.currentPage + 1 }"/>
+						</c:url>
+						<a href="${ after }">[다음]</a>
+					</c:if>
+						<c:if test="${ search != null }">
+						<c:url var="after" value="TeaSearch.do">
+							<c:param name="page" value="${ pi.currentPage + 1 }"/>
+							<c:param name="searchTitle" value="${search.searchTitle}"/>
+						</c:url>
+						<a href="${ after }">[다음]</a>
+					</c:if>
+				</c:if>
+				</td>
+			</tr>
         </table>
         <br>
         <div id="ea_bt_div">

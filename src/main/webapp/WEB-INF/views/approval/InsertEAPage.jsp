@@ -57,6 +57,8 @@
 	<jsp:include page="../common/include.jsp" />
 
 	<div id="main">
+	<c:url var="approverList" value="approverList.do"/>
+	<c:url var="referrerList" value="referrerList.do"/>
 	<form id="insertEAForm" action=""  method="post" enctype="multipart/form-data">
 		<br>
 		   <p id="form_title">${form.form_name }</p>
@@ -64,24 +66,26 @@
     <table class="ea_table" border="1" id="ea_create_table" >
     <tr>
         <td width="15%">기안자</td>
-        <td width="35%">${ loginUser.mNo }</td>
+        <td width="35%">${ member.mName }</td>
         <td width="15%">서식 번호</td>
         <td width="35%">${form.form_no}</td>
         <input type="hidden" name="form_no" value="${ form.form_no }">
    		<input type="hidden" name="drafter" value="${ loginUser.mNo }">
-   		
+   		<input type="hidden" name="app" id="app" >
+   		<input type="hidden" name="ref" id="ref" >
+
     </tr>
     <tr>
         <td>결재자</td>
-        <td><input type="text" class="ea_line" required ></td>
+        <td><input type="text" class="ea_line" id="approverbt" name="approverbt" required></td>
         <td>기안부서</td>
-        <td><input type="text" ></td>
+        <td>${ member.deptTitle }</td>
     </tr>
     <tr>
         <td>참조자</td>
-        <td><input type="text" class="ea_line"></td>
+        <td><input type="text" class="ea_line" id="referrerBt"></td>
         <td>구분</td>
-        <td><input type="text" name="ea_type"></td>
+        <td><label name="ea_type" value=" ${form.form_category}">${form.form_category}</label></td>
     </tr>
     <tr>
         <td>제목</td>
@@ -99,14 +103,14 @@
     </tr>
     <tr></tr>
     <tr><td colspan="4" style="text-align: left;"> &nbsp; 파일 업로드 </td></tr>
-    <tr><td colspan="4" style=" background: white"><input type="file" name="uploadFile"></td></tr>
+    <tr><td colspan="4" style=" background: white"><input type="file" id="fileupload" name="uploadFile"></td></tr>
     </table>
     <br>
     
     <div id="ea_control_bt_div">
         <button type="submit" class="ea_bt" id="savebutton">저장/결재</button> 
         <button type="submit" class="ea_bt" id="tembutton">임시저장</button>
-        <button type="button" class="ea_bt">취소</button>
+        <button type="button" class="ea_bt" onclick="history.go(-1)">취소</button>
     </div>
      <script type="text/javascript">
         var oEditors = [];
@@ -163,6 +167,21 @@
                     $(this).parent().css({"background":"white", "font-weight":"normal"});
                 });
             });
+            
+            //결재자 등록 클릭시
+            $(function(){
+            	$("#approverbt").click(function(){
+						window.open('${approverList}','window_name','width=1000,height=700,left=130,top=250,location=no,status=no,scrollbars=yes');
+            	});
+            });
+            // 참조자 선택
+            $(function(){
+            	$("#referrerBt").click(function(){
+						window.open('${referrerList}','window_name','width=1000,height=700,left=130,top=250,location=no,status=no,scrollbars=yes');
+            	});
+            });
+            
+
         </script>
 </body>
 </html>
