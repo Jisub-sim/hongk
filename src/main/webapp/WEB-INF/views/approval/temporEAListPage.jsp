@@ -50,8 +50,6 @@
             <th>문서제목</th>
             <th>기안자</th>
             <th>기안부서</th>
-            <th>첨부파일</th>
-            <th>상태</th>
         </thead>
         <c:forEach var="ea" items="${list}">
             <tr>
@@ -64,8 +62,6 @@
 	                		<a href="${ eadetail }">${ ea.ea_title }</a></td>
                 <td>${ ea.mName }</td>
                 <td>${ ea.deptTitle } </td>
-                <td>◎</td>
-                <td></td>
             </tr>
           </c:forEach>
        	<tr align="center">

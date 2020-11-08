@@ -64,18 +64,18 @@
      <br>
    <div id="includedContent"></div>
     <br>
-    <p id="form_title">프로젝트</p>
+    <p id="form_title">${ form.form_name }</p>
     <br><Br>
     <table class="ea_table" border="1" id="ea_create_table" >
     <tr>
         <td width="15%">기안자</td>
         <td width="35%">${  member.mName }</td>
         <td width="15%">구분</td>
-        <td><input type="text" name="ea_type">
+        <td><label name="ea_type" value=" ${form.form_category}">${form.form_category}</label>
         <input type="hidden" name="form_no" value="${ form.form_no }"></td>
     	<input type="hidden" name="drafter" value="${ loginUser.mNo }">
     	<input type="hidden" name="mid" id="mid" >
-    		<input type="hidden" name="app" id="app" >
+    	<input type="hidden" name="app" id="app" >
    		<input type="hidden" name="ref" id="ref" >
     </tr>
     <tr>
