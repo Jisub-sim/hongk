@@ -1,6 +1,6 @@
 package com.kh.hongk.member.model.vo;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Member {
 	private int mNo;
@@ -21,7 +21,25 @@ public class Member {
 	private String jobCode;
 	private String deptTitle;
 	private String jobTitle;
+	private Date work_on;
+	private Date work_off;
 	public Member() {}
+	
+	public Date getWork_on() {
+		return work_on;
+	}
+
+	public void setWork_on(Date work_on) {
+		this.work_on = work_on;
+	}
+
+	public Date getWork_off() {
+		return work_off;
+	}
+
+	public void setWork_off(Date work_off) {
+		this.work_off = work_off;
+	}
 
 	public Member(int mNo, String mId, String mPwd, String mName, int age, String gender, String email, String address,
 			String phone, String exNumber, Date hireDate, Date entDate, String mLevel, String mStatus, String deptCode,
@@ -192,10 +210,12 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return "Member [mNo=" + mNo + ", mId=" + mId + ", mPwd=" + mPwd + ", mName=" + mName + ", age=" + age
-				+ ", gender=" + gender + ", email=" + email + ", address=" + address + ", phone=" + phone
-				+ ", exNumber=" + exNumber + ", hireDate=" + hireDate + ", entDate=" + entDate + ", mLevel=" + mLevel
-				+ ", mStatus=" + mStatus + ", deptCode=" + deptCode + ", jobCode=" + jobCode + "]";
+		return "Member [mNo=" + mNo + ", mId=" + mId + ", mPwd=" + mPwd + ", mName=" + mName + ", age=" + age + ", gender="
+				+ gender + ", email=" + email + ", address=" + address + ", phone=" + phone + ", exNumber=" + exNumber
+				+ ", hireDate=" + hireDate + ", entDate=" + entDate + ", mLevel=" + mLevel + ", mStatus=" + mStatus
+				+ ", deptCode=" + deptCode + ", jobCode=" + jobCode + ", deptTitle=" + deptTitle + ", jobTitle=" + jobTitle
+				+ ", work_on=" + work_on + ", work_off=" + work_off + "]";
 	}
+
 	
 }

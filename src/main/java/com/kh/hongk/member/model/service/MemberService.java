@@ -19,6 +19,8 @@ public interface MemberService {
 	public int insertMember(Member m);
 	// 회원 정보 수정
 	public int updateMember(Member m);
+	
+	public Member selectattmember(Member m);
 
 
 

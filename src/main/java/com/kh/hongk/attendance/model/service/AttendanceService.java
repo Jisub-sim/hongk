@@ -2,7 +2,9 @@ package com.kh.hongk.attendance.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.hongk.annual.model.vo.PageInfo;
 import com.kh.hongk.attendance.model.vo.Attendance;
+import com.kh.hongk.attendance.model.vo.Search;
 
 public interface AttendanceService {
 
@@ -30,7 +32,21 @@ public interface AttendanceService {
 	int AttendanceListinsert(Attendance att);
 
 	// 근태 전체 리스트 불러오기
-	public ArrayList<Attendance> selectList(int mNo);
+	public ArrayList<Attendance> selectList(int mNo, PageInfo pi);
+
+	// 전체 게시글 수 불러오기
+	public int selectallListCount(int mNo);
+
+	// 검색 Count
+	public int shListCount(int mNo, Search search);
+
+	// 검색 리스트
+	public ArrayList<Attendance> attSearch(PageInfo pi, Search search);
+
+	// 미처리
+	public int selectworkoffCount(int mNo);
+
+
 
 
 	

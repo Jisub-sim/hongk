@@ -20,9 +20,6 @@
 
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    
-    
-      
 
 <style>
  .workmain {
@@ -56,7 +53,6 @@
             text-align: center;
             vertical-align: middle;
             float: left;
-            
         }
 
         #tardy {
@@ -258,137 +254,125 @@
         font-size: 16px;
         color: #F9F0DA;
     }
-    
-    .ui-datepicker table{
-    display: none;
-}
-
-	#searchCondition{
-	margin-left : 350px;
-	}
-    
 
 </style>
 </head>
 <body>
 
    <jsp:include page="../common/include.jsp" />
-   
-   <!-- 달력jquery -->
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
-   
    <div id="main">
 
    
       <br>
-   <section class="workmain">
-<br>
-        <h1 style=" display:inline;">&nbsp;&nbsp;&nbsp;출퇴근 Summary</h1>&nbsp;&nbsp;&nbsp;<p style=" display:inline;">*지각한 날은 정상근로일에 포함되지 않음</p>
-        <br>
+      
+      <h2>근무신청리스트</h2>
+  <!--  <section class="workmain">
+
+        <h1>&nbsp;&nbsp;&nbsp;근무신청관리</h1>
         <br>
         <div id="allwork">
             <h2>전체</h2>
-            ${ ac.listCount}건
+           건
         </div>
         <div id="getwork">
             <h2>정상근로일</h2>
-            ${ ac.workCount }건
+           건
         </div>
         <div id="tardy">
             <h2>지각</h2>
-            ${ ac.overtimeCount }건
+            건
         </div>
         <div id="untreated">
             <h2>미처리</h2>
-            	${ wkoff }건
+            <a>2건</a>
         </div>
 
 
-    </section>
- <form action="wksearch.do" name="searchCondition" >
-    <select id="searchCondition" name="searchCondition" style="font-family: 'Sunflower', sans-serif;">
+    </section> -->
+
+   <!--  <select style="font-family: 'Sunflower', sans-serif;">
         <option selected>----</option>
-        <option value="3"
-		<c:if test="${search.searchCondition == '3'}">selected
-		</c:if>>출근</option>
-        <option value="2"
-		<c:if test="${search.searchCondition == '2'}">selected
-		</c:if>>지각</option>
-        <option value="10"
-		<c:if test="${search.searchCondition == '10'}">selected
-        </c:if>>전체</option>
-    </select>
-   &nbsp;&nbsp; <input type="date" id="monthDate" name="SearchValue" > &nbsp; 
-        <button type="submit">검색</button>
-	</form>  
-    <br><br>
-  <!-- 
-    <div class="date">
+        <option>출근</option>
+        <option>퇴근</option>
+        <option>미처리</option>
+    </select> -->
+
+
+  
+   <!--  <div class="date">
 
         <input type="date" id="datecalnder">
-        <button type="submit">검색</button>
+        <button type="submit"></button>
 
-    </div> -->
-      
+    </div>
+        <input type="date" id="datecalnder"> &nbsp; 
+
+    <br><br> -->
+
 
     <table>
         <thead>
 
 
             <tr>
-                <td>출근 체크 구분</td>
-                <td>퇴근 체크 구분</td>
-                <td style="width: 300px;">출근시간</td>
-                <td style="width: 300px;">퇴근시간</td>
-                <td style="width: 100px;">근태</td>
-                <td>처리상태</td>
+                <td style="width: 200px; height:50px;">제목</td>
+                <td style="width: 100px; height:50px;">근무타입</td>
+                <td style="width: 200px;">신청날짜</td>
+                <td style="width: 200px;">시작시간</td>
+                <td style="width: 200px;">종료시간</td>
+                <td style="width: 100px;">승인</td>
+                <td style="width: 100px;">자세히보기</td>
             </tr>
         </thead>
         <tbody>
-        	<c:forEach var="att" items="${ list }">
+        	
+        	<c:forEach var="wk" items="${ list }">
             <tr>
-                <td><c:if test="${att.attendance_type eq '2' || att.work_on != null}">
-                	출근
-                </c:if>
+            
+                <td>${wk.work_title } </td>
                 
-                </td>
-                
-                 <td><c:if test="${att.attendance_type eq '3' || att.work_off != null}">
-                	퇴근
-                </c:if>
-                <c:if test="${att.attendance_type eq '2' && att.work_off == null }">
-                	미퇴근
-                </c:if>
-                
-                 <%--  <c:if test="${att.work_off != null}"> 
-                	퇴근
-                </c:if> --%> 
-                </td>
-                
-                
+                <c:set var="wk_type" value="${wk.work_type}"/>
+                <td>
+                <c:if test="${wk_type eq '1' }">외근</c:if>
+                <c:if test="${wk_type eq '2' }">조퇴</c:if>
+                 </td>
                 
                 <td>
-                <fmt:formatDate var="work_on" type="date" value="${att.work_on }" pattern="yyyy-MM-dd-HH:mm"/>
-                    ${work_on }</td>
-                <td><fmt:formatDate var="work_off" type="date" value="${att.work_off }" pattern="yyyy-MM-dd-HH:mm"/>
-                    ${work_off }</td></td>
-                <td>
-                <c:if test="${att.attendance_type eq '2' }">
-                	지각
-                </c:if>
+                <fmt:formatDate var="work_date" type="date" value="${wk.work_date }" pattern="yyyy-MM-dd"/>
+                ${work_date }</td>
+                
+               <td> <fmt:formatDate var="start_time" type="time" value="${wk.start_time }" pattern="HH:mm"/>
+                ${ start_time }</td>
+                
+                <td><fmt:formatDate var="end_time" type="time" value="${wk.end_time }" pattern="HH:mm"/>
+                ${ end_time }</td>
+                <c:url var="wkupView" value="wkupView.do">
+                	<c:param name="work_no" value="${ wk.work_no }"/>
+					<c:param name="page" value="${ pi.currentPage }"/>
+				</c:url>
+				<c:url var="wkdatail" value="wkdatail.do">
+                	<c:param name="work_no" value="${ wk.work_no }"/>
+                	<c:param name="work_date" value="${ wk.work_date }"/>
+                	<c:param name="work_content" value="${ wk.work_content }"/>
+                	<c:param name="work_type" value="${ wk.work_type }"/>
+                	<c:param name="start_time" value="${ wk.start_time }"/>
+                	<c:param name="end_time" value="${ wk.end_time }"/>
+					<c:param name="page" value="${ pi.currentPage }"/>
+				</c:url>
+				<c:set var="wk_status" value="${wk.wk_status}"/>
+				
+				<td>
+				
+				 <c:if test="${wk_status eq 'W'}"><a href="${ wkupView }">진행중</a></c:if>
+                <c:if test="${wk_status eq 'Y'}"><a href="${ wkdatail }">승인완료</a></c:if>
                 </td>
                 <td>
-                    <c:if test="${att.work_off == null}"> 
-                    <a id="untreated_st">미처리 </a></c:if>
-                    <c:if test="${att.work_off != null}">
-                    <p id="normalcy">정상처리</p> 
-                    </c:if>
+                	
                 </td>
+               
             </tr>
             
-            </c:forEach>
+      </c:forEach>   
         </tbody>
     </table>
     <br><br>
@@ -397,7 +381,7 @@
     	&laquo;
     	</c:if>
     	<c:if test="${pi.currentPage > 1 }">
-    		<c:url var="before" value="attlist.do">
+    		<c:url var="before" value="wkList.do">
     			<c:param name="page" value="${pi.currentPage - 1 }"/>
     		</c:url>
     		<a href="${ before }">&laquo;</a>
@@ -408,7 +392,7 @@
     		${ p }
     		</c:if>
     		<c:if test="${ p ne pi.currentPage }">
-    			<c:url var="pagination" value="attlist.do">
+    			<c:url var="pagination" value="wkList.do">
     				<c:param name="page" value="${ p }"/>
     			</c:url>
     			<a href="${ pagination }">${ p }</a>
@@ -419,7 +403,7 @@
     		&raquo;
     	</c:if>
     	<c:if test="${pi. currentPage < pi.maxPage }">
-    		<c:url var="after" value="attlist.do">
+    		<c:url var="after" value="wkList.do">
     			<c:param name="page" value="${pi.currentPage + 1 }"/>
     		</c:url>
     		<a href="${ after }">&raquo;</a>
@@ -428,38 +412,6 @@
 
    
   </div>
-  
-<!--  <script type="text/javascript"> 
-//  $.datepicker.setDefaults({
-//      dateFormat: 'yy-mm-dd',
-//      prevText: '이전 달',
-//      nextText: '다음 달',
-//      monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//      monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//      dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-//      dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-//      dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-//      showMonthAfterYear: true,
-//      yearSuffix: '년'
-//  });
-//  $(function () {
-    
-//      $("#monthDate").datepicker({
-//          dateFormat: 'yy-MM', changeMonth: true,
-//          changeYear: true, showButtonPanel: true,
-//          onClose: function (dateText, inst) {
-//              var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-//              var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val(); $(this).datepicker('setDate',
-//                  new Date(year, month, 1)); $(".ui-datepicker-calendar").css("display", "none");
-//          }
-//      });
 
-//      $("#monthDate").focus(function () {
-//          $(".ui-datepicker-calendar").css("display", "none"); $("#ui-datepicker-div").position({ my: "center top", at: "center bottom", of: $(this) });
-//      });
-//  });
-
-
- </script> -->
 </body>
 </html>

@@ -20,7 +20,7 @@
         text-align: left;
         line-height: 1.5;
         width: 900px;
-        margin-left:50px;
+        margin-left:100px;
 
     }
 
@@ -31,6 +31,7 @@
         color: #369;
         /* border-bottom: 3px solid #036; */
         border-width: 3px solid #036;
+        width: 400px;
 
 
 
@@ -44,6 +45,7 @@
         border-bottom: 1px solid #ccc;
         background: #f3f6f7;
         border-top: 3px solid #036;
+        text-align: center;
     }
 
     table.type1 td {
@@ -51,6 +53,7 @@
         padding: 10px;
         vertical-align: top;
         border-bottom: 1px solid #ccc;
+         text-align: center;
     }
 
     .ann-bt {
@@ -68,7 +71,7 @@
     .annualmain {
             border: 3px solid rgba(128, 128, 128, 0.363);
             width: 1000px;
-            height: 200px;
+            height: 280px;
             border-radius: 20px;
             margin-top: 10px;
             margin-left: 50px;
@@ -76,10 +79,10 @@
         
       .annualAll {
             border-radius: 20px;
-            border: 3px solid #59d4d4e0;
+            border: 3px solid #369;
             width: 200px;
-            height: 100px;
-            margin-left: 55px;
+            height: 120px;
+            margin-left: 100px;
             margin-bottom: 20px;
             text-align: center;
             vertical-align: middle;
@@ -125,15 +128,11 @@
 <div id="main">
 <section class="annualmain">
 
-        <h1>&nbsp;&nbsp;&nbsp;연차</h1>
+        <h2 style="text-align: center; vertical-align: middle;">&nbsp;&nbsp;&nbsp;연차신청내역</h2>
         <br>
         <div class="annualAll">
             <h2>전체</h2>
            ${ann.annual_day_count } 건
-        </div>
-        <div class="annualAll">
-            <h2>발생연차</h2>
-            건
         </div>
         <div class="annualAll">
             <h2>잔여연차</h2>
@@ -141,13 +140,14 @@
         </div>
         <div class="annualAll">
             <h2>사용연차</h2>
-            ${ annual_day_use}건
+            <c:set var="ann_use" value="${ann.annual_day_count-ann.annual_day_remain}"/>
+            	${ ann_use }건
         </div>
 
 
     </section>
     <br><br>
-    <h2>신청내역</h2>
+    <!-- <h2 style="margin-left:70px;">신청내역</h2> -->
 <table class="type1">
         <thead>
             <tr>
@@ -162,9 +162,9 @@
                 <th scope="row">휴가구분</th>
                 <th scope="row">시작일</th>
                 <th scope="row">종료일</th>
-                <th scope="row">휴가사유</th>
-                <th scope="row">구분</th>
-                <th scope="row">승인자</th>
+                 <th scope="row">사용일</th>
+                <th scope="row">제목</th>
+                <th scope="row">신청날짜</th>
                 <th scope="row">자세히보기</th>
 
             </tr>
@@ -184,9 +184,10 @@
                     ${annual_start }</td>
                <td><fmt:formatDate var="annual_end" type="date" value="${ ann.annual_end }" pattern="yyyy-MM-dd"/>
                     ${ annual_end }</td>
-                <td>${ann.annual_content }</td>
-                <td>진행중</td>
-                <td>관리자</td>
+               <%--  <td>${ann.annual_content }</td> --%>
+                <td>${ann.annual_day_use }</td>
+                <td>${ann.annual_title }</td>
+                <td>${ann.annual_signupday }</td>
                 <c:url var="annupView" value="annupView.do">
                 	<c:param name="annual_no" value="${ ann.annual_no }"/>
 					<c:param name="page" value="${ pi.currentPage }"/>

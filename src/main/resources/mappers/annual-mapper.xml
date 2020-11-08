@@ -14,6 +14,7 @@
 		<result property="annual_halftime" column="ANNUAL_HALFTIME"/>
 		<result property="annual_signupday" column="ANNUAL_SIGNUPDAY"/>
 		<result property="ann_status" column="ANN_STATUS"/>
+		
 	</resultMap>
 	
 	<resultMap type="Member" id="memberResultSet">
@@ -46,6 +47,19 @@
 		SEQ_EAID.CURRVAL
 	)
 	</insert>
+	
+	<insert id="halfTimeinsert" parameterType="Annual">
+	INSERT INTO ANNUAL VALUES(
+		SEQ_ANNO.NEXTVAL, #{mno}, #{annual_start}, #{annual_end},
+		 0.5,
+		 #{annual_type},
+		#{annual_content}, #{annual_halftime},SYSDATE, 'W', #{annual_title},
+		SEQ_EAID.CURRVAL
+	)
+	
+	</insert>
+	
+	
 	
 	<select id="selectList" parameterType="_int" resultMap="annualResultSet">
 		SELECT *
@@ -106,7 +120,7 @@
 	</select>
 	
 	<select id="selectendList" resultType="_int" resultMap="annualResultSet">
-	SELECT *
+		SELECT *
 		FROM ANNUAL
 		WHERE MNO=#{mno}
 		AND ANN_STATUS='Y'

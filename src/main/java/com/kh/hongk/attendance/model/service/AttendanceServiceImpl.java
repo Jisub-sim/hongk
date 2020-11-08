@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.hongk.annual.model.vo.PageInfo;
 import com.kh.hongk.attendance.model.dao.AttendanceDao;
 import com.kh.hongk.attendance.model.vo.Attendance;
+import com.kh.hongk.attendance.model.vo.Search;
 
 @Service("attService")
 public class AttendanceServiceImpl implements AttendanceService{
@@ -75,10 +77,37 @@ public class AttendanceServiceImpl implements AttendanceService{
 	}
 
 	@Override
-	public ArrayList<Attendance> selectList(int mNo) {
-		return attDao.selectList(mNo);
+	public ArrayList<Attendance> selectList(int mNo, PageInfo pi) {
+		return attDao.selectList(mNo, pi);
 	}
 
+
+	@Override
+	public int selectallListCount(int mNo) {
+		return attDao.selectallListCount(mNo);
+	}
+
+	// 검색 Count
+	@Override
+	public int shListCount(int mNo, Search search) {
+		return attDao.shListCount(search, mNo);
+	}
+	
+	// 검색 후 셀렉트
+	@Override
+	public ArrayList<Attendance> attSearch(PageInfo pi, Search search) {
+		return attDao.attSearch(search, pi);
+	}
+
+	@Override
+	public int selectworkoffCount(int mNo) {
+		return attDao.selectworkoffCount(mNo);
+	}
+
+
+
+	
+	
 
 	
 

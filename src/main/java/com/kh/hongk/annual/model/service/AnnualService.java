@@ -45,10 +45,13 @@ public interface AnnualService {
 	// 결재자 등록
 	int insertApprover(Approval appro);
 
+	// 반차일 때 0.5 처리
+	int halfTimeinsert(Annual ann);
 
-	
 
 
-	
+
+
+
 
 }
