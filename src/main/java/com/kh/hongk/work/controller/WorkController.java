@@ -1,10 +1,7 @@
 package com.kh.hongk.work.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +17,7 @@ import com.kh.hongk.annual.model.vo.PageInfo;
 import com.kh.hongk.annual.model.vo.Pagination;
 import com.kh.hongk.approval.model.vo.Approval;
 import com.kh.hongk.approval.model.vo.Electronic_Approval;
+import com.kh.hongk.approval.model.vo.Form;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.work.model.exception.WorkException;
 import com.kh.hongk.work.model.service.WorkService;
@@ -34,7 +32,7 @@ public class WorkController {
 	
 	// 근무 신청 페이지 이동
 	@RequestMapping("wkinsertview.do")
-	public ModelAndView workInsertPage(ModelAndView mv,HttpSession session) {
+	public ModelAndView workInsertPage(ModelAndView mv,HttpSession session, Form form) {
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
@@ -42,6 +40,7 @@ public class WorkController {
 		Member member = wkService.selectmember(mNo);
 		
 		mv.addObject("member", member)
+		  .addObject("form",form)
 		  .setViewName("work/workInsertForm");
 		
 		return mv;
@@ -50,7 +49,7 @@ public class WorkController {
 	// 근무신청 클릭 시
 	 @RequestMapping("workinsert.do")
 	 public String WorkSelect(Work wk, 
-			 String wk_type,String mid, HttpSession session, Electronic_Approval ea ) {
+			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no ) {
 		 int wktype= Integer.parseInt(wk_type);
 		 Member loginUser = (Member)session.getAttribute("loginUser");
 			int mNo = loginUser.getmNo();
@@ -75,6 +74,7 @@ public class WorkController {
 			
 			// 전자결재
 			ea.setDrafter(mNo);
+			ea.setForm_no(form_no);
 			ea.setEa_title(wk.getWork_title());
 			ea.setEa_content(wk.getWork_content());
 			

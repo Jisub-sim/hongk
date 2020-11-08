@@ -132,7 +132,7 @@ private EAService eaService;
 			}else if(form.getForm_name().contains("휴가")) {
 				mv.addObject("form",form)
 				.addObject("member", member)
-				.setViewName("annual/annualInserForm");
+				.setViewName("annual/annualInsertForm");
 			}else if(form.getForm_name().contains("외근")) {
 				mv.addObject("form",form)
 				.addObject("member", member)

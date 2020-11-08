@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kh.hongk.member.model.dao.MemberDao;
+import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 
 @Service("mService")
@@ -57,5 +58,20 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Member selectattmember(Member m) {
 		return mDao.selectattmember(m);
+	}
+	// 프로필 등록
+	@Override
+	public int Fileinsert(Files f) {
+		return mDao.Fileinsert(f);
+	}
+	// 등록된 프로필이 있는가
+	@Override
+	public Files selectProFiles(int mno) {
+		return mDao.selectProFiles(mno);
+	}
+	// 기존 프로피 파일 삭제
+	@Override
+	public int FileDelete(int file_no) {
+		return mDao.FileDelete(file_no);
 	}
 }

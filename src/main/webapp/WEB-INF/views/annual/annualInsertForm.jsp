@@ -21,6 +21,7 @@
    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
    crossorigin="anonymous"></script>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <script type="text/javascript" src="${pageContext.request.contextPath}/resources/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
 
 
 
@@ -37,6 +38,7 @@
 <title>Insert title here</title>
 <style>
     table.type02 {
+    	width:90%;
         border-collapse: separate;
         border-spacing: 0;
         text-align: left;
@@ -50,7 +52,6 @@
     }
 
     table.type02 th {
-        width: 150px;
         padding: 10px;
         font-weight: bold;
         vertical-align: top;
@@ -64,7 +65,6 @@
     }
 
     table.type02 td {
-        width: 150px;
         padding: 10px;
         vertical-align: top;
         border-right: 1px solid #ccc;
@@ -152,6 +152,12 @@
     text-align: center;
      vertical-align: middle;
     }
+    
+    #smartEditor{
+    width:100%;
+    	height:35vh;
+    	resize: none;
+    }
 </style>
 </head>
 <body>
@@ -183,8 +189,8 @@
     <table class="type02">
         
         <tr>
-        <th scope="row">제목</th>
-        <td> <input type="text" name="annual_title"></td>
+        <th scope="row" width="15%"> 제목</th>
+        <td  width="85%"> <input type="text" name="annual_title"></td>
         </tr>
         <tr>
             <th scope="row">휴가 종류</th>
@@ -211,7 +217,7 @@
         <tr>
             <th scope="row">반차 여부</th>
             <td>
-                    <p> <input type="radio" name="annual_halftime" value="am" > <span class="up">오전</span>&nbsp;
+                   <p> <input type="radio" name="annual_halftime" value="am" > <span class="up">오전</span>&nbsp;
                         <input type="radio" name="annual_halftime" value="pm" > <span class="up">오후</span></p>
                          <input type="radio" name="annual_halftime" value="none" > <span class="up">없음</span></p>
             </td>
@@ -227,7 +233,9 @@
         <tr>
             <th scope="row">휴가 사유</th>
             <td>
-                <textarea style="width: 700px; height: 150px;" name="annual_content"></textarea>
+	             <div>
+	                <textarea name="smartEditor" id="smartEditor" rows="10" cols="100" >${ form.form_content }</textarea>
+	            </div>
             </td>
         </tr>
         
@@ -235,6 +243,7 @@
         <th>담당자</th>
         <td><input type="text" class="ea_line" id="managerBt" required></td>
         <input type="hidden" name="mid" id="mid" >
+        <input type="hidden" name="form_no" value="${ form.form_no }">
          <c:url var="managerList" value="managerList.do"/>
 		</tr>
         <!-- <table class="type03">
@@ -264,12 +273,41 @@
     </table>
     
     <div class="aunnalsm">
-        <button type="submit" class=" btclick">신청하기</button>
+        <button type="submit" class=" btclick" id="savebutton">신청하기</button>
     </div>
     
     </div>
     </form>
     <script type="text/javascript">
+    var oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({ 
+    	oAppRef : oEditors,
+    	elPlaceHolder : "smartEditor", 
+    	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //경로를 꼭 맞춰주세요! 
+    	fCreator : "createSEditor2", htParams : { 
+    	// 툴바 사용 여부 (true:사용/ false:사용하지 않음) 
+    	bUseToolbar : true, 
+    	// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음) 
+    	bUseVerticalResizer : false, 
+    	// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음) 
+    	bUseModeChanger : false
+    	} 
+    }); 
+    
+    $(function() { 
+		$("#savebutton").click(function() { 
+			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
+			var content = document.getElementById("smartEditor").value;
+			document.getElementById("smartEditor").setAttribute('name','ea_content' );
+
+			var result = confirm("등록 하시겠습니까?"); 
+			if(result){ 
+				
+			}else{ 
+				return; 
+			} 
+		}); 
+	})
     // 담당자 선택
            $(function(){
                $("#managerBt").click(function(){

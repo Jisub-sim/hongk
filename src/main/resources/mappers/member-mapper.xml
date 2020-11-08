@@ -22,6 +22,14 @@
 		<result property="jobTitle" column="JOB_TITLE" />
 	</resultMap>
 
+	<resultMap type="Files" id="fileResultSet">
+			<id property="file_no" column="FILE_NO"/>
+			<result property="ref_no" column="REF_FNO"/>
+			<result property="original_FileName" column="ORIGINAL_FILENAME"/>
+			<result property="reName_FileName" column="RENAME_FILENAME"/>
+			<result property="save_Date" column="SAVE_DATE"/>
+			<result property="File_type" column="FILE_TYPE"/>
+		</resultMap>
 
 	<select id="jobList" resultMap="memberResultSet">
 		SELECT *
@@ -82,6 +90,26 @@
 		AND MPWD =  #{mPwd}
 		AND M_STATUS = 'Y'
         AND TO_CHAR(WORK_ON, 'YYYYMMDD')= TO_CHAR(SYSDATE ,'YYYYMMDD')
-		
 	</select>
+	
+	 <insert id="Fileinsert" parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, null, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'Pro', #{ mno }
+     	)
+     </insert>
+     
+     <select id="selectProFiles" resultMap="fileResultSet">
+     	SELECT *
+     	FROM FILES
+     	WHERE MNO = #{ mno }
+     	AND FILE_TYPE = 'Pro'
+     </select>
+     
+     <delete id="FileDelete" parameterType="_int">
+     	DELETE 
+     	FROM FILES
+     	WHERE FILE_NO = #{ file_no }
+     </delete>
+	
 </mapper>
