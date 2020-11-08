@@ -16,9 +16,9 @@ import com.kh.hongk.annual.model.service.AnnualService;
 import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.annual.model.vo.PageInfo;
 import com.kh.hongk.annual.model.vo.Pagination;
-import com.kh.hongk.approval.model.service.EAService;
 import com.kh.hongk.approval.model.vo.Approval;
 import com.kh.hongk.approval.model.vo.Electronic_Approval;
+import com.kh.hongk.approval.model.vo.Form;
 import com.kh.hongk.member.model.vo.Member;
 
 @Controller
@@ -28,7 +28,7 @@ public class AnnualController {
 
 	// 휴가신청페이지 이동
 	@RequestMapping("anninsert.do")
-	public ModelAndView annualInsertPage(ModelAndView mv, HttpSession session) {
+	public ModelAndView annualInsertPage(ModelAndView mv, HttpSession session, Form form) {
 
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
@@ -39,6 +39,7 @@ public class AnnualController {
 
 		mv.addObject("ann", ann)
 		  .addObject("member", member)
+		  .addObject("form",form)
 		  .setViewName("annual/annualInsertForm");
 
 
@@ -49,7 +50,7 @@ public class AnnualController {
 
 	// 휴가신청 클릭 시 
 	@RequestMapping("annTypeSelect.do")
-	public String AnnualTypeSelect(Annual ann, String a_type,String mid, Electronic_Approval ea, HttpSession session) {
+	public String AnnualTypeSelect(Annual ann, String a_type,String mid, Electronic_Approval ea, HttpSession session, int form_no) {
 		int atype=Integer.parseInt(a_type);
 		ann.setAnnual_type(atype);
 		System.out.println("annual :" + ann );
@@ -65,6 +66,7 @@ public class AnnualController {
 		
 		// 전자결재
 		ea.setDrafter(mNo);
+		ea.setForm_no(form_no);
 		ea.setEa_title(ann.getAnnual_title());
 		ea.setEa_content(ann.getAnnual_content());
 
