@@ -31,4 +31,10 @@
 		AND MPWD = #{mPwd}
 		AND M_STATUS = 'Y'
 	</select>
+	
+	<select id="selectList" resultMap="memberResultSet">
+		SELECT * 
+		FROM MEMBER
+		ORDER BY MID DESC
+	</select>
 </mapper>

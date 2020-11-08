@@ -19,7 +19,7 @@ public class Member {
 	private String mStatus;
 	private String deptCode;
 	private String jobCode;
-
+	
 	public Member() {}
 
 	public Member(int mNo, String mId, String mPwd, String mName, int age, String gender, String email, String address,

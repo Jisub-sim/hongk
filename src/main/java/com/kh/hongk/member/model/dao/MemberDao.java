@@ -1,5 +1,7 @@
 package com.kh.hongk.member.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,11 @@ public class MemberDao {
 	
 	public Member selectMember(Member m) {
 		return sqlSession.selectOne("memberMapper.selectOne", m);
+	}
+
+	public ArrayList<Member> selectList() {
+		// TODO Auto-generated method stub
+		return (ArrayList)sqlSession.selectList("memberMapper.selectList");
 	}
 
 }

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardMapper">
+	<resultMap id="boardResultSet" type="Board">
+		<id property="bId" column="BID"/>
+		<result property="bTitle" column="BTitle"/>
+		<result property="bWriter" column="BWRITER"/>
+		<result property="bContent" column="BCONTENT"/>
+		<result property="bCount" column="BCOUNT"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
+		<result property="b_Status" column="B_STATUS"/>
+		<result property="b_Type" column="B_TYPE"/>
+		<result property="b_Level" column="B_LEVEL"/>
+		<result property="mNo" column="MNO"/>
+		<result property="file_No" column="FILE_NO"/>
+	</resultMap>
+	
+	<resultMap id="replyResultSet" type="Reply">
+		<id property="rId" column="RID"/>
+		<result property="rContent" column="RCONTENT"/>
+		<result property="rWriter" column="RWRITER"/>
+		<result property="rCreateDate" column="R_CREATE_DATE"/>
+		<result property="rModifyDate" column="R_MODIFY_DATE"/>
+		<result property="rStatus" column="R_STATUS"/>
+		<result property="refBid" column="REF_BID"/>
+	</resultMap>
+
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE B_STATUS='Y'
+	</select>
+	
+	<select id="selectList" resultMap="boardResultSet">
+		SELECT  *
+		FROM BOARD
+		WHERE B_STATUS='Y'
+		AND B_TYPE ='공지'
+		ORDER BY B_LEVEL ASC, BID DESC
+	</select>
+	
+	<insert id="insertBoard" parameterType="Board">
+		INSERT INTO BOARD VALUES(
+			SEQ_BID.NEXTVAL, #{bTitle}, #{bWriter}, #{bContent}, DEFAULT,
+			SYSDATE, SYSDATE, DEFAULT, #{b_Type}, #{b_Level}, #{mNo}, #{file_No}
+		)
+	</insert>
+	
+	<update id="updateCount" parameterType="_int">
+		UPDATE BOARD
+		SET BCOUNT = BCOUNT + 1
+		WHERE BID=#{bId}
+	</update>
+	
+	<select id="selectOne" parameterType="_int" resultMap="boardResultSet">
+		SELECT *
+		FROM BOARD
+		WHERE BID=#{bId}
+		AND B_STATUS='Y'
+	</select>
+	
+	<update id="updateBoard" parameterType="Board">
+		UPDATE BOARD
+		SET BTITLE=#{bTitle}, BCONTENT=#{bContent}, 
+			MODIFY_DATE=SYSDATE
+		WHERE BID=#{bId}
+	</update>
+	
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE BOARD
+		SET B_STATUS = 'N'
+		WHERE BID=#{bId}
+	</update>
+	
+	
+	<select id="selectReplyList" resultMap="replyResultSet" parameterType="_int">
+		SELECT * 
+		FROM REPLY R
+		JOIN BOARD B ON(R.REF_BID = B.BID)
+		WHERE REF_BID=#{bId}
+		AND R_STATUS='Y'
+		ORDER BY RID DESC
+	</select>
+	
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO REPLY VALUES
+		(SEQ_RID.NEXTVAL, #{rContent}, #{rWriter}, SYSDATE, SYSDATE, 'Y', #{refBid})
+	</insert> 
+	
+	<select id="searchList" parameterType="Search" resultMap="boardResultSet">
+		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
+		SELECT *
+		FROM BOARD
+		<where><!-- where : where + AND|OR로 시작 시 자동 제거 기능 --><!-- trim도 사용 가능 -->
+			<choose>
+				<when test="searchCondition == 'title'">
+					AND BTITLE LIKE #{sv}
+				</when>
+				<when test="searchCondition == 'content'">
+					AND BCONTENT LIKE #{sv}
+				</when>
+				<otherwise>
+					AND (BTITLE LIKE #{sv}
+						OR BCONTENT LIKE #{sv})
+				</otherwise>
+			</choose>
+		</where>
+		ORDER BY BID DESC
+	</select>
+	
+	
+</mapper>

@@ -10,7 +10,7 @@ import com.kh.hongk.project.model.dao.ProjectDao;
 import com.kh.hongk.project.model.vo.Project;
 import com.kh.hongk.project.model.vo.Pteam;
 
-@Service("bService")
+@Service("pService")
 public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	private ProjectDao pDao;

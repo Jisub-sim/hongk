@@ -12,6 +12,11 @@
 		<typeAlias type="com.kh.hongk.project.model.vo.Project" alias="Project"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pteam" alias="Pteam"/>
+		<typeAlias type="com.kh.hongk.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.hongk.board.model.vo.Reply" alias="Reply"/>
+		<typeAlias type="com.kh.hongk.board.model.vo.Search" alias="Search"/>
+		<typeAlias type="com.kh.hongk.chat.model.vo.Room" alias="Room"/>
+		
 	
 	</typeAliases>
 
@@ -19,5 +24,8 @@
 		<mapper resource="mappers/project-mapper.xml"/>
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/ea-mapper.xml"/>
+		<mapper resource="mappers/board-Mapper.xml"/>
+		<mapper resource="mappers/chat-Mapper.xml"/>
+		
 	</mappers>
 </configuration>
