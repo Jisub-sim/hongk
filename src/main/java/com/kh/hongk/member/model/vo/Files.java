@@ -9,8 +9,10 @@ public class Files {
 	private String reName_FileName;
 	private Date save_Date;
 	private String File_type;
-	
+	private String mName;
+	private int mNo;
 	public Files() {}
+	
 	
 	public Files(int file_no, int ref_no, String original_FileName, String reName_FileName, Date save_Date,
 			String file_type) {
@@ -22,6 +24,22 @@ public class Files {
 		this.save_Date = save_Date;
 		File_type = file_type;
 	}
+
+
+
+	public Files(int file_no, int ref_no, String original_FileName, String reName_FileName, Date save_Date,
+			String file_type, String mName, int mNo) {
+		super();
+		this.file_no = file_no;
+		this.ref_no = ref_no;
+		this.original_FileName = original_FileName;
+		this.reName_FileName = reName_FileName;
+		this.save_Date = save_Date;
+		File_type = file_type;
+		this.mName = mName;
+		this.mNo = mNo;
+	}
+
 
 	public int getFile_no() {
 		return file_no;
@@ -71,12 +89,32 @@ public class Files {
 		File_type = file_type;
 	}
 
+	public String getmName() {
+		return mName;
+	}
+
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+
+
+	public int getmNo() {
+		return mNo;
+	}
+
+
+	public void setmNo(int mNo) {
+		this.mNo = mNo;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Files [file_no=" + file_no + ", ref_no=" + ref_no + ", original_FileName=" + original_FileName
 				+ ", reName_FileName=" + reName_FileName + ", save_Date=" + save_Date + ", File_type=" + File_type
-				+ "]";
+				+ ", mName=" + mName + ", mNo=" + mNo + "]";
 	}
+
 	
 	
 }

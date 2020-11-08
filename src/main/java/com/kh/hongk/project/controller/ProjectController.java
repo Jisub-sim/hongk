@@ -1,7 +1,11 @@
 package com.kh.hongk.project.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,16 +17,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.kh.hongk.approval.model.vo.PageInfo;
+import com.kh.hongk.approval.model.vo.Pagination;
+import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.exception.ProjectException;
 import com.kh.hongk.project.model.service.ProjectService;
 import com.kh.hongk.project.model.vo.Pmember;
 import com.kh.hongk.project.model.vo.Project;
 import com.kh.hongk.project.model.vo.Pteam;
+import com.kh.hongk.project.model.vo.Reply;
+import com.kh.hongk.project.model.vo.Request;
 import com.kh.hongk.project.model.vo.Task;
+import com.kh.hongk.project.model.vo.TrReply;
 
 @Controller
 public class ProjectController {
@@ -37,6 +51,10 @@ public class ProjectController {
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 		// System.out.println("프로젝트 mNo : " + mNo);
 		ArrayList<Project> list = pService.selectmyProject(mNo);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		for(int i = 0; i<list.size();i++) {
+			list.get(i).setDateString(format.format(list.get(i).getDeadLine())); 
+		}
 		System.out.println("list : " + list);
 
 		if (list != null) {
@@ -47,7 +65,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping("project.do")
-	public ModelAndView projectDetail(int pId, ModelAndView mv,HttpServletRequest request) {
+	public @ResponseBody ModelAndView projectDetail(int pId, ModelAndView mv,HttpServletRequest request) {
 		// pId에 맞는 Project 정보 가져오기
 		Project project = pService.projectDetail(pId);
 
@@ -59,14 +77,54 @@ public class ProjectController {
 		Pmember p = new Pmember();
 		p.setmNo(mNo);
 		p.setpId(pId);
-		ArrayList<Task> tl = pService.selectTaskList(p);
+		ArrayList<Pteam> tCount = pService.selectTaskCount(pId);
+		System.out.println(tCount);
+		// 전체 task 수 
+		for(int i=0; i<tCount.size(); i++) {
+			for(int j =0; j<ptlist.size();j++) {
+				if(tCount.get(i).getPtId() == ptlist.get(j).getPtId()) {
+					ptlist.get(j).settCount(tCount.get(i).gettCount());
+				}
+			}
+		}
 		
+		ArrayList<Pteam> completeTask = pService.selectCompleteTask(pId);
+		
+		System.out.println("ptlist :" + ptlist);
+		ArrayList<Task> tl = pService.selectTaskList(p);
+		System.out.println("cpt:" + completeTask);
 		System.out.println(tl);
-
+		for(int i =0; i<completeTask.size();i++) {
+			for(int j=0;j<ptlist.size();j++) {
+				if(completeTask.get(i).getPtId()==ptlist.get(j).getPtId()) {
+					if(ptlist.get(i).gettCount() != 0) {
+						double persentd = ((double)(completeTask.get(i).gettCount())/ptlist.get(j).gettCount())*100;
+						System.out.println(persentd);
+						int persent = (int)persentd;
+						ptlist.get(j).setPersent(persent);
+						System.out.println(persent);
+					}
+				}
+			}
+		}
+		Pmember m = pService.selectMemberTeam(p);
+		System.out.println(m);
+		ArrayList<Request> rq = new ArrayList<>();
+		if(m.getPtId() != 0) {
+			rq = pService.selectRequestList(m.getPtId());
+			for(int i = 0; i<rq.size(); i++) {
+				if(rq.get(i).getTrManager() != 0) {
+				Member mem = pService.selectMemberOne(rq.get(i).getTrManager());
+				rq.get(i).setManager(mem.getmName());
+				}
+			}
+		}
+		System.out.println("rq : " +rq);
 		if (project != null) {
 			mv.addObject("tl",tl);
 			mv.addObject("p", project);
 			mv.addObject("pt", ptlist);
+			mv.addObject("rqList",rq);
 			mv.setViewName("project/projectPage");
 		} else {
 			throw new ProjectException("프로젝트 상세조회에 실패하였습니다");
@@ -120,11 +178,11 @@ public class ProjectController {
 	@RequestMapping("teaminsert.do")
 	public String teamInsert(Pteam pt, @RequestParam(name = "memberList", required = false) String memberList,
 			HttpServletRequest request) {
+		System.out.println(memberList);
+		memberList += ",0";
 		List<String> TmList = Arrays.asList(memberList.split(","));
+		
 		List<Integer> mList = new ArrayList<Integer>();
-		for (String s : TmList) {
-			mList.add(Integer.valueOf(s));
-		}
 
 		pt.setTmList(TmList);
 		System.out.println(pt);
@@ -142,9 +200,24 @@ public class ProjectController {
 	}
 
 
-	@RequestMapping("askadd.do")
-	public String askAdd() {
-		return "project/ask/askAdd";
+	@RequestMapping("askaddForm.do")
+	public ModelAndView askAdd(int pId,HttpServletRequest request,ModelAndView mv) {
+		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		System.out.println("taskAdd mNo : " + mNo);
+		Pmember p = new Pmember();
+		p.setmNo(mNo);
+		p.setpId(pId);
+		Pmember pm = pService.selectMemberTeam(p);
+		
+		// ptId 이외의 팀 가져오기 
+		ArrayList<Pteam> ptList = pService.selectOtherTeam(pm);  
+		System.out.println("ptList : " + ptList);
+		mv.addObject("pt",ptList);
+		mv.addObject("pm",pm);
+		mv.addObject("pId",pId);
+		mv.setViewName("project/ask/askAdd");
+		
+		return mv;
 	}
 
 	@RequestMapping("progress.do")
@@ -359,6 +432,72 @@ public class ProjectController {
 		
 		
 	}
+	@RequestMapping("askadd.do")
+	public String askAdd(Request rq, HttpServletRequest request, int pId,
+			Files f, @RequestParam(value="file", required=false) MultipartFile file) {
+		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		System.out.println(file.getOriginalFilename());
+		if(!file.getOriginalFilename().equals("")) {
+			String renameFileName = saveFile(file, request);
+			
+			if(renameFileName != null) {
+				f.setOriginal_FileName(file.getOriginalFilename());
+				f.setReName_FileName(renameFileName);
+			}
+		}
+		rq.setTrWriter(mNo);
+		System.out.println(rq);
+		f.setmNo(mNo);
+		
+		int result = pService.insertRequest(rq);
+		int result1 = pService.insertAFile(f);
+		
+		if(result>0 && result1>0) {
+			return "redirect:project.do?pId="+pId;
+		}else {
+			throw new ProjectException("요청 등록에 실패하였습니다");
+		}
+	}
+	@RequestMapping("askClick.do")
+	public ModelAndView askClick(int trId,int pId, ModelAndView mv) {
+		System.out.println(trId);
+		
+		Request rq = pService.selectAsk(trId);
+		if(rq.getTrManager() != 0) {
+		int manager = rq.getTrManager();
+		Member m = pService.selectMemberOne(manager);
+		rq.setManager(m.getmName());
+		}
+		
+		int writer = rq.getTrWriter();
+		
+		Member m2 = pService.selectMemberOne(writer);
+		
+		rq.setWriter(m2.getmName());
+		
+		Files f = pService.selectAskFile(trId);
+		
+		if(rq != null) {
+		    mv.addObject("f",f);
+			mv.addObject("rq",rq);
+			mv.addObject("trId",trId);
+			mv.addObject("pId",pId);
+			mv.setViewName("project/ask/askClick");
+		}
+		
+		return mv;
+	}
+	@RequestMapping("rrList.do")
+	@ResponseBody
+	public String rrList(int trId) { 
+		ArrayList<TrReply> treply = pService.selectTrlist(trId);
+	
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		System.out.println(treply);
+		return gson.toJson(treply);
+	
+	
+}
 	@RequestMapping("taskadd.do")
 	public String taskAdd(Task t,HttpServletRequest request,int pId) {
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
@@ -373,12 +512,197 @@ public class ProjectController {
 			throw new ProjectException("업무 등록에 실패하였습니다");
 		}
 	}
+	@RequestMapping("trStatusUp.do")
+	public String trStatusUp(int trId) {
+		
+		return "";
+	}
 
-	@RequestMapping("taskclick.do")
+	@RequestMapping("taskClick.do")
+	public ModelAndView taskClick(int twId, ModelAndView mv,
+			@RequestParam(value="page", required=false) Integer page) {
+		System.out.println("taskCLick : " + twId);
+		Task t = pService.selectTask(twId);
+		Member m = pService.selectMemberOne(t.getTwManager());
+		t.setManager(m.getmName());
+		System.out.println(t);
+		
+		// file 전체 수 
+		int listCount = pService.fListCount(twId);
+		int currentPage = page != null ? page : 1;
+		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 5,6);
+		ArrayList<Files> flist = pService.selectFileList(twId,pi);
+		System.out.println(pi);
+		if(t != null) {
+			mv.addObject("pi",pi);
+			mv.addObject("flist",flist);
+			mv.addObject("t", t);
+			mv.setViewName("project/task/taskClick");
+		}
+		return mv;
+	}
+	@RequestMapping("getManager.do")
+	public String getManager(int twId, HttpServletRequest request,RedirectAttributes rd ) {
+		Task t = new Task();
+		t.setTwId(twId);
+		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		t.setTwManager(mNo);
+		System.out.println(t);
+		int result = pService.updateManager(t);
+		
+		if(result>0) {
+			rd.addFlashAttribute("msg","담당자를 등록하였습니다.");
+			return "redirect:taskClick.do?twId="+twId;
+		}
+		else
+			throw new ProjectException("담당자 등록에 실패하였습니다.");
+	}
+	@RequestMapping("getRequestManager.do")
+	public String getRequestManager(int trId,int pId, HttpServletRequest request, RedirectAttributes rd) {
+		Request rq = new Request();
+		rq.setTrId(trId);
+		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		rq.setTrManager(mNo);
+		System.out.println(rq);
+		int result = pService.updateRequestManager(rq);
+		if(result>0) {
+			rd.addFlashAttribute("msg","담당자가 등록되었습니다.");
+			return "redirect:askClick.do?trId="+trId+"&pId="+pId;
+		}
+		else
+			throw new ProjectException("담당자 등록에 실패하였습니다.");
+	}
 
-	public String taskClick() {
-		return "project/task/taskClick";
+	@RequestMapping("taskfileUpload.do")
+	@ResponseBody
+	public String taskfileUpload(Files f,int twId,
+			@RequestParam(value="file", required=false) MultipartFile file ,
+			HttpServletRequest request
+		) {		
+		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		System.out.println(file.getOriginalFilename());
+		System.out.println(twId);
+		f.setmNo(mNo);
+		f.setRef_no(twId);
+		if(!file.getOriginalFilename().equals("")){
+			String renameFileName = saveFile(file,request);
+			System.out.println(renameFileName);
+			if(renameFileName != null) {
+				f.setOriginal_FileName(file.getOriginalFilename());
+				f.setReName_FileName(renameFileName);
+			}
+		}
+		
+		int result = pService.insertFile(f); 
+		System.out.println(result);
+		
+		if(result>0) {
+			return "success";
+		}else {
+			return "false";
+		}
 	}
 	
+	
+	
+	
+// 파일 저장
+	private String saveFile(MultipartFile file, HttpServletRequest request) {
+		String root = request.getSession().getServletContext().getRealPath("resources");
+		
+		String savePath = root + "\\TaskUpload";
+		File folder = new File(savePath);
+		
+		if(!folder.exists())
+			folder.mkdirs();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		String originFileName = file.getOriginalFilename();	// -> 원래 이름으로부터 확장자 추출
+		String renameFileName = sdf.format(new Date()) 
+				+ originFileName.substring(originFileName.lastIndexOf("."));
+		
+		String renamePath = folder + "\\" + renameFileName;
+		
+		try {
+			file.transferTo(new File(renamePath));
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		
+		return renameFileName;
+	}
+	
+	@RequestMapping("addReply.do")
+	@ResponseBody
+	public String insertReply(String rContent,int twId,HttpServletRequest request) {
+		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		
+		Reply r = new Reply();
+		r.setWrContent(rContent);
+		r.setmNo(mNo);
+		r.setTwId(twId);
+		
+		int result = pService.insertReply(r);
+		
+		if(result>0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+	@RequestMapping("wrList.do")
+	@ResponseBody
+	public String selectReplyList(int twId) {
+		ArrayList<Reply> rList = pService.selectReplyList(twId);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		System.out.println(rList);
+		return gson.toJson(rList);
+		
+		
+	}
+	@RequestMapping("deleteReply.do")
+	public String deleteReply(int wrId,int twId,RedirectAttributes rd) {
+		System.out.println(wrId);
+		int result = pService.deleteReply(wrId);
+		if(result>0) {
+			rd.addFlashAttribute("msg","댓글이 삭제되었습니다.");
+		}
+		return "redirect:taskClick.do?twId="+twId;
+	}
+	@RequestMapping("deleteRReply.do")
+	public String deleteRReply(int rrId,int trId,int pId,RedirectAttributes rd) {
+		int result = pService.deleteRReply(rrId);
+		if(result>0) {
+			rd.addFlashAttribute("msg","댓글이 삭제되었습니다.");
+		}
+		return "redirect:askClick.do?trId="+trId+"&pId="+pId;
+		
+	}
+	@RequestMapping("twStatusUp.do")
+	public String twStatusUpdate(int twId, RedirectAttributes rd) {
+		int result = pService.twStatusUpdate(twId);
+		System.out.println(result);
+		rd.addFlashAttribute("msg","업무 상태에 변경하였습니다.");
+		
+		return "redirect:taskClick.do?twId="+twId;
+	}
+	@RequestMapping("rrInsert.do")
+	public String rrInsert(TrReply reply,HttpServletRequest request,
+			 @RequestParam(name = "pId", required = false) int pId,RedirectAttributes rd) {
+		System.out.println(reply);
+		System.out.println("pId : " + pId);
+		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
+		reply.setmNo(mNo);
+		int result = pService.insertTrReply(reply);
+		if (result > 0) {
+			rd.addFlashAttribute("msg","변경사항을 등록하였습니다.");
+			return "redirect:askClick.do?trId="+ reply.getTrId()+"&pId="+pId;
+		} else {
+			throw new ProjectException("TrReply 등록에 실패하였습니다.");
+		}
+
+	}
 }
+
  
