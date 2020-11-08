@@ -2,11 +2,14 @@ package com.kh.hongk.attendance.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hongk.annual.model.vo.PageInfo;
 import com.kh.hongk.attendance.model.vo.Attendance;
+import com.kh.hongk.attendance.model.vo.Search;
 
 @Repository("attDao")
 public class AttendanceDao {
@@ -45,8 +48,32 @@ public class AttendanceDao {
 	public int selectListCount(int mNo) {
 		return sqlSession.selectOne("attendanceMapper.selectListCount",mNo);
 	}
-	public ArrayList<Attendance> selectList(int mNo) {
-		return (ArrayList)sqlSession.selectList("attendanceMapper.selectList", mNo);
+	public ArrayList<Attendance> selectList(int mNo, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		return (ArrayList)sqlSession.selectList("attendanceMapper.selectList", mNo, rowBounds);
+	}
+	public int selectallListCount(int mNo) {
+		return sqlSession.selectOne("attendanceMapper.selectallListCount", mNo);
+	}
+	
+	// 검색용 count
+	public int shListCount(Search search, int mNo) {
+		search.setMno(mNo);
+		return sqlSession.selectOne("attendanceMapper.shListCount", search);
+	}
+	
+	// 검색 후 셀렉
+	public ArrayList<Attendance> attSearch(Search search, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return (ArrayList)sqlSession.selectList("attendanceMapper.attSearch", search, rowBounds);
+	}
+	
+	// 미처리개수
+	public int selectworkoffCount(int mNo) {
+		return sqlSession.selectOne("attendanceMapper.selectworkoffCount", mNo);
 	}
 
 	

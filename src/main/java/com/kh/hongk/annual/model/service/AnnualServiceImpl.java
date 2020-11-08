@@ -22,6 +22,11 @@ public class  AnnualServiceImpl implements AnnualService {
 	public int Annualinsert(Annual ann) {
 		return annDao.insertAnnual(ann);
 	}
+	// 반차 0.5
+	@Override
+	public int halfTimeinsert(Annual ann) {
+		return annDao.halfTimeinsert(ann);
+	}
 
 	// 휴가리스트 조회
 	@Override
@@ -78,6 +83,8 @@ public class  AnnualServiceImpl implements AnnualService {
 	public int insertApprover(Approval appro) {
 		return annDao.insertApprover(appro);
 	}
+
+	
 
 
 

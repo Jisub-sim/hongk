@@ -18,6 +18,9 @@
 		<typeAlias type="com.kh.hongk.project.model.vo.Pteam" alias="Pteam"/>
 		<typeAlias type="com.kh.hongk.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Task" alias="Task"/>
+		<typeAlias type="com.kh.hongk.annual.model.vo.Annual" alias="Annual"/>
+		<typeAlias type="com.kh.hongk.attendance.model.vo.Attendance" alias="Attendance"/>
+		<typeAlias type="com.kh.hongk.work.model.vo.Work" alias="Work"/>
 	</typeAliases>
 
 	<mappers>
@@ -25,6 +28,9 @@
 		<mapper resource="mappers/member-mapper.xml"/>
 		<mapper resource="mappers/ea-mapper.xml"/>
 		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/attendance-mapper.xml"/>
+		<mapper resource="mappers/annual-mapper.xml"/>
+		<mapper resource="mappers/work-mapper.xml"/>
 
 	</mappers>
 </configuration>

@@ -17,14 +17,19 @@ import com.kh.hongk.member.model.vo.Member;
 public class AnnualDao {
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
+
 	public int insertAnnual(Annual ann) {
 		return sqlSession.insert("annualMapper.insertannual", ann);
 	}
+	
+	public int halfTimeinsert(Annual ann) {
+		return sqlSession.insert("annualMapper.halfTimeinsert", ann);
+	}
+
 
 
 	public ArrayList<Annual> selectList(int mNo,PageInfo pi ) {
-		
+
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		return (ArrayList)sqlSession.selectList("annualMapper.selectList", mNo, rowBounds);
@@ -80,6 +85,8 @@ public class AnnualDao {
 		return sqlSession.insert("eaMapper.insertApprover", appro);
 	}
 
+
+	
 
 
 

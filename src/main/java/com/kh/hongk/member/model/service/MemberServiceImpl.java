@@ -53,4 +53,9 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.updateMember(m);
 	}
 
+	
+	@Override
+	public Member selectattmember(Member m) {
+		return mDao.selectattmember(m);
+	}
 }

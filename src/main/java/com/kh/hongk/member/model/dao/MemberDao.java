@@ -33,5 +33,9 @@ public class MemberDao {
 	public int updateMember(Member m) {
 		return sqlSession.update("memberMapper.updateMember", m);
 	}
+	
+	public Member selectattmember(Member m) {
+		return sqlSession.selectOne("memberMapper.selectattmember", m);
+	}
 
 }

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
-   <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>  
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,9 +19,6 @@
         border-collapse: collapse;
         text-align: left;
         line-height: 1.5;
-        margin-left:300px;
-        width: 40%;
-        
 
     }
 
@@ -58,25 +55,21 @@
 
         text-align: center;
     }
-    .ann-bt {
+    .wk-bt {
         background-color: #369;
         border: 1px solid white;
         border-radius: 10px;
         color: white;
         width: 70px;
         height: 30px;
-        margin-left: 80px;
-       
+        margin-left: 70px;
 
 
-    }
-    .annAllbt{
-    	margin-left: 300px;
     }
 </style>
 <body>
 
-	<form action="annupdate.do" method="post" enctype="multipart/form-data">
+	<form action="wkList.do" method="post" enctype="multipart/form-data">
  <table class="type09">
         <thead>
             <tr>
@@ -87,63 +80,56 @@
         <tbody>
             <tr>
             <%-- <c:forEach> --%>
-                <th scope="row">휴가종류</th>
-                <c:set var="ann_type" value="${ann.annual_type }"/>
+                <th scope="row">근무타입</th>
                 <td>
-                    <c:if test="${ ann_type eq '0'}">연차유급휴가</c:if>
-                    <c:if test="${ ann_type eq '1'}">병가</c:if>
-                    <c:if test="${ ann_type eq '2'}">경조</c:if>
-                    <c:if test="${ ann_type eq '3'}">월차</c:if>
-                    <c:if test="${ ann_type eq '4'}">반차</c:if>
+                    <c:if test="${work.work_type eq '1'  }">외근</c:if>
+                    <c:if test="${work.work_type eq '2' }">조퇴</c:if>
                 </td>
             </tr>
            <%--  </c:forEach> --%>
             <tr>
-                <th scope="row">신청 기간</th>
-                <td>${ ann.annual_start } - ${ ann.annual_end }
-                    <p>사용일수 : ${ann.annual_day_use }</p>
-                </td>
-            </tr>
-            <tr>
-                <th scope="row">반차 여부</th>
+                <th scope="row">신청날짜</th>
                 <td>
-                <c:if test="${ann.annual_halftime != null }">
-                	<p>
-                	<c:if test="${ann.annual_halftime eq 'am'}">오전반차</c:if>
-                	<c:if test="${ann.annual_halftime eq 'pm'}">오후반차</c:if>
-                	<c:if test="${ann.annual_halftime eq 'none'}">없음</c:if>
-                	</p>
-                </c:if>
-                <p>
-               <%--  <c:if test="${ann.annual_halftime == none }">
-               			 없음
-                </c:if> --%>
-                </p>
+                  <fmt:formatDate var="work_date" type="date" value="${ work.work_date }" pattern="yyyy-MM-dd"/>
+                   ${work_date } 
+                   
                 </td>
             </tr>
             <tr>
-                <th scope="row">휴가사유</th>
-                <td><textarea name="annual_content" style="width:400px; height:200px;">${ann.annual_content}</textarea>
-                <input type="hidden" value="${ ann.annual_no }" name="annual_no">
+                <th scope="row">신청시간</th>
+                <td>
+                <fmt:formatDate var="start_time" type="date" value="${ work.start_time }" pattern="HH:mm"/>
+                <fmt:formatDate var="end_time" type="date" value="${ work.end_time }" pattern="HH:mm"/>
+                   ${ start_time } - ${end_time }
+                    
+                </td>
+            </tr>
+           <tr>
+                <th scope="row">신청사유</th>
+                <td><textarea name="work_content" style="width:300px; height:200px;">${work.work_content}</textarea>
+                <input type="hidden" value="${ work.work_no }" name="work_no">
                 </td>
             </tr>
         </tbody>
     </table>
    
     <br><br>
+    <c:url var="wkList" value="wkList.do">
+					<c:param name="page" value="${ currentPage }"/>
+				</c:url>
+					<button class="wk-bt" onclick="location.href='${ wkList }'">목록</button>
     
-    
+    <%-- 
 				<c:url var="anndelete" value="anndelete.do">
 					<c:param name="annual_no" value="${ ann.annual_no }"/>
 				</c:url>
 				<c:url var="annList" value="annList.do">
 					<c:param name="page" value="${ currentPage }"/>
 				</c:url>
-				<div class="annAllbt">
 					<button class="ann-bt" onclick="location.href='${ annList }'">목록</button>
 					<button type="submit" class="ann-bt" >수정하기</button> 
-					<button class="ann-bt" onclick="location.href='${ anndelete }'">삭제하기</button> 
-				</div>
+					<button class="ann-bt" onclick="location.href='${ anndelete }'">삭제하기</button>  --%>
+				
 </form>
 </body>
 </html>
