@@ -41,7 +41,7 @@ import com.kh.hongk.project.model.vo.TrReply;
 
 @Controller
 public class ProjectController {
-	@Autowired
+	@Autowired 
 	private ProjectService pService;
 
 	private Logger logger = LoggerFactory.getLogger(ProjectController.class);

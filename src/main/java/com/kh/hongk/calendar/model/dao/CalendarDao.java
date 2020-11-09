@@ -16,7 +16,7 @@ import com.kh.hongk.project.model.vo.Pteam;
 @Repository("cDao")
 public class CalendarDao {
 	@Autowired
-	private SqlSessionTemplate sqlSession;
+	private SqlSessionTemplate sqlSession; 
 	
 	public ArrayList<Calendar1> selectCalendarList(Calendar1 c) {
 		return (ArrayList)sqlSession.selectList("calendarMapper.selectCalendarList", c);

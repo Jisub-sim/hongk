@@ -46,7 +46,7 @@ public class ApprovalController {
 private EAService eaService;
 	
 	
-/////// ea 메인 페이지
+/////// ea 메인 페이지 
 	@RequestMapping("app.do")
 	public ModelAndView approvalpage(HttpSession session, ModelAndView mv, int pageurlnum) {
 		Member loginUser = (Member)session.getAttribute("loginUser");

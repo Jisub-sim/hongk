@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 
 <style>
-.calendar td {
+.calendar td { 
 	font-family: "돋움";
 	font-size: 11pt;
 	color: #595959;

@@ -39,7 +39,7 @@ public class AttendanceController {
 		
 		Date ot = null;
 		Date nt = null;
-		try {
+		try { 
 			Date currentTime = new Date();
 			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 			SimpleDateFormat f = new SimpleDateFormat("HH:mm");

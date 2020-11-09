@@ -10,7 +10,7 @@ import com.kh.hongk.project.model.vo.Project;
 import com.kh.hongk.project.model.vo.Pteam;
 
 public interface CalendarService {
-	// 캘린더 일정 리스트 가져오는 메소드
+	// 캘린더 일정 리스트 가져오는 메소드 
 	ArrayList<Calendar1> selectCalendarList(Calendar1 c);
 	// 일일 개인일정  리스트 가져오는 메소드
 	ArrayList<Calendar1> selectOnedayList(Calendar1 c);
