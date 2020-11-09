@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%@ page session="false" %>
 <html>
 <head>
@@ -58,38 +59,34 @@
                 <div class="Divisiontext">결재 대기함</div>
                 <div class="projectwrap">
                     <table class="projecttable">
-                        <tr>
-                            <th></th>
-                            <th>NO</th>
-                            <th>제목</th>
-                            <th>작성일</th>
-                        </tr>
-                        <tr>    
-                            <td><input type="checkbox" value="1" name="b_Level"></td>
-                            <td>41</td>
-                            <td>공지사항 제목</td>
-                            <td>2020/11/11</td>
-                        </tr>
-                        <tr>
-                            <th><input type="checkbox" value="1" name="b_Level"></th>    
-                            <th>22</th>
-                            <th>공지사항 제목</th>
-                            <th>2020/11/11</th>
-                        </tr>
-                        <tr> 
-                            <th><input type="checkbox" value="1" name="b_Level"></th>   
-                            <th>22</th>
-                            <th>공지사항 제목</th>
-                            <th>2020/11/11</th>
-                        </tr>
-                        <tr> 
-                            <th><input type="checkbox" value="1" name="b_Level"></th>   
-                            <th>22</th>
-                            
-                            <th>공지사항 제목</th>
-                            <th>2020/11/11</th>
-                        </tr>
-                    
+                         <thead>
+				                <th width="5%">NO</th>
+				                <th width="36%">문서제목</th>
+				                <th width="10%">기안자</th>
+				                <th width="10%">상태</th>
+				         </thead>
+				            <c:forEach var ="listWp" items="${ listWp }">
+				            <c:set var="status" value="${listWp.ea_status }"/>
+				            <tr>
+				                <td>${listWp.ea_no }</td>
+				                <td>${listWp.ea_title }</td>
+				                <td>${listWp.mName }</td>
+				              <c:choose>
+								<c:when test="${ status eq 'B' }">
+									<td>반려</td>
+								</c:when>
+								<c:when test="${ status eq 'C' }">
+									 <td>완료</td>
+								</c:when>
+								<c:when test="${ status eq 'W' }">
+									 <td>진행</td>
+								</c:when>
+								<c:when test="${ status eq 'R' }">
+									<td>회수</td>
+								</c:when>
+							</c:choose>
+				            </tr>
+						</c:forEach>
                     </table>
                 </div>
                 
