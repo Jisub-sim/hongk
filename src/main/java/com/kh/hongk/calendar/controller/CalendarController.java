@@ -691,12 +691,7 @@ public class CalendarController {
 	
 	@RequestMapping("calOnedayUpdate.do")
 	public ModelAndView calendarOnedayUpdate(ModelAndView mv, int cId, Calendar1 c) {
-		ArrayList<Calendar1> result = cService.selectInsertCheck(c);
-		
-		if(!result.isEmpty()) {
-			throw new CalendarException("지정한 시간에 이미 일정이 존재합니다.");
-		}
-		
+		System.out.println("c = " + c);
 		String cDate = c.getcDate();
 		
 		ArrayList<Annual> result2 = cService.selectCalAnnualCheck(cDate);
@@ -724,10 +719,11 @@ public class CalendarController {
 				}
 			}
 		}
-
-		int result3 = cService.updateCalendar(c);
-		
-		if(result.isEmpty() && (result2.isEmpty() || count == 1) && result3 > 0) {
+		int result3 = 0;
+		if(result2.isEmpty() || count == 1) {
+			result3 = cService.updateCalendar(c);
+		}
+		if(result3 > 0) {
 			mv.setViewName("calendar/calendarClose");
 		} else {
 			throw new CalendarException("일정 수정에 실패하였습니다.");
@@ -737,13 +733,14 @@ public class CalendarController {
 	
 	@RequestMapping("calOnedayDelete.do")
 	public ModelAndView calendarOnedayDelete(ModelAndView mv, int cId,
-									String cDate, int mNo, String deptCode) {
+									String cDate, int mNo, String deptCode, String jTitle) {
 		int result = cService.delectCalendar(cId);
 		
 		if(result > 0) {
 			mv.addObject("cDate", cDate);
 			mv.addObject("mNo", mNo);
 			mv.addObject("deptCode", deptCode);
+			mv.addObject("jTitle", jTitle);
 			mv.setViewName("redirect:calOneday.do");
 		} else {
 			throw new CalendarException("일정 삭제에 실패하였습니다.");

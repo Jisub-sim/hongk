@@ -354,7 +354,7 @@
     		result = confirm("일정을 삭제하시겠습니까?");
     		if(result == true){
     			var cId = $(this).val();
-        		location.href = "./calOnedayDelete.do?cId="+cId+"&cDate=${cDate}&mNo=${mNo}&deptCode=${loginUser.deptCode}";	
+        		location.href = "./calOnedayDelete.do?cId="+cId+"&cDate=${cDate}&mNo=${mNo}&deptCode=${loginUser.deptCode}&jTitle=${jTitle}";	
     		}
 		});
     	
