@@ -29,13 +29,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kh.hongk.approval.model.vo.PageInfo;
-
-import com.kh.hongk.board.model.exception.BoardException;
+import com.kh.hongk.board.exception.BoardException;
 import com.kh.hongk.board.model.service.BoardService;
 import com.kh.hongk.board.model.vo.Board;
 import com.kh.hongk.board.model.vo.Pagination;
 import com.kh.hongk.board.model.vo.Photo;
-import com.kh.hongk.board.model.vo.Reply;
+import com.kh.hongk.board.model.vo.BoardReply;
 import com.kh.hongk.board.model.vo.Search;
 import com.kh.hongk.member.model.vo.Member;
 
@@ -44,38 +43,29 @@ public class BoardController {
 	@Autowired
 	private BoardService bService;
 
-	@RequestMapping("blist.do")
+	 @RequestMapping("blist.do")
+	   public ModelAndView boardList(ModelAndView mv, int pageurlnum, HttpSession session,
+	         @RequestParam(value="page", required=false) Integer page
+	         ) {
 
-	public ModelAndView boardList(ModelAndView mv, int pageurlnum, HttpSession session,
-			@RequestParam(value="page", required=false) Integer page
-			) {
-		// 커맨드 객체 사용 시 해당 파라미터가 존재하지 않을 경우 null 값을 반환함
-		// 기본 자료형인 int는 null 값을 저장할 수 없어 오류 발생하므로 Integer로 정의함
-		
-		int pageurlnum1 = pageurlnum;
-		if(pageurlnum1 != 0) {
-			session.setAttribute("pageurlnum1", pageurlnum1);
-		}
-		
-
-		// 1. 전체 게시글 수 리턴 받기
+		 int pageurlnum1 = pageurlnum;
+	      if(pageurlnum1 != 0) {
+	         session.setAttribute("pageurlnum1", pageurlnum1);
+	      }
+	      
 		int listCount = bService.selectListCount();
 
-		// 현재 페이지 계산
 		int currentPage = page != null ? page : 1;
 
-		// 페이징 정보 만들기(3번째 인자 - pageLimit, 4번째 인자 - boardLimit)
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10, 10);
 
 		// 2. 페이징 정보에 맞는 게시글 리스트 셀렉
 		ArrayList<Board> list = bService.selectList(pi);
-
+		System.out.println("boardcontroller : " + list);
 		if (list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
 			mv.setViewName("board/boardnoticeListview");
-//			보드 인서트 
-//			mv.setViewName("board/boardinsert");
 		} else {
 			throw new BoardException("게시글 목록 조회 실패!");
 
@@ -95,7 +85,8 @@ public class BoardController {
 		int result = bService.insertBoard(b);
 
 		if (result > 0) {
-			return "redirect:blist.do";
+			System.out.println();
+			return "redirect:blist.do?pageurlnum=5";
 		} else {
 			throw new BoardException("게시글 등록에 실패하였습니다.");
 		}
@@ -139,8 +130,6 @@ public class BoardController {
 	public ModelAndView boardUpdateView(ModelAndView mv, int bId, @RequestParam("page") Integer page) {
 		Board board = bService.selectBoard(bId, true);
 		
-		
-
 		mv.addObject("board", board)
 		.addObject("currentPage", page)
 		.setViewName("board/update");
@@ -152,13 +141,13 @@ public class BoardController {
 	public ModelAndView boardUpdate(ModelAndView mv, Board b,
 									HttpServletRequest request, 
 									@RequestParam("page") Integer page) {
-	
+		
 		
 		int result = bService.updateBoard(b); 
 		
 		if(result > 0) {
 			mv.addObject("page", page)
-			   .setViewName("redirect:blist.do");
+			   .setViewName("redirect:blist.do?pageurlnum=5");
 		}else {
 			throw new BoardException("게시글 수정에 실패하였습니다.");
 		}
@@ -175,7 +164,7 @@ public class BoardController {
 		int result = bService.deleteBoard(bId);
 		
 		if(result > 0) {
-			return "redirect:blist.do";
+			return "redirect:blist.do?pageurlnum=5";
 		}else {
 			throw new BoardException("게시물 삭제에 실패하였습니다");
 		}
@@ -186,7 +175,7 @@ public class BoardController {
 	@RequestMapping("rList.do")
 	@ResponseBody
 	public String getReplyList(int bId) {
-		ArrayList<Reply> rList = bService.selectReplyList(bId);
+		ArrayList<BoardReply> rList = bService.selectReplyList(bId);
 		// 2020-09-23
 		Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd HH:mm").create(); 
 		// 시분초 표시하고 싶다면 java.util.Date 사용할 것
@@ -194,9 +183,9 @@ public class BoardController {
 	}
 	
 	
-	@RequestMapping("addReplyboard.do")
+	@RequestMapping("addReply2.do")
 	@ResponseBody
-	public String addReply(Reply r, HttpSession session) {
+	public String addReply(BoardReply r, HttpSession session) {
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		String rWriter = loginUser.getmName();

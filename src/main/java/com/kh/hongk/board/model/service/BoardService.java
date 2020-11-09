@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.hongk.approval.model.vo.PageInfo;
 import com.kh.hongk.board.model.vo.Board;
-import com.kh.hongk.board.model.vo.Reply;
+import com.kh.hongk.board.model.vo.BoardReply;
 import com.kh.hongk.board.model.vo.Search;
 
 
@@ -25,10 +25,10 @@ public interface BoardService {
 		public int deleteBoard(int bId);
 
 		// 8. 댓글 리스트 조회
-		public ArrayList<Reply> selectReplyList(int bId);
+		public ArrayList<BoardReply> selectReplyList(int bId);
 		
 		// 9. 댓글 등록 
-		public int insertReply(Reply r);
+		public int insertReply(BoardReply r);
 
 		public ArrayList<Board> searchList(Search search);
 }

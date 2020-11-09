@@ -298,7 +298,7 @@ input:focus {
 				var refBid = ${ board.bId };
 				
 				$.ajax({
-					url:"addReply.do",
+					url:"addReply2.do",
 					data: {rContent:rContent, refBid:refBid},
 					type: "post",
 					success : function(data){

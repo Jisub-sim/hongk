@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kh.hongk.approval.model.vo.PageInfo;
 import com.kh.hongk.board.model.dao.BoardDao;
 import com.kh.hongk.board.model.vo.Board;
-import com.kh.hongk.board.model.vo.Reply;
+import com.kh.hongk.board.model.vo.BoardReply;
 import com.kh.hongk.board.model.vo.Search;
 
 @Service("bService")
@@ -49,12 +49,12 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.deleteBoard(bId);
 	}
 	@Override
-	public ArrayList<Reply> selectReplyList(int bId) {
+	public ArrayList<BoardReply> selectReplyList(int bId) {
 		return bDao.selectReplyList(bId);
 	}
 
 	@Override
-	public int insertReply(Reply r) {
+	public int insertReply(BoardReply r) {
 		return bDao.insertReply(r);
 	}
 

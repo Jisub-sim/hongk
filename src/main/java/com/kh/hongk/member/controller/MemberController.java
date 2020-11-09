@@ -40,7 +40,7 @@ public class MemberController {
 	
 	// 로그인 
 		@RequestMapping(value="login.do", method=RequestMethod.POST)
-		public String memberLogin(Member m, Model model) {
+		public String memberLogin(Member m, Model model, HttpServletRequest request) {
 			
 			Member loginUser = null;
 			
@@ -55,10 +55,11 @@ public class MemberController {
 				
 			}else {
 				 loginUser = mService.loginMember(m);
-				 
+				 ArrayList<Member> mList = mService.selectList();
 				 if(loginUser != null) {
 						logger.info(loginUser.getmId() + "로그인");
-						
+						model.addAttribute("loginUser", loginUser);
+						request.getSession().setAttribute("mList", mList);
 					/*	int mNo = loginUser.getmNo()*/;
 						
 						/*Attendance att = mService.AttendancenceSelect(mNo);

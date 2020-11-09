@@ -111,5 +111,11 @@
      	FROM FILES
      	WHERE FILE_NO = #{ file_no }
      </delete>
+     
+     <select id="selectList" resultMap="memberResultSet">
+     SELECT * 
+     FROM MEMBER 
+     ORDER BY MID DESC
+     </select>
 	
 </mapper>

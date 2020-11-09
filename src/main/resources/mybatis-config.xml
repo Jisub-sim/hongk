@@ -17,9 +17,14 @@
 		<typeAlias type="com.kh.hongk.project.model.vo.Pmember" alias="Pmember"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Pteam" alias="Pteam"/>
 		<typeAlias type="com.kh.hongk.calendar.model.vo.Calendar1" alias="Calendar"/>
+		
 		<typeAlias type="com.kh.hongk.board.model.vo.Board" alias="Board"/>
+		<typeAlias type="com.kh.hongk.board.model.vo.BoardReply" alias="BoardReply"/>
+		<typeAlias type="com.kh.hongk.board.model.vo.Search" alias="Search"/>
+		<typeAlias type="com.kh.hongk.chat.model.vo.Room" alias="Room"/>
+		
+		
 		<typeAlias type="com.kh.hongk.project.model.vo.Task" alias="Task"/>
-
 		<typeAlias type="com.kh.hongk.project.model.vo.Reply" alias="Reply"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Request" alias="Request"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.TrReply" alias="TrReply"/>
@@ -36,6 +41,7 @@
 		<mapper resource="mappers/ea-mapper.xml"/>
 		<mapper resource="mappers/calendar-mapper.xml"/>
 		<mapper resource="mappers/board-mapper.xml"/>
+		<mapper resource="mappers/chat-Mapper.xml"/>
 		<mapper resource="mappers/attendance-mapper.xml"/>
 		<mapper resource="mappers/annual-mapper.xml"/>
 		<mapper resource="mappers/work-mapper.xml"/>

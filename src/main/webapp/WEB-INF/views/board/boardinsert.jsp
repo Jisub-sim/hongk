@@ -84,7 +84,7 @@ color: white;
 		                <option value="자유">자유</option>
                 	</select>
 						<input id="contenttitle" type="text" placeholder="제목을 입력하세요" name="bTitle">
-						<input type="hidden" readonly name="bWriter" value="${ loginUser.mId }">
+						<input type="hidden" readonly name="bWriter" value="${ loginUser.mName }">
 						<%-- <input type="text"  size="50"> --%>
 					</div>
 				</td>
@@ -135,7 +135,6 @@ color: white;
 	 $(function() { 
 			$("#savebutton").click(function() {   
 				oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
-				//textarea의 id를 적어줍니다. 
  				var selcatd = $("#category > option:selected").val(); 
 				var title = $("#contenttitle").val(); 
 				var content = document.getElementById("smartEditor").value;

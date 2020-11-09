@@ -9,8 +9,8 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		<result property="bWriter" column="BWRITER"/>
 		<result property="bContent" column="BCONTENT"/>
 		<result property="bCount" column="BCOUNT"/>
-		<result property="create_date" column="CREATE_DATE"/>
-		<result property="modify_date" column="MODIFY_DATE"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="modifyDate" column="MODIFY_DATE"/>
 		<result property="b_Status" column="B_STATUS"/>
 		<result property="b_Type" column="B_TYPE"/>
 		<result property="b_Level" column="B_LEVEL"/>
@@ -18,7 +18,7 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 	</resultMap>
 	
 
-	<resultMap id="replyResultSet" type="Reply">
+	<resultMap id="replyResultSet" type="BoardReply">
 		<id property="rId" column="RID"/>
 		<result property="rContent" column="RCONTENT"/>
 		<result property="rWriter" column="RWRITER"/>
@@ -85,13 +85,13 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		AND R_STATUS='Y'
 		ORDER BY RID DESC
 	</select>
-<!--	
-	<insert id="insertReply" parameterType="Reply">
+	
+	<insert id="insertReply" parameterType="BoardReply">
 		INSERT INTO REPLY VALUES
 		(SEQ_RID.NEXTVAL, #{rContent}, #{rWriter}, SYSDATE, SYSDATE, 'Y', #{refBid})
-	</insert>  -->
+	</insert>  
 	
-<!-- 	<select id="searchList" parameterType="Search" resultMap="boardResultSet">
+ 	<select id="searchList" resultMap="boardResultSet">
 		<bind name="sv" value="'%' + _parameter.getSearchValue() + '%'"/>
 		SELECT *
 		FROM BOARD
@@ -111,7 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		</where>
 		ORDER BY BID DESC
 	</select>
-	 -->
+	 
 	
 
 	
