@@ -46,11 +46,16 @@ public class ApprovalController {
 private EAService eaService;
 	
 	
-/////// ea 메인 페이지
+/////// ea 메인 페이지 
 	@RequestMapping("app.do")
-	public ModelAndView approvalpage(HttpSession session, ModelAndView mv) {
+	public ModelAndView approvalpage(HttpSession session, ModelAndView mv, int pageurlnum) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mno = loginUser.getmNo();
+		
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
 		
 		int Wp= eaService.countWp(mno);
 		int Cp=eaService.countCp(mno);

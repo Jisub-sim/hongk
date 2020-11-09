@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +41,18 @@ import com.kh.hongk.project.model.vo.TrReply;
 
 @Controller
 public class ProjectController {
-	@Autowired
+	@Autowired 
 	private ProjectService pService;
 
 	private Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
 	@RequestMapping("myProject.do")
-	public ModelAndView myProject(ModelAndView mv, HttpServletRequest request) {
+	public ModelAndView myProject(ModelAndView mv, HttpServletRequest request,
+			int pageurlnum, HttpSession session) {
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
 		// 내가 관련된 프로젝트 가져오기
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 		// System.out.println("프로젝트 mNo : " + mNo);

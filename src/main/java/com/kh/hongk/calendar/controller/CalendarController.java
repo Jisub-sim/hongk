@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,12 +25,16 @@ import com.kh.hongk.project.model.vo.Project;
 
 @Controller
 public class CalendarController {
-	@Autowired
+	@Autowired 
 	private CalendarService cService;
 	
 	@RequestMapping(value = "calendar.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView calendar(ModelAndView mv, HttpServletRequest request, DateData dateData,
-								 String deptCode, int mNo){
+								 String deptCode, int mNo, int pageurlnum, HttpSession session){
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
 		
 		Calendar cal = Calendar.getInstance();
 		DateData calendarData;
@@ -112,8 +117,8 @@ public class CalendarController {
 		mv.addObject("tmList", tmList);
 		mv.addObject("calList", calList);
 		mv.addObject("mNo", mNo);
-		/*mv.addObject("numtest", numtest);*/
 		mv.addObject("aList", aList);
+		mv.addObject("pageurlnum1", pageurlnum1);
 		mv.setViewName("calendar/calendarTeam");
 		
 		return mv;
