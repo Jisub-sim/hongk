@@ -96,7 +96,7 @@ public class MemberController {
 	@RequestMapping(value="logout.do")
 	public String logout(SessionStatus status) {
 		status.setComplete();
-		return "redirect:home.do";
+		return "redirect:index.jsp";
 	}
 	
 	// 회원 가입 페이지 이동
