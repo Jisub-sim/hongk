@@ -83,6 +83,27 @@ public class CalendarServiceImpl implements CalendarService{
 		return cDao.selectCalAnnualList(mNo);
 	}
 
+	@Override
+	public String selectCalJTitle(int mNo) {
+		return cDao.selectCalJTitle(mNo);
+	}
+
+	@Override
+	public String selectCalDTitle(int mNo) {
+		return cDao.selectCalDTitle(mNo);
+	}
+	
+	@Override
+	public int selectCalPtid(int mNo) {
+		return cDao.selectCalPtid(mNo);
+	}
+
+	@Override
+	public String selectCaltTitle(int ptid) {
+		return cDao.selectCaltTitle(ptid);
+	}
+
+	
 	
 
 

@@ -4,6 +4,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
 	integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
 	crossorigin="anonymous"></script>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -155,7 +156,7 @@ a {
 	border-radius: 10px 10px 10px 10px;
 	/* background-color:skyblue; */
 	border: 2px solid skyblue;
-	padding-bottom: 200px;
+	padding-bottom: 400px;
 }
 
 #icon_menu {
@@ -194,6 +195,33 @@ a {
 	font-size: 12px;
 	width: 40%;
 }
+
+/* 출퇴근 기록 */
+        .workstart {
+            width: 50px;
+            height: 30px;
+            border-radius: 5px;
+            /*  border:1px soid White; */
+            border: none;
+            font-weight: bold;
+            font-size: 10px;
+            color: White;
+            background-color: rgba(36, 236, 203, 0.897);
+            float:left;
+        }
+
+        .workend {
+            width: 50px;
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            border: 1px soid White;
+            font-weight: bold;
+            font-size: 10px;
+            color: White;
+            background-color: rgba(193, 138, 238, 0.966);
+            
+        }
 
 /* 
 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 
@@ -764,7 +792,8 @@ div.message.right .corner {
 	</c:if>
 	<nav id="header">
 		<div id="logo_div">
-			<i class="fab fa-accusoft"></i> <a href="" id="logo_font">Hongk</a>
+			<c:url var="home" value="home.do"/>
+			<i class="fab fa-accusoft"></i> <a href="${home }" id="logo_font">Hongk</a>
 		</div>
 		<c:url var="approval" value="app.do">
 			<c:param name="pageurlnum" value="1" />
@@ -791,6 +820,10 @@ div.message.right .corner {
 			<li id="1"><a href="${ attlist }" class="navi_font">근태관리</a></li>
 			<li id="1"><a href="${ board }" class="navi_font">게시판</a></li>
 			<li id="1"><a href="" class="navi_font"> 정보수정</a></li>
+			<li> <c:if test="${ loginUser.mLevel <= 2 }">
+               		<a href="${ MemberJoin }" class="navi_font">사원등록</a>
+           		 </c:if>
+            </li>
 		</ul>
 	</nav>
 
@@ -818,7 +851,8 @@ div.message.right .corner {
 					</table>
 				</form>
 			</c:if>
-
+				<c:url var="attinsert" value="attinsert.do"/>
+				<c:url var="attupdate" value="attupdate.do"/>
 
 			<c:if test="${ !empty sessionScope.loginUser }">
 				<c:if test="${ !empty sessionScope.file }">
@@ -830,9 +864,35 @@ div.message.right .corner {
 						src="${pageContext.request.contextPath}/resources/ProfileFileUpload/profileDefault.PNG"
 						width="140px" height="140px" />
 				</c:if>
-				<h4>${ loginUser.mName }/${ loginUser.jobCode }/ ${ loginUser.deptCode }</h4>
+				<h4>${ loginUser.mName }/${ loginUser.jobTitle }/ ${ loginUser.deptTitle }</h4>
+				
+				<div class="timeckeck">
+		         			<%--  <c:url var="attselect" value="attselect.do"/>  --%>
+		         			
+			         
+			         <div class="timestar">
+					     <c:if test="${ loginUser.work_on != null  }"> 
+					         	<a >출근시간</a><br>
+					        	<p><fmt:formatDate value="${ loginUser.work_on }" pattern="HH:mm" type="time"/></p>
+						</c:if>        
+			        </div>
+			        <c:if test="${ loginUser.work_off != null }">
+			        	<div class="timeend">	
+			          		<a>퇴근시간</a><br>
+			         		 <p><fmt:formatDate value="${ loginUser.work_off }" pattern="HH:mm" type="time"/></p>
+			        	</div>
+       				</c:if> 
+      </div>	
+
+        <div class="timebtn">
+          <div class="workbutton">
+          <button class="workstart" onclick="location.href='${ attinsert }'">출근</button>
+          <button class="workend" onclick="location.href='${ attupdate }'">퇴근</button>
+        </div>
+        </div>
 				<c:url var="logout" value="logout.do" />
-				<button> <a href="${logout}">로그아웃</a></button>
+
+				<button><a href="${logout}">로그아웃</a></button>
 			</c:if>
 		</header>
 
@@ -870,7 +930,6 @@ div.message.right .corner {
 							<a href="${ FormInsertPage }">양식 추가</a>
 						</c:if>
 					</div></li>
-
 			</ul>
 		</div>
 		</c:if>
@@ -879,23 +938,24 @@ div.message.right .corner {
 		<!-- 일정관리 -->
 		<h3 id="sideTitle">일정관리</h3>
 		<c:url var="calendar" value="calendar.do">
-			<c:param name="deptCode" value="${ deptCode }" />
-			<c:param name="mNo" value="${ mNo }" />
+			<c:param name="deptCode" value="${ loginUser.deptCode }" />
+			<c:param name="mNo" value="${ loginUser.mNo }" />
+			<c:param name="pageurlnum" value="3" />
 		</c:url>
 		<c:url var="calendarTeam" value="calendarTeam.do">
-			<c:param name="deptCode" value="${ deptCode }" />
-			<c:param name="mNo" value="${ mNo }" />
+			<c:param name="deptCode" value="${ loginUser.deptCode }" />
+			<c:param name="mNo" value="${ loginUser.mNo }" />
+			<c:param name="pageurlnum" value="3" />
 		</c:url>
 		<c:url var="calendarDept" value="calendarDept.do">
-			<c:param name="deptCode" value="${ deptCode }" />
-			<c:param name="mNo" value="${ mNo }" />
+			<c:param name="deptCode" value="${ loginUser.deptCode }" />
+			<c:param name="mNo" value="${ loginUser.mNo }" />
+			<c:param name="pageurlnum" value="3" />
 		</c:url>
-		<c:url var="wkinsertview" value="wkinsertview.do" />
-		<c:url var="wkList" value="wkList.do" />
 		<ul>
-			<li><a href="${ anninsert }">개인 일정</a></li>
-			<li><a href="${ annList }">팀원 일정</a></li>
-			<li><a href="${ annUseList }">부서원 일정</a></li>
+			<li><a href="${ calendar }">개인 일정</a></li>
+			<li><a href="${ calendarTeam }">팀원 일정</a></li>
+			<li><a href="${ calendarDept }">부서원 일정</a></li>
 		</ul>
 		</c:if>
 		
@@ -907,6 +967,7 @@ div.message.right .corner {
 		<c:url var="annUseList" value="annUseList.do" />
 		<c:url var="wkinsertview" value="wkinsertview.do" />
 		<c:url var="wkList" value="wkList.do" />
+		
 		<ul>
 			<li><a href="${ anninsert }">휴가신청</a></li>
 			<li><a href="${ annList }">휴가신청 조회</a></li>
@@ -928,35 +989,6 @@ div.message.right .corner {
 		</c:if>
 
 
-		<!--    
-
-         <c:url var="formList" value="formList.do"/>
-        <c:url var="earequest" value="earequest.do"/>
-        <c:url var="temporEAList" value="temporEAList.do"/>
-        <c:url var="waitingEAList" value="waitingEAList.do"/>
-        <c:url var="progressEAList" value="progressEAList.do"/>
-        <c:url var="completeEAList" value="completeEAList.do"/>
-        <c:url var="TBackEAList" value="TBackEAList.do"/>
-        <c:url var="referEAList" value="referEAList.do"/>
-        <c:url var="sigList" value="sigList.do"/>
-        <c:url var="FormInsertPage" value="FormInsertPage.do"/>
-        <ul>
-        <li><br><b>기안</b></li>
-        <li><a href="${ formList }">기안문 작성</a></li>
-        <li><a href="${ earequest }">결재 요청함</a></li>
-        <li><a href="${ temporEAList }">임시 저장함</a></li>
-        <li><br><b>결재</b></li>
-        <li><a href="${ waitingEAList }">결재대기함</a></li>
-        <li><a href="${ progressEAList }">결재진행함</a></li>
-        <li><a href="${ completeEAList }">완료문서함</a></li>
-        <li><a href="${ TBackEAList }">반려문서함</a></li>
-        <li><a href="${ referEAList }">참조문서함</a></li>
-        <li><br><b>기타</b></li>
-        <li><a href="${ sigList }">서명관리</a></li>
-        <!-- 양식 추가 가능한 권한은..? -->
-
-		<%-- <li><a href="${ FormInsertPage }">양식 추가</a></li> --%>
-		</ul>
 	</div>
 
 	<div id="icon_menu">

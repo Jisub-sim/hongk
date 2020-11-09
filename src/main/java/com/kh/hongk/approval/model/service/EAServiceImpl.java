@@ -419,6 +419,19 @@ public class EAServiceImpl implements EAService {
 	public int updatewkend(Work wk) {
 		return eaDao.updatewkend(wk);
 	}
+	// Pmember 등록
+	@Override
+	public int insertPM(int manager) {
+		return eaDao.insertPM(manager);
+	}
+	@Override
+	public Project selectp(int ea_no) {
+		return  eaDao.selectp(ea_no);
+	}
+	@Override
+	public int PMupdateY(int pid) {
+		return  eaDao.PMupdateY(pid);
+	}
 	
 	
 

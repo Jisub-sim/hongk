@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.member.model.dao.MemberDao;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
@@ -75,7 +76,12 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.FileDelete(file_no);
 	}
 	@Override
+
 	public ArrayList<Member> selectList() {
 		return mDao.selectList();
+
+	public ArrayList<Electronic_Approval> listWp(int mno) {
+		return mDao.listWp(mno);
+
 	}
 }

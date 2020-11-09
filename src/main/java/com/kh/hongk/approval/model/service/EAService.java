@@ -163,6 +163,12 @@ public interface EAService {
 	Work selectwk(int ea_no);
 	// 퇴근시간 업데이트
 	int updatewkend(Work wk);
+	// Pmember 등록
+	int insertPM(int manager);
+	// project select
+	Project selectp(int ea_no);
+	// pmember Y
+	int PMupdateY(int pid);
 	
 	
 	

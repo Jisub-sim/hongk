@@ -26,8 +26,6 @@ public class AnnualDao {
 		return sqlSession.insert("annualMapper.halfTimeinsert", ann);
 	}
 
-
-
 	public ArrayList<Annual> selectList(int mNo,PageInfo pi ) {
 
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();

@@ -93,15 +93,19 @@
 	padding: 0;
 	float: left;
 }
-
-.cal_depttitle_input{
-	width: 150px;
-	height: 32px;
-	margin: 2px 0 0 0;
-	padding: 2px 0 0 0;
+*/
+.cal_depttitle_input1{
+	width: 141px;
+	height: 34px;
+	margin: 0;
+	padding: 0 0 0 1px;
+	font-size:15px;
+	text-align: center;
+	block: inline-block;
 	border: 2px solid skyblue;
 	border-radius: 5px;
-} */
+}
+
 .cal_teammember_div, .cal_deptmember_div {
 	width: 150px;
 	height: 40px;
@@ -121,7 +125,7 @@
 .navigation {
 	margin-top: 50px;
 	margin-bottom: 30px;
-	margin-left: 195px;
+	margin-left: 25px;
 	width: 400px;
 	height: 40px;
 	text-align: center;
@@ -273,40 +277,43 @@
 		<form name="calendarFrm" id="calendarFrm" action="" method="GET">
 
 			<div class="calendar">
-				<%-- <div class="cal_teammember_div">
-					<select class="cal_teammember_select" name="mName">
+				<div class="cal_teammember_div">
+					<input class="cal_depttitle_input1" value="${ tTitle }" readonly>
+				</div>
+				<div class="cal_teammember_div">
+					<select class="cal_teammember_select" id="cal_teammember_select" name="mName">
 						<c:forEach var="tm" items="${ tmList }">
-							<option value="${ tm.mNo }">${ tm.mName }</option>
+							<option value="${ tm.mNo }">${tm.jobCode}   ${ tm.mName }</option>
 						</c:forEach>
 					</select>
-				</div> --%>
+				</div>
 				<%-- <div class="cal_depttitle_div">
 					<input class="cal_depttitle_input" readonly>${ deptTitle }</input>
 				</div>  --%>
-				<div class="cal_deptmember_div">
+				<%-- <div class="cal_deptmember_div">
 					<select class="cal_deptmember_select" id="cal_deptmember_select"
 						name="mName">
 						<c:forEach var="dm" items="${ dmList }">
 							<option value="${ dm.mNo }">${dm.jobCode}   ${ dm.mName }</option>
 						</c:forEach>
 					</select>
-				</div>
+				</div> --%>
 
 				<!--날짜 네비게이션  -->
 				<div class="navigation">
 					<a class="before_after_year"
-						href="./calendar.do?year=${today_info.search_year-1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarTeam.do?year=${today_info.search_year-1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt;&lt; <!-- 이전해 -->
 					</a> <a class="before_after_month"
-						href="./calendar.do?year=${today_info.before_year}&month=${today_info.before_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarTeam.do?year=${today_info.before_year}&month=${today_info.before_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt; <!-- 이전달 -->
 					</a> <span class="this_month"> &nbsp;${today_info.search_year}.
 						<c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}
 					</span> <a class="before_after_month"
-						href="./calendar.do?year=${today_info.after_year}&month=${today_info.after_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarTeam.do?year=${today_info.after_year}&month=${today_info.after_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음달 --> &gt;
 					</a> <a class="before_after_year"
-						href="./calendar.do?year=${today_info.search_year+1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarTeam.do?year=${today_info.search_year+1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음해 --> &gt;&gt;
 					</a>
 				</div>
@@ -331,7 +338,7 @@
 						<tr>
 							<c:forEach var="dateList" items="${dateList}"
 								varStatus="date_status">
-								<c:url var="calOneday" value="calOneday.do">
+								<c:url var="calOneday" value="calOnedayTeam.do">
 									<c:if test="${ dateList.date < 10 }">
 										<c:param name="cDate"
 											value="${ today_info.search_year }${today_info.search_month}0${ dateList.date }" />
@@ -708,11 +715,11 @@
 		$(function(){
 			$('#cal_teammember_select').change(function(){
 				var mNo = $("#cal_teammember_select option:selected").val();
-    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
+    			location.href="./calendarTeam.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
 			});
 			$('#cal_deptmember_select').change(function(){
 				var mNo = $("#cal_deptmember_select option:selected").val();
-    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
+    			location.href="./calendarTeam.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
 			});
 		});
 	</script>

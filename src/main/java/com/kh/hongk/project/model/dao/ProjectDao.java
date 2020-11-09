@@ -243,6 +243,10 @@ public class ProjectDao {
 	public Files selectAskFile(int trId) {
 		return sqlSession.selectOne("projectMapper.selectAskFile",trId);
 	}
+
+	public ArrayList<Project> selectProjectMain(int mNo) {
+		return (ArrayList)sqlSession.selectList("projectMapper.selectProjectMain",mNo);
+	}
 	
 	
 

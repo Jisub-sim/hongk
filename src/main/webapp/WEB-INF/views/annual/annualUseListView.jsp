@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -91,14 +91,14 @@
 
         }  
         
-               /* ÆäÀÌÂ¡Ã³¸® */
+               /* í˜ì´ì§•ì²˜ë¦¬ */
        .paging {
         text-align: center;
     }
     .paging a {
         /*
-        display: inline-block ÀÎ¶óÀÎ ¿ä¼ÒÀÇ Æ¯Â¡°ú ºí·Ï ¿ä¼ÒÀÇ Æ¯Â¡À» ¸ğµÎ °®´Â´Ù
-        Å©±â¸¦ °¡Áú ¼ö ÀÖÀ¸¸ç ÅØ½ºÆ® Á¤·Äµµ Àû¿ë¹Ş´Â´Ù
+        display: inline-block ì¸ë¼ì¸ ìš”ì†Œì˜ íŠ¹ì§•ê³¼ ë¸”ë¡ ìš”ì†Œì˜ íŠ¹ì§•ì„ ëª¨ë‘ ê°–ëŠ”ë‹¤
+        í¬ê¸°ë¥¼ ê°€ì§ˆ ìˆ˜ ìˆìœ¼ë©° í…ìŠ¤íŠ¸ ì •ë ¬ë„ ì ìš©ë°›ëŠ”ë‹¤
         */
         display: inline-block;
         
@@ -118,10 +118,6 @@
         }
 
 
-  * {
-        box-sizing: border-box;
-    }
-
     </style>
 
 <body>
@@ -129,22 +125,22 @@
 <div id="main">
 <section class="annualmain">
 
-        <h2 style="text-align: center; vertical-align: middle;">&nbsp;&nbsp;&nbsp;¿¬Â÷»ç¿ë³»¿ª</h2>
+        <h2 style="text-align: center; vertical-align: middle;">&nbsp;&nbsp;&nbsp;ì—°ì°¨ì‚¬ìš©ë‚´ì—­</h2>
         <br>
         <br>
         <div class="annualAll">
-            <h2>ÀüÃ¼</h2>
-           ${ann.annual_day_count } °Ç
+            <h2>ì „ì²´</h2>
+           ${ann.annual_day_count } ê±´
         </div>
        
         <div class="annualAll">
-            <h2>ÀÜ¿©¿¬Â÷</h2>
-          ${ann.annual_day_remain } °Ç
+            <h2>ì”ì—¬ì—°ì°¨</h2>
+          ${ann.annual_day_remain } ê±´
         </div>
         <div class="annualAll">
-            <h2>»ç¿ë¿¬Â÷</h2>
+            <h2>ì‚¬ìš©ì—°ì°¨</h2>
            <c:set var="ann_use" value="${ann.annual_day_count-ann.annual_day_remain}"/>
-            	${ ann_use }°Ç
+            	${ ann_use }ê±´
         </div>
 
 
@@ -161,13 +157,13 @@
         <tbody>
             <tr>
 
-                <th scope="row">ÈŞ°¡±¸ºĞ</th>
-                <th scope="row">½ÃÀÛÀÏ</th>
-                <th scope="row">Á¾·áÀÏ</th>
-                <th scope="row">»ç¿ë½ÅÃ»ÀÏ</th>
-                <th scope="row">Á¦¸ñ</th>
-                <th scope="row">½ÅÃ»³¯Â¥</th>
-                <th scope="row">ÀÚ¼¼È÷º¸±â</th>
+                <th scope="row">íœ´ê°€êµ¬ë¶„</th>
+                <th scope="row">ì‹œì‘ì¼</th>
+                <th scope="row">ì¢…ë£Œì¼</th>
+                <th scope="row">ì‚¬ìš©ì‹ ì²­ì¼</th>
+                <th scope="row">ì œëª©</th>
+                <th scope="row">ì‹ ì²­ë‚ ì§œ</th>
+                <th scope="row">ìì„¸íˆë³´ê¸°</th>
                 
 
             </tr>
@@ -176,18 +172,18 @@
 			  <tr>
 			<c:set var="ann_type" value="${ann.annual_type}"/>
                 <td> 
-                 <c:if test="${ann_type eq '0'}">¿¬Â÷ÈŞ°¡</c:if>
-                 <c:if test="${ann_type eq '1'}">º´°¡</c:if>
-                 <c:if test="${ann_type eq '2'}">°æÁ¶</c:if>
-                 <c:if test="${ann_type eq '3'}">¿ùÂ÷</c:if>
-                 <c:if test="${ann_type eq '4'}">¹İÂ÷</c:if>
+                 <c:if test="${ann_type eq '0'}">ì—°ì°¨íœ´ê°€</c:if>
+                 <c:if test="${ann_type eq '1'}">ë³‘ê°€</c:if>
+                 <c:if test="${ann_type eq '2'}">ê²½ì¡°</c:if>
+                 <c:if test="${ann_type eq '3'}">ì›”ì°¨</c:if>
+                 <c:if test="${ann_type eq '4'}">ë°˜ì°¨</c:if>
                  </td>
                  <td>
                 <fmt:formatDate var="annual_start" type="date" value="${ ann.annual_start }" pattern="yyyy-MM-dd"/>
                     ${annual_start }</td>
                <td><fmt:formatDate var="annual_end" type="date" value="${ ann.annual_end }" pattern="yyyy-MM-dd"/>
                     ${ annual_end }</td>
-                <td>${ann.annual_day_use }ÀÏ</td>
+                <td>${ann.annual_day_use }ì¼</td>
                <%--  <td>${ann.annual_content }</td> --%>
                 <td>${ann.annual_title }</td>
                 <td>${ann.annual_signupday }</td>
@@ -195,7 +191,7 @@
                 	<c:param name="annual_no" value="${ ann.annual_no }"/>
 					<c:param name="page" value="${ pi.currentPage }"/>
 				</c:url>
-                <td><a href="${ annupView }">Å¬¸¯</a></td>
+                <td><a href="${ annupView }">í´ë¦­</a></td>
             </tr>
  </c:forEach>
         </tbody>
@@ -212,7 +208,7 @@
     		</c:url>
     		<a href="${ before }">&laquo;</a>
     	</c:if>
-    	<!-- ÆäÀÌÁö ¼ıÀÚ -->
+    	<!-- í˜ì´ì§€ ìˆ«ì -->
     	<c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }">
     		<c:if test="${ p eq pi.currentPage }">
     		${ p }
@@ -224,7 +220,7 @@
     			<a href="${ pagination }">${ p }</a>
     		</c:if>
     	</c:forEach>
-    	<!-- ´ÙÀ½ -->
+    	<!-- ë‹¤ìŒ -->
     	<c:if test="${ pi.currentPage >= pi.maxPage }">
     		&raquo;
     	</c:if>

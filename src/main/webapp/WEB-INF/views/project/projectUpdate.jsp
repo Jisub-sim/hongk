@@ -74,6 +74,7 @@ float: right;
 }
 
 .choose {
+	overflow:scroll;
 	height: 250px;
 	width: 350px;
 	margin-left: 490px;

@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.member.exception.MemberException;
 import com.kh.hongk.member.model.service.MemberService;
 import com.kh.hongk.member.model.vo.Files;
@@ -49,6 +50,7 @@ public class MemberController {
 				
 				loginUser=attmember;
 				
+				System.out.println("로그인유저 : " + loginUser);
 				model.addAttribute("loginUser", loginUser);
 				
 			}else {
@@ -66,16 +68,25 @@ public class MemberController {
 //						if(att != null) {
 							model.addAttribute("att", att);
 //						}
-			*/			model.addAttribute("loginUser", loginUser);
+ * 	
+ */						
+						System.out.println("로그인 유저 : " + loginUser);
+						model.addAttribute("loginUser", loginUser);
 					}else {
 						throw new MemberException("로그인에 실패하였습니다.");
 					}
 				
 			}
+			
 			int mno = loginUser.getmNo();
 			
+			ArrayList<Electronic_Approval> listWp = mService.listWp(mno);
+			System.out.println("listWp : " + listWp);
+			
 			Files newProfile = mService.selectProFiles(mno);
+			
 			model.addAttribute("file", newProfile);
+			model.addAttribute("listWp", listWp);
 			
 			System.out.println("로그인유저 : " + loginUser);
 			return "redirect:home.do";

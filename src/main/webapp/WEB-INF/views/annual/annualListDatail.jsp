@@ -1,20 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>  
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    
-    <link rel="stylesheet"
-   href="${pageContext.request.contextPath}/resources/css/approvalcss.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+
     
     
 <title>Insert title here</title>
@@ -91,7 +90,7 @@
  <table class="type09">
         <thead>
             <tr>
-                <th scope="cols">½ÅÃ»³»¿ª</th>
+                <th scope="cols">ì‹ ì²­ë‚´ì—­</th>
                 <th scope="cols"></th>
             </tr>
         </thead>
@@ -99,48 +98,49 @@
             <tr>
             <%-- <c:forEach> --%>
      <%--        <td>
-            	±Û¹øÈ£
+            	ê¸€ë²ˆí˜¸
             </td>
             <td>
             ${ann.annual_no }
             </td> --%>
-                <th scope="row">ÈŞ°¡Á¾·ù</th>
+                <th scope="row">íœ´ê°€ì¢…ë¥˜</th>
                 <c:set var="ann_type" value="${ann.annual_type }"/>
                 <td>
-                    <c:if test="${ ann_type eq '0'}">¿¬Â÷À¯±ŞÈŞ°¡</c:if>
-                    <c:if test="${ ann_type eq '1'}">º´°¡</c:if>
-                    <c:if test="${ ann_type eq '2'}">°æÁ¶</c:if>
-                    <c:if test="${ ann_type eq '3'}">¿ùÂ÷</c:if>
-                    <c:if test="${ ann_type eq '4'}">¹İÂ÷</c:if>
+                    <c:if test="${ ann_type eq '0'}">ì—°ì°¨ìœ ê¸‰íœ´ê°€</c:if>
+                    <c:if test="${ ann_type eq '1'}">ë³‘ê°€</c:if>
+                    <c:if test="${ ann_type eq '2'}">ê²½ì¡°</c:if>
+                    <c:if test="${ ann_type eq '3'}">ì›”ì°¨</c:if>
+                    <c:if test="${ ann_type eq '4'}">ë°˜ì°¨</c:if>
                 </td>
             </tr>
            <%--  </c:forEach> --%>
             <tr>
-                <th scope="row">½ÅÃ» ±â°£</th>
+                <th scope="row">ì‹ ì²­ ê¸°ê°„</th>
                 <td>${ ann.annual_start } - ${ ann.annual_end }
-                    <p>»ç¿ëÀÏ¼ö : ${ann.annual_day_use }</p>
+                    <p>ì‚¬ìš©ì¼ìˆ˜ : ${ann.annual_day_use }</p>
                 </td>
             </tr>
             <tr>
-                <th scope="row">¹İÂ÷ ¿©ºÎ</th>
+                <th scope="row">ë°˜ì°¨ ì—¬ë¶€</th>
                 <td>
                 <c:if test="${ann.annual_halftime != null }">
                 	<p>
-                	<c:if test="${ann.annual_halftime eq 'am'}">¿ÀÀü¹İÂ÷</c:if>
-                	<c:if test="${ann.annual_halftime eq 'pm'}">¿ÀÈÄ¹İÂ÷</c:if>
-                	<c:if test="${ann.annual_halftime eq 'none'}">¾øÀ½</c:if>
+                	<c:if test="${ann.annual_halftime eq 'am'}">ì˜¤ì „ë°˜ì°¨</c:if>
+                	<c:if test="${ann.annual_halftime eq 'pm'}">ì˜¤í›„ë°˜ì°¨</c:if>
+                	<c:if test="${ann.annual_halftime eq 'none'}">ì—†ìŒ</c:if>
                 	</p>
                 </c:if>
                 <p>
                <%--  <c:if test="${ann.annual_halftime == none }">
-               			 ¾øÀ½
+               			 ì—†ìŒ
                 </c:if> --%>
                 </p>
                 </td>
             </tr>
             <tr>
-                <th scope="row">ÈŞ°¡»çÀ¯</th>
-                <td><textarea name="annual_content" id="smartEditor" style="width:400px; height:200px;">${ ann.annual_content }</textarea>
+                <th scope="row">íœ´ê°€ì‚¬ìœ </th>
+                <td><textarea name="annual_content" id="smartEditor" style="width:400px; height:200px;">
+                ${ ann.annual_content }</textarea>
                 <input type="hidden" value="${ ann.annual_no }" name="annual_no">
                 </td>
             </tr>
@@ -148,8 +148,6 @@
     </table>
    
     <br><br>
-    
-    
 				<c:if test="${ann.ann_status eq 'W'}">
 				<c:url var="anndelete" value="anndelete.do">
 					<c:param name="annual_no" value="${ ann.annual_no }"/>
@@ -158,24 +156,24 @@
 					<c:param name="page" value="${ currentPage }"/>
 				</c:url>
 				<div class="annAllbt">
-					<button class="ann-bt" onclick="location.href='${ annList }'">¸ñ·Ï</button>
-					<button type="submit" class="ann-bt" >¼öÁ¤ÇÏ±â</button> 
-					<button class="ann-bt" onclick="location.href='${ anndelete }'">»èÁ¦ÇÏ±â</button> 
+					<button class="ann-bt" onclick="location.href='${ annList }'">ëª©ë¡</button>
+					<button type="submit" class="ann-bt" >ìˆ˜ì •í•˜ê¸°</button> 
+					<button class="ann-bt" onclick="location.href='${ anndelete }'">ì‚­ì œí•˜ê¸°</button> 
 				</div>
 				</c:if>
 				
 				
 				
-				<c:if test="${ann.ann_status eq 'Y'}">
+				 <c:if test="${ann.ann_status eq 'Y'}"> 
 				 <c:url var="annUseList" value="annUseList.do">
 					<c:param name="page" value="${ currentPage }"/>
 				</c:url>
 				
 				<div class="annAllbt">
-					<button class="ann-bt" onclick="location.href='${ annUseList }'">¸ñ·Ï</button>
+					<button class="ann-bt" style="margin-left: 300px;" onclick="location.href='${ annUseList }'">ëª©ë¡</button>
 				</div>
 				
-				</c:if>
+				 </c:if>
 </form>
 
   <script type="text/javascript">
@@ -183,13 +181,13 @@
     nhn.husky.EZCreator.createInIFrame({ 
     	oAppRef : oEditors,
     	elPlaceHolder : "smartEditor", 
-    	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //°æ·Î¸¦ ²À ¸ÂÃçÁÖ¼¼¿ä! 
+    	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //ê²½ë¡œë¥¼ ê¼­ ë§ì¶°ì£¼ì„¸ìš”! 
     	fCreator : "createSEditor2", htParams : { 
-    	// Åø¹Ù »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+    	// íˆ´ë°” ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
     	bUseToolbar : true, 
-    	// ÀÔ·ÂÃ¢ Å©±â Á¶Àı¹Ù »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+    	// ì…ë ¥ì°½ í¬ê¸° ì¡°ì ˆë°” ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
     	bUseVerticalResizer : false, 
-    	// ¸ğµå ÅÇ(Editor | HTML | TEXT) »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+    	// ëª¨ë“œ íƒ­(Editor | HTML | TEXT) ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
     	bUseModeChanger : false
     	} 
     }); 
@@ -200,7 +198,7 @@
 			var content = document.getElementById("smartEditor").value;
 			document.getElementById("smartEditor").setAttribute('name','annual_content' );
 
-			var result = confirm("µî·Ï ÇÏ½Ã°Ú½À´Ï±î?"); 
+			var result = confirm("ë“±ë¡ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"); 
 			if(result){ 
 				
 			}else{ 

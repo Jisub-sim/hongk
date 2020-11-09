@@ -37,8 +37,7 @@
 		<table id="projectList">
 			<th>코드명</th>
 			<th id="pm">프로젝트명</th>
-			<th class="l1">요청</th>
-			<th class="l1">업무</th>
+		
 			<th class="l1">상태</th>
 			<th id="date" class="l1">마감일</th>
 			<c:forEach var="p" items="${ list }">
@@ -48,8 +47,6 @@
 						<c:param name="pId" value="${ p.pId }"/>
 					</c:url>
 				<a href="${ project }">${ p.pTitle }</a></td>
-				<td class="l1">1/2</td>
-				<td class="l1">1/2</td>
 				<td class="l1"><c:if test="${ p.progress eq 'I'}">진행중</c:if>
 				<c:if test="${ p.progress eq 'S'}">보류</c:if>
 				<c:if test="${ p.progress eq 'C'}">완료</c:if></td>

@@ -214,7 +214,7 @@
         }
 
 
-  * {
+  .workbox{
         box-sizing: border-box;
     }
 
@@ -324,14 +324,6 @@
         <button type="submit">검색</button>
 	</form>  
     <br><br>
-  <!-- 
-    <div class="date">
-
-        <input type="date" id="datecalnder">
-        <button type="submit">검색</button>
-
-    </div> -->
-      
 
     <table>
         <thead>
@@ -342,8 +334,8 @@
                 <td>퇴근 체크 구분</td>
                 <td style="width: 300px;">출근시간</td>
                 <td style="width: 300px;">퇴근시간</td>
-                <td style="width: 100px;">근태</td>
-                <td>처리상태</td>
+                <td style="width: 100px;">근태상태</td>
+                <td style="width: 60px;">처리상태</td>
             </tr>
         </thead>
         <tbody>
@@ -378,10 +370,13 @@
                 <c:if test="${att.attendance_type eq '2' }">
                 	지각
                 </c:if>
+                <c:if test="${att.attendance_type != '2' }">
+                	-
+                </c:if>
                 </td>
                 <td>
                     <c:if test="${att.work_off == null}"> 
-                    <a id="untreated_st">미처리 </a></c:if>
+                    <a  class="workbox" id="untreated_st">미처리 </a></c:if>
                     <c:if test="${att.work_off != null}">
                     <p id="normalcy">정상처리</p> 
                     </c:if>
@@ -416,7 +411,7 @@
     	</c:forEach>
     	<!-- 다음 -->
     	<c:if test="${ pi.currentPage >= pi.maxPage }">
-    		&raquo;
+    		&raquo; 
     	</c:if>
     	<c:if test="${pi. currentPage < pi.maxPage }">
     		<c:url var="after" value="attlist.do">

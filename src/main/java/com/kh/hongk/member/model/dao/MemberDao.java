@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 
@@ -50,8 +51,13 @@ public class MemberDao {
 	public int FileDelete(int file_no) {
 		return  sqlSession.delete("memberMapper.FileDelete", file_no);
 	}
+
 	public ArrayList<Member> selectList() {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectList");
+
+	public ArrayList<Electronic_Approval> listWp(int mno) {
+		return (ArrayList)sqlSession.selectList("eaMapper.listWp", mno);
+
 	}
 
 }
