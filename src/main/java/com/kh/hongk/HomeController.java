@@ -1,4 +1,4 @@
-package com.kh.hongk;
+package com.kh.hongk; 
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,11 +51,13 @@ public class HomeController {
 	private ProjectService pService;
 	@Autowired
 	private EAService eaService;
+	@Autowired 
+	private CalendarService cService;
 	@Autowired
 	private BoardService bService;
 	
 	@RequestMapping(value = "/home.do", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, Model model, HttpServletRequest request,ModelAndView mv,Integer page) {
+	public ModelAndView home(Locale locale, Model model, HttpServletRequest request,ModelAndView mv, DateData dateData, Integer page) {
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 		
 		int listCount = bService.selectListCount();

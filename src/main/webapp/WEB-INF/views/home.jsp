@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@ page session="false" %>
@@ -314,7 +314,7 @@
                 
                   </div>
             </div>
-            
+             
             <div class="Division" id="plandiv">
                 <div class="Divisiontext">일정</div>
                 <div class="projectwrap">

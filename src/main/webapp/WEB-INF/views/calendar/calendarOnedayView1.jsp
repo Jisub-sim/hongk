@@ -4,7 +4,7 @@
 <%
 	ArrayList<Integer> test = (ArrayList<Integer>)request.getAttribute("test");
 	pageContext.setAttribute("test", test);
-%>
+%> 
 <!DOCTYPE html>
 <html>
 <head>
