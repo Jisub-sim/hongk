@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hongk.approval.model.service.EAService;
+import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.service.ProjectService;
 import com.kh.hongk.project.model.vo.Project;
@@ -32,11 +34,16 @@ public class HomeController {
 	 */
 	@Autowired
 	private ProjectService pService;
+	@Autowired
+	private EAService eaService;
+	
 	
 	@RequestMapping(value = "/home.do", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, Model model, HttpServletRequest request,ModelAndView mv) {
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 		//System.out.println(mNo);
+		
+		ArrayList<Electronic_Approval> listWp = eaService.listWp(mNo);
 		
 		ArrayList<Project> list = pService.selectmyProjectMain(mNo);
 		SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
@@ -49,10 +56,14 @@ public class HomeController {
 			list.get(i).setmName(m.getmName());
 		}
 		System.out.println("list : " + list);
+		
 		if (list != null) {
 			mv.addObject("plist", list);
-			mv.setViewName("home");
 		}
+		if(listWp!= null) {
+			mv.addObject("listWp", listWp);
+		}
+		mv.setViewName("home");
 		return mv;
 	}
 	
