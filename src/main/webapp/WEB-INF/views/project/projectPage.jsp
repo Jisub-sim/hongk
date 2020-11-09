@@ -23,14 +23,14 @@
     width:46%;
     float:left;
     margin-left: 2.4%;
-    
+    overflow:scroll;
 }
 #ask{
     height:250px;
     width:46%;
     float:right;
     margin-right: 2.4%;
-    
+    overflow:scroll;
 }
 #progress{
     width:100px;
@@ -48,7 +48,7 @@ hr{
     float:left;
 }
 #update{
-    width:165px;
+    width:110px;
     float:right;
     border:none;
 }
@@ -158,7 +158,7 @@ ul, li{
             <li>프로젝트명 : ${ p.pTitle } </li>
             <li>내용 : ${ p.pContent }
             <li>책임자 정보(생성자) : ${ p.mName }</li>
-            <li>기간 : ${ p.pDate } ~ ${ p.deadLine }</li>
+            <li>기간 : ${ p.dateString } ~ ${ p.pdateString }</li>
         </ul>
         
 
@@ -199,6 +199,7 @@ ul, li{
                 <tr>                
                		<c:url var="task" value="taskClick.do">
 						<c:param name="twId" value="${tl.twId}"/>
+						<c:param name="pId" value="${p.pId}"/>
 					</c:url>
                     <td class="task_name"><a href="${task}">${tl.twTitle}</a></td>
                     <c:if test="${tl.manager ne null}">

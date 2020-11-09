@@ -244,12 +244,13 @@ th {
 					<tr>
 						<td class="tm">담당자</td>
 						<td class="content">${t.manager }
-						<%-- <c:if test="${t.manager eq null }"> --%>
+						<c:if test="${t.manager eq null }">
 						<c:url var="getManager" value="getManager.do">
 							<c:param name="twId" value="${t.twId}"/>
+							<c:param name="pId" value="${pId }"/>
 						</c:url>
 						<button id="getManager" onclick="location.href='${getManager}'">가져오기</button>
-						<%-- </c:if></td> --%>
+						 </c:if></td> 
 					</tr>
 					<tr>
 						<td class="tc">내용</td>
