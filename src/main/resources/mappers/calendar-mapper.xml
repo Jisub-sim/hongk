@@ -95,6 +95,7 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		FROM CALENDAR
 		WHERE C_DATE=TO_DATE(#{cDate}, 'YY-MM-DD')
 		AND C_BEGIN_TIME=#{cBeginTime}
+		AND MNAME=#{mName}
 	</select>
 	
 	<select id="selectCalAnnualCheck" resultMap="annualResultSet">
@@ -115,7 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		WHERE CID=#{cId}
 	</select>
 	
-	<update id="updateCalendar" parameterType="_int">
+	<update id="updateCalendar" parameterType="Calendar">
 		UPDATE CALENDAR
 		SET C_DATE=TO_DATE(#{cDate}, 'RRRRMMDD'), C_BEGIN_TIME=#{cBeginTime},
 			C_END_TIME=#{cEndTime}, C_KIND=#{cKind}, C_TITLE=#{cTitle}, 
