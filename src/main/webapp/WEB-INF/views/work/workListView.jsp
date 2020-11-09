@@ -14,11 +14,11 @@
    href="${pageContext.request.contextPath}/resources/css/approvalcss.css">
 <!-- 폰트 -->
     <link href="https://fonts.googleapis.com/css2?family=Sunflower:wght@300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+   <!--  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 
 
 <style>
@@ -78,7 +78,7 @@
         }
 
         body {
-            font-family: 'Lato', sans-serif;
+            /* font-family: 'Lato', sans-serif; */
             color: #333;
             font-weight: 400;
             font-size: 16px;
@@ -142,14 +142,14 @@
             font-size: 11px;
             color: #000;
             text-decoration: none;
-            font-family: verdana;
+            /* font-family: verdana; */
             font-style: italic;
         }
 
         select {
             width: 200px;
             padding: .8em .5em;
-            font-family: inherit;
+           /*  font-family: inherit; */
             border: 1px solid #999;
             border-radius: 0px;
             margin-left: 100px;
@@ -162,7 +162,7 @@
         }
 
         table {
-            font-family: 'Sunflower', sans-serif;
+           /*  font-family: 'Sunflower', sans-serif; */
 
 
         }
@@ -254,6 +254,12 @@
         font-size: 16px;
         color: #F9F0DA;
     }
+    
+         h2{
+    text-align: center;
+     vertical-align: middle;
+     margin-top : 20px;
+    }
 
 </style>
 </head>
@@ -266,69 +272,27 @@
       <br>
       
       <h2>근무신청리스트</h2>
-  <!--  <section class="workmain">
-
-        <h1>&nbsp;&nbsp;&nbsp;근무신청관리</h1>
-        <br>
-        <div id="allwork">
-            <h2>전체</h2>
-           건
-        </div>
-        <div id="getwork">
-            <h2>정상근로일</h2>
-           건
-        </div>
-        <div id="tardy">
-            <h2>지각</h2>
-            건
-        </div>
-        <div id="untreated">
-            <h2>미처리</h2>
-            <a>2건</a>
-        </div>
-
-
-    </section> -->
-
-   <!--  <select style="font-family: 'Sunflower', sans-serif;">
-        <option selected>----</option>
-        <option>출근</option>
-        <option>퇴근</option>
-        <option>미처리</option>
-    </select> -->
-
-
-  
-   <!--  <div class="date">
-
-        <input type="date" id="datecalnder">
-        <button type="submit"></button>
-
-    </div>
-        <input type="date" id="datecalnder"> &nbsp; 
-
-    <br><br> -->
-
+      <br><br><br>
 
     <table>
         <thead>
 
 
             <tr>
-                <td style="width: 200px; height:50px;">제목</td>
-                <td style="width: 100px; height:50px;">근무타입</td>
-                <td style="width: 200px;">신청날짜</td>
-                <td style="width: 200px;">시작시간</td>
-                <td style="width: 200px;">종료시간</td>
-                <td style="width: 100px;">승인</td>
-                <td style="width: 100px;">자세히보기</td>
+            	<td style="width: 50px; background-color: #59d4d4e0;">글번호</td>
+                <td style="width: 200px; height:50px; background-color: #59d4d4e0;">제목</td>
+                <td style="width: 100px; height:50px;background-color: #59d4d4e0;">근무타입</td>
+                <td style="width: 200px;background-color: #59d4d4e0;">신청날짜</td>
+                <td style="width: 200px;background-color: #59d4d4e0;">시작시간</td>
+                <td style="width: 200px;background-color: #59d4d4e0;">종료시간</td>
+                <td style="width: 100px;background-color: #59d4d4e0;">승인</td>
             </tr>
         </thead>
         <tbody>
         	
         	<c:forEach var="wk" items="${ list }">
             <tr>
-            
+            	<td>${wk.work_no }
                 <td>${wk.work_title } </td>
                 
                 <c:set var="wk_type" value="${wk.work_type}"/>
@@ -352,24 +316,14 @@
 				</c:url>
 				<c:url var="wkdatail" value="wkdatail.do">
                 	<c:param name="work_no" value="${ wk.work_no }"/>
-                	<c:param name="work_date" value="${ wk.work_date }"/>
-                	<c:param name="work_content" value="${ wk.work_content }"/>
-                	<c:param name="work_type" value="${ wk.work_type }"/>
-                	<c:param name="start_time" value="${ wk.start_time }"/>
-                	<c:param name="end_time" value="${ wk.end_time }"/>
-					<c:param name="page" value="${ pi.currentPage }"/>
+                	<c:param name="page" value="${ pi.currentPage }"/> 
 				</c:url>
 				<c:set var="wk_status" value="${wk.wk_status}"/>
 				
 				<td>
-				
 				 <c:if test="${wk_status eq 'W'}"><a href="${ wkupView }">진행중</a></c:if>
                 <c:if test="${wk_status eq 'Y'}"><a href="${ wkdatail }">승인완료</a></c:if>
                 </td>
-                <td>
-                	
-                </td>
-               
             </tr>
             
       </c:forEach>   
@@ -410,7 +364,7 @@
     	</c:if>
     </div>
 
-   
+
   </div>
 
 </body>

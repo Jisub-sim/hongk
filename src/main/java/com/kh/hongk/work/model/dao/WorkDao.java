@@ -69,6 +69,7 @@ public class WorkDao {
 
 
 	public int deleteWork(int work_no) {
+		System.out.println("workNO : " + work_no);
 		return sqlSession.update("workMapper.deleteWork", work_no);
 	}
 

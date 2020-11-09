@@ -8,16 +8,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!--     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
 </head>
  <style>
   table.type1 {
         border-collapse: collapse;
-        text-align: left;
+        text-align: center;
         line-height: 1.5;
         width: 900px;
         margin-left:100px;
@@ -27,7 +27,7 @@
     table.type1 thead th {
         padding: 10px;
         font-weight: bold;
-        vertical-align: top;
+        vertical-align: center;
         color: #369;
         /* border-bottom: 3px solid #036; */
         border-width: 3px solid #036;
@@ -41,7 +41,7 @@
         width: 150px;
         padding: 10px;
         font-weight: bold;
-        vertical-align: top;
+        vertical-align: center;
         border-bottom: 1px solid #ccc;
         background: #f3f6f7;
         border-top: 3px solid #036;
@@ -51,7 +51,7 @@
     table.type1 td {
         width: 350px;
         padding: 10px;
-        vertical-align: top;
+        vertical-align: center;
         border-bottom: 1px solid #ccc;
          text-align: center;
     }
@@ -185,7 +185,7 @@
                <td><fmt:formatDate var="annual_end" type="date" value="${ ann.annual_end }" pattern="yyyy-MM-dd"/>
                     ${ annual_end }</td>
                <%--  <td>${ann.annual_content }</td> --%>
-                <td>${ann.annual_day_use }</td>
+                <td>${ann.annual_day_use }일</td>
                 <td>${ann.annual_title }</td>
                 <td>${ann.annual_signupday }</td>
                 <c:url var="annupView" value="annupView.do">
@@ -233,89 +233,7 @@
     	</c:if>
     </div>
    
- <%-- <h2>내 연차 내역</h2>
 
-    <table class="type1">
-        <thead>
-            <tr>
-                <th scope="cols">사원명</th>
-                <th scope="cols">사원 번호</th>
-                <th scope="cols">직급</th>
-                <th scope="cols">사용 연차</th>
-                <th scope="cols">남은 연차</th>
-                <th scope="cols" style="width: 3.5em;">총 연차</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            <c:if test="${ !empty sessionScope.loginUser }">
-                <td>${ loginUser.mName }</td>
-                <td>${loginUser.jobCode }</td>
-                <td>${loginUser.deptCode }</td>
-                <td>1</td>
-                <td>19</td>
-                <td>20</td>
-            </tr>
-			</c:if>
-        </tbody>
-    </table>
-
-    <br><br>
-
-    <h2>사용 내역</h2>
-    <table class="type1">
-        <thead>
-            <tr>
-                <th scope="cols">이름</th>
-                <th scope="cols" style="width:241px;">연차 사용 시작 날짜</th>
-                <th scope="cols" style="width:241px;" >연차 사용 끝난 날짜</th>
-                <th scope=" cols">사용 연차</th>
-                <th scope="cols">사용 내용</th>
-
-            </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>김몰라</td>
-                <td>2020.08.09</td>
-                <td>2020.08.11</td>
-                <td>3</td>
-                <td>여름휴가사용</td>
-            </tr>
-
-        </tbody>
-    </table>
-
-    <h2>휴가신청내역</h2>
-    <table class="type1">
-        <thead>
-            <tr>
-                <th scope="cols">사원명</th>
-                <th scope="cols">신청날짜</th>
-                <th scope="cols">휴가구분</th>
-                <th scope="cols">신청일수</th>
-                <th scope="cols">전자결재상태</th>
-                <th scope="cols" style="width:150px">신청내역</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>김몰라</td>
-                <td>2020.08.09</td>
-                <td>연차</td>
-                <td>2</td>
-                <td>진행중</td>
-                <td><a href="annListDatail.do"
-                 onclick="window.open(this.href, '_blank','width=500,height=500,toolbars=no,scrollbars=no'); return false;">자세히보기</a></td>
-            </tr>
-
-        </tbody>
-        <button type="submit" class="ann-bt">추가</button>
-    <button type="submit" class="ann-bt">목록</button>
-        
-    </table> --%>
 </div>
 
 </body>

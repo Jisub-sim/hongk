@@ -51,27 +51,17 @@ public class AttendanceController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-//		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-//		Calendar time = Calendar.getInstance();
-//		String format_time1 = format.format(time.getTime());
-//		System.out.println("현재시간 : " + format_time1);
-//		ot = format.parse("09:00");
-		
 		Attendance att = attService.AttendancenceSelect(mNo);
-		
 		if(att != null) {
 			result = 1;
-			
 		}else {
 		// 지각이 아니라면
 		if(ot.compareTo(nt) >= 0) {
 			result = attService.Attendanceinsert(mNo);
-			
 		// 지각이라면
 		} else if(ot.compareTo(nt) <= 0){
 			result = attService.AttendanceOverinsert(mNo);
 		}
-				
 	}
 		if(result > 0) {
 			System.out.println("출근하기 버튼 클릭 : " + result);
@@ -82,6 +72,12 @@ public class AttendanceController {
 		} else {
 			throw new AttendanceException("근태 등록에 실패하였습니다.");
 		}
+		
+//		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+//		Calendar time = Calendar.getInstance();
+//		String format_time1 = format.format(time.getTime());
+//		System.out.println("현재시간 : " + format_time1);
+//		ot = format.parse("09:00");
 
 	}
 	
@@ -155,7 +151,6 @@ public class AttendanceController {
 		
 		// 페이징 처리를 위해 개시글 개수 구해오기
 		int allListCount = attService.selectallListCount(mNo);
-		
 		int currentPage = page != null ? page : 1;
 		PageInfo pi = Pagination.getPageInfo(currentPage, allListCount , 10, 5);
 		
@@ -171,12 +166,10 @@ public class AttendanceController {
 		// 미처리개수 조회
 		int workoffCount = attService.selectworkoffCount(mNo);
 		
-		
 		AttendanceCount ac = new AttendanceCount();
 		ac.setListCount(listCount);
 		ac.setOvertimeCount(overtimeCount);
 		ac.setWorkCount(workCount);
-	
 		
 		if(list != null) {
 		mv.addObject("ac", ac );
