@@ -50,6 +50,7 @@ public class MemberController {
 				
 				loginUser=attmember;
 				
+				System.out.println("로그인유저 : " + loginUser);
 				model.addAttribute("loginUser", loginUser);
 				
 			}else {
@@ -66,7 +67,10 @@ public class MemberController {
 //						if(att != null) {
 							model.addAttribute("att", att);
 //						}
-			*/			model.addAttribute("loginUser", loginUser);
+ * 	
+ */						
+						System.out.println("로그인 유저 : " + loginUser);
+						model.addAttribute("loginUser", loginUser);
 					}else {
 						throw new MemberException("로그인에 실패하였습니다.");
 					}

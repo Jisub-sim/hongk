@@ -52,28 +52,30 @@ public class WorkController {
 	
 	// 근무신청 클릭 시
 	 @RequestMapping("workinsert.do")
-
-	 public String WorkSelect(Work wk, 
-			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no ) {
-
+	 public String WorkSelect(Work wk,
+			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no
+			 ) {
 		 int wktype= Integer.parseInt(wk_type);
 		 Member loginUser = (Member)session.getAttribute("loginUser");
 			int mNo = loginUser.getmNo();
 			
 			System.out.println("변경 전 wk : " + wk);
 			
-			GregorianCalendar workDate = new GregorianCalendar(); 
+			/*GregorianCalendar workDate = new GregorianCalendar(); 
 			workDate.setGregorianChange(wk.getWork_date());
 			GregorianCalendar startTime = new GregorianCalendar(); 
 			startTime.setGregorianChange(wk.getStart_time());
 			GregorianCalendar endTime = new GregorianCalendar(); 
 			endTime.setGregorianChange(wk.getEnd_time());
 			
+			System.out.println("시간 start타임: " + startTime );
+			System.out.println("시간 end타임: " + endTime );
+			
 			startTime.set(workDate.get(Calendar.YEAR), workDate.get(Calendar.MONTH), workDate.get(Calendar.DATE));
 			endTime.set(workDate.get(Calendar.YEAR), workDate.get(Calendar.MONTH), workDate.get(Calendar.DATE));
 			
 			wk.setStart_time(startTime.getTime());
-			wk.setEnd_time(endTime.getTime());
+			wk.setEnd_time(endTime.getTime());*/
 			
 			wk.setMno(mNo);
 			wk.setWork_type(wktype);
@@ -126,7 +128,6 @@ public class WorkController {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
 			mv.setViewName("work/workListView");
-			System.out.println("list" + list);
 		} else {
 			throw new WorkException("근무신청 내역 조회에 실패하였습니다.");
 		}
@@ -196,16 +197,19 @@ public class WorkController {
 	 
 	 
 	 // 근무신청 삭제하기
-	 @RequestMapping("wkdelete.do")
+	 @RequestMapping("workdelete.do")
 	 public String WorkDelete(HttpSession session, int work_no) {
 			Member loginUser = (Member)session.getAttribute("loginUser");
 			int mNo = loginUser.getmNo();
 			
 			
+			System.out.println("컨트롤러진입 : " );
+			
 			int result = wkService.deleteWork(work_no);
 			System.out.println("근무번호 : " + work_no);
 			
 			if(result > 0) {
+				System.out.println("t삭제성공 : ");
 				return "redirect:wkList.do";
 			}else {
 				throw new WorkException("근무신청 삭제에 실패하였습니다.");

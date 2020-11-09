@@ -35,7 +35,7 @@ public class AnnualController {
 
 		Annual ann = annService.selectmyann(mNo);
 		Member member = annService.selectmember(mNo);
-		 
+		
 
 		mv.addObject("ann", ann)
 		  .addObject("member", member)

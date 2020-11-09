@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <jsp:useBean id="nowDate" class="java.util.Date" />
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -193,11 +193,7 @@
         
         <tr>
         <th scope="row" width="15%"> 제목</th>
-
         <td  width="85%"> <input style="width:500px; height:30px;" type="text" name="annual_title"></td>
-
-        <td  width="85%"> <input type="text" name="annual_title"></td>
-
         </tr>
         <tr>
             <th scope="row">휴가 종류</th>
@@ -223,7 +219,6 @@
         </tr>
         <tr>
             <th scope="row">반차 여부</th>
-
             <td><div style=" float: left; display: block; text-align: center; vertical-align: middle;">
                     <input type="radio" id="radio" name="annual_halftime" value="am" > <!-- <p class="up">오전</p>&nbsp; -->
                     <label for="radio">오전</label>
@@ -232,12 +227,6 @@
                          <input type="radio" id="radio" name="annual_halftime" value="none" > 
                          <label for="radio">없음</label>
                          </div>
-
-            <td>
-                   <p> <input type="radio" name="annual_halftime" value="am" > <span class="up">오전</span>&nbsp;
-                        <input type="radio" name="annual_halftime" value="pm" > <span class="up">오후</span></p>
-                         <input type="radio" name="annual_halftime" value="none" > <span class="up">없음</span></p>
-
             </td>
         </tr>
         <tr>
@@ -252,11 +241,7 @@
             <th scope="row">휴가 사유</th>
             <td>
 	             <div>
-
 	                <textarea name="annual_content" id="smartEditor" rows="10" cols="100" >${ ann.annual_content }</textarea>
-
-	                <textarea name="smartEditor" id="smartEditor" rows="10" cols="100" >${ form.form_content }</textarea>
-
 	            </div>
             </td>
         </tr>
@@ -298,10 +283,7 @@
 		$("#savebutton").click(function() { 
 			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
 			var content = document.getElementById("smartEditor").value;
-
 			document.getElementById("smartEditor").setAttribute('name','annual_content' );
-  	document.getElementById("smartEditor").setAttribute('name','ea_content' );
-
 
 			var result = confirm("등록 하시겠습니까?"); 
 			if(result){ 

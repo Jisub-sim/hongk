@@ -39,7 +39,7 @@ public class AttendanceController {
 		
 		Date ot = null;
 		Date nt = null;
-		try { 
+		try {
 			Date currentTime = new Date();
 			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 			SimpleDateFormat f = new SimpleDateFormat("HH:mm");
@@ -137,58 +137,59 @@ public class AttendanceController {
 		
 	
 	
+	// 근태관리 리스트
 	@RequestMapping("attlist.do")
-	public ModelAndView AttendanceList(ModelAndView mv,  HttpSession session, 
-			@RequestParam(value="page", required=false) Integer page, int pageurlnum) {
-		
-		Member loginUser = (Member)session.getAttribute("loginUser");
-		int mNo = loginUser.getmNo();
-		
-		int pageurlnum1 = pageurlnum;
-		if(pageurlnum1 != 0) {
-			session.setAttribute("pageurlnum1", pageurlnum1);
-		}
-		
-		// 페이징 처리를 위해 개시글 개수 구해오기
-		int allListCount = attService.selectallListCount(mNo);
-		int currentPage = page != null ? page : 1;
-		PageInfo pi = Pagination.getPageInfo(currentPage, allListCount , 10, 5);
-		
-		ArrayList<Attendance> list = attService.selectList(mNo, pi);
-		// 지각개수 조회
-		int overtimeCount = attService.selectListovertimeCount(mNo);
-		
-		// 정상근로 개수 조회
-		int workCount = attService.selectListworkCount(mNo);
-		// 지각 포함 전체 개수 조회
-		int listCount = attService.selectListCount(mNo);
-		
-		// 미처리개수 조회
-		int workoffCount = attService.selectworkoffCount(mNo);
-		
-		AttendanceCount ac = new AttendanceCount();
-		ac.setListCount(listCount);
-		ac.setOvertimeCount(overtimeCount);
-		ac.setWorkCount(workCount);
-		
-		if(list != null) {
-		mv.addObject("ac", ac );
-		mv.addObject("list",list);
-		mv.addObject("pi",pi);
-		mv.addObject("wkoff", workoffCount);
-		mv.setViewName("attendance/AttendancePage");
-		System.out.println("지각 수 : " + overtimeCount);
-		System.out.println("정상출근 수  : " + workCount);
-		System.out.println("총 출근 수   : " + listCount);
-		System.out.println("근태 리스트 : " + list);
-		System.out.println("미처리 개수 : " + workoffCount);
-		} else {
-			throw new AttendanceException("근태 내역 조회에 실패하였습니다.");
-		}
-		
-		return mv;
-		
-	}
+	   public ModelAndView AttendanceList(ModelAndView mv,  HttpSession session, 
+	         @RequestParam(value="page", required=false) Integer page, int pageurlnum) {
+	      
+	      Member loginUser = (Member)session.getAttribute("loginUser");
+	      int mNo = loginUser.getmNo();
+	      
+	      int pageurlnum1 = pageurlnum;
+	      if(pageurlnum1 != 0) {
+	         session.setAttribute("pageurlnum1", pageurlnum1);
+	      }
+	      
+	      // 페이징 처리를 위해 개시글 개수 구해오기
+	      int allListCount = attService.selectallListCount(mNo);
+	      int currentPage = page != null ? page : 1;
+	      PageInfo pi = Pagination.getPageInfo(currentPage, allListCount , 10, 5);
+	      
+	      ArrayList<Attendance> list = attService.selectList(mNo, pi);
+	      // 지각개수 조회
+	      int overtimeCount = attService.selectListovertimeCount(mNo);
+	      
+	      // 정상근로 개수 조회
+	      int workCount = attService.selectListworkCount(mNo);
+	      // 지각 포함 전체 개수 조회
+	      int listCount = attService.selectListCount(mNo);
+	      
+	      // 미처리개수 조회
+	      int workoffCount = attService.selectworkoffCount(mNo);
+	      
+	      AttendanceCount ac = new AttendanceCount();
+	      ac.setListCount(listCount);
+	      ac.setOvertimeCount(overtimeCount);
+	      ac.setWorkCount(workCount);
+	      
+	      if(list != null) {
+	      mv.addObject("ac", ac );
+	      mv.addObject("list",list);
+	      mv.addObject("pi",pi);
+	      mv.addObject("wkoff", workoffCount);
+	      mv.setViewName("attendance/AttendancePage");
+	      System.out.println("지각 수 : " + overtimeCount);
+	      System.out.println("정상출근 수  : " + workCount);
+	      System.out.println("총 출근 수   : " + listCount);
+	      System.out.println("근태 리스트 : " + list);
+	      System.out.println("미처리 개수 : " + workoffCount);
+	      } else {
+	         throw new AttendanceException("근태 내역 조회에 실패하였습니다.");
+	      }
+	      
+	      return mv;
+	      
+	   }
 		
 
 		// 날짜,근무타입 검색기능

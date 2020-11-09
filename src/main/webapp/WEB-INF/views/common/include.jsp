@@ -4,6 +4,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
 	integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
 	crossorigin="anonymous"></script>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -194,6 +195,33 @@ a {
 	font-size: 12px;
 	width: 40%;
 }
+
+/* 출퇴근 기록 */
+        .workstart {
+            width: 50px;
+            height: 30px;
+            border-radius: 5px;
+            /*  border:1px soid White; */
+            border: none;
+            font-weight: bold;
+            font-size: 10px;
+            color: White;
+            background-color: rgba(36, 236, 203, 0.897);
+            float:left;
+        }
+
+        .workend {
+            width: 50px;
+            height: 30px;
+            border-radius: 5px;
+            border: none;
+            border: 1px soid White;
+            font-weight: bold;
+            font-size: 10px;
+            color: White;
+            background-color: rgba(193, 138, 238, 0.966);
+            
+        }
 
 /* 
 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 채팅창 
@@ -823,7 +851,8 @@ div.message.right .corner {
 					</table>
 				</form>
 			</c:if>
-
+				<c:url var="attinsert" value="attinsert.do"/>
+				<c:url var="attupdate" value="attupdate.do"/>
 
 			<c:if test="${ !empty sessionScope.loginUser }">
 				<c:if test="${ !empty sessionScope.file }">
@@ -836,6 +865,31 @@ div.message.right .corner {
 						width="140px" height="140px" />
 				</c:if>
 				<h4>${ loginUser.mName }/${ loginUser.jobTitle }/ ${ loginUser.deptTitle }</h4>
+				
+				<div class="timeckeck">
+		         			<%--  <c:url var="attselect" value="attselect.do"/>  --%>
+		         			
+			         
+			         <div class="timestar">
+					     <c:if test="${ loginUser.work_on != null  }"> 
+					         	<a >출근시간</a><br>
+					        	<p><fmt:formatDate value="${ loginUser.work_on }" pattern="HH:mm" type="time"/></p>
+						</c:if>        
+			        </div>
+			        <c:if test="${ loginUser.work_off != null }">
+			        	<div class="timeend">	
+			          		<a>퇴근시간</a><br>
+			         		 <p><fmt:formatDate value="${ loginUser.work_off }" pattern="HH:mm" type="time"/></p>
+			        	</div>
+       				</c:if> 
+      </div>	
+
+        <div class="timebtn">
+          <div class="workbutton">
+          <button class="workstart" onclick="location.href='${ attinsert }'">출근</button>
+          <button class="workend" onclick="location.href='${ attupdate }'">퇴근</button>
+        </div>
+        </div>
 				<c:url var="logout" value="logout.do" />
 				<button><a href="${logout}">로그아웃</a></button>
 			</c:if>
@@ -912,6 +966,7 @@ div.message.right .corner {
 		<c:url var="annUseList" value="annUseList.do" />
 		<c:url var="wkinsertview" value="wkinsertview.do" />
 		<c:url var="wkList" value="wkList.do" />
+		
 		<ul>
 			<li><a href="${ anninsert }">휴가신청</a></li>
 			<li><a href="${ annList }">휴가신청 조회</a></li>

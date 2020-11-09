@@ -10,6 +10,7 @@ import com.kh.hongk.work.model.vo.Work;
 
 public interface WorkService {
 
+	
 	// 근무 신청 내용
 	public int workinsert(Work wk);
 
