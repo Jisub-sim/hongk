@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.hongk.approval.model.vo.PageInfo;
 import com.kh.hongk.board.model.vo.Board;
-import com.kh.hongk.board.model.vo.Replyboard;
+import com.kh.hongk.board.model.vo.Reply;
 import com.kh.hongk.board.model.vo.Search;
 
 
@@ -56,11 +56,11 @@ public class BoardDao {
 	}
 	
 	
-	public ArrayList<Replyboard> selectReplyList(int bId){
+	public ArrayList<Reply> selectReplyList(int bId){
 		return (ArrayList)sqlSession.selectList("boardMapper.selectReplyList", bId);
 	}
 	
-	public int insertReply(Replyboard r) {
+	public int insertReply(Reply r) {
 		return sqlSession.insert("boardMapper.insertReply", r);
 	}
 

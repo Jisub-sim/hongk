@@ -29,12 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kh.hongk.approval.model.vo.PageInfo;
-import com.kh.hongk.board.exception.BoardException;
+
+import com.kh.hongk.board.model.exception.BoardException;
 import com.kh.hongk.board.model.service.BoardService;
 import com.kh.hongk.board.model.vo.Board;
 import com.kh.hongk.board.model.vo.Pagination;
 import com.kh.hongk.board.model.vo.Photo;
-import com.kh.hongk.board.model.vo.Replyboard;
+import com.kh.hongk.board.model.vo.Reply;
 import com.kh.hongk.board.model.vo.Search;
 import com.kh.hongk.member.model.vo.Member;
 
@@ -185,7 +186,7 @@ public class BoardController {
 	@RequestMapping("rList.do")
 	@ResponseBody
 	public String getReplyList(int bId) {
-		ArrayList<Replyboard> rList = bService.selectReplyList(bId);
+		ArrayList<Reply> rList = bService.selectReplyList(bId);
 		// 2020-09-23
 		Gson gson = new GsonBuilder().setDateFormat("yyyy.MM.dd HH:mm").create(); 
 		// 시분초 표시하고 싶다면 java.util.Date 사용할 것
@@ -195,7 +196,7 @@ public class BoardController {
 	
 	@RequestMapping("addReplyboard.do")
 	@ResponseBody
-	public String addReply(Replyboard r, HttpSession session) {
+	public String addReply(Reply r, HttpSession session) {
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		String rWriter = loginUser.getmName();
