@@ -36,6 +36,15 @@ public interface CalendarService {
 	ArrayList<Member> selectCalTMemberList(int pId);
 	// 휴가, 반차 리스트 가져오는 메소드
 	ArrayList<Annual> selectCalAnnualList(int mNo);
+	// 일정 직급명 가져오는 메소드
+	String selectCalJTitle(int mNo);
+	// 일정 부서명 가져오는 메소드
+	String selectCalDTitle(int mNo);
+	// ptid 가져오는 메소드
+	int selectCalPtid(int mNo);
+	// 팀명 가져오는 메소드
+	String selectCaltTitle(int ptid);
+	
 	
 	
 	

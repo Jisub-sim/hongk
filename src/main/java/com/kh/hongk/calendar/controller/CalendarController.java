@@ -85,9 +85,17 @@ public class CalendarController {
 			cDate = yearchange + "/" + monchange;
 		}
 		
+		String jTitle = cService.selectCalJTitle(mNo);
+		System.out.println("jTitle = " + jTitle);
+		String dTitle = cService.selectCalDTitle(mNo);
+		System.out.println("dTitle = " + dTitle);
+		
 		ArrayList<Member> dmList = cService.selectCalDMemberList(deptCode);
 		
+		System.out.println("mNo = " + mNo);
 		Pmember p = cService.selectCalPid(mNo);
+		
+		System.out.println("p = " + p);
 		
 		int pId = p.getpId();
 		
@@ -96,6 +104,10 @@ public class CalendarController {
 		Calendar1 c = new Calendar1();
 		c.setcDate(cDate);
 		c.setmName(mNo);
+		
+		System.out.println("cDate = " + cDate);
+		System.out.println("mNo = " + mNo);
+		System.out.println("c 전 = " + c);
 		
 		ArrayList<Calendar1> calList = cService.selectCalendarList(c);
 		
@@ -116,10 +128,212 @@ public class CalendarController {
 		mv.addObject("dmList", dmList);
 		mv.addObject("tmList", tmList);
 		mv.addObject("calList", calList);
+		mv.addObject("jTitle", jTitle);
+		mv.addObject("dTitle", dTitle);
+		mv.addObject("mNo", mNo);
+		mv.addObject("aList", aList);
+		mv.addObject("pageurlnum1", pageurlnum1);
+		mv.setViewName("calendar/calendar");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "calendarTeam.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView calendarTeam(ModelAndView mv, HttpServletRequest request, DateData dateData,
+								 String deptCode, int mNo, int pageurlnum, HttpSession session){
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
+		
+		Calendar cal = Calendar.getInstance();
+		DateData calendarData;
+		//검색 날짜
+		if(dateData.getDate().equals("")&&dateData.getMonth().equals("")){
+			dateData = new DateData(String.valueOf(cal.get(Calendar.YEAR)),String.valueOf(cal.get(Calendar.MONTH)),String.valueOf(cal.get(Calendar.DATE)),null);
+		}
+		//검색 날짜 end
+
+		Map<String, Integer> today_info =  dateData.today_info(dateData);
+		List<DateData> dateList = new ArrayList<DateData>();
+		
+		//실질적인 달력 데이터 리스트에 데이터 삽입 시작.
+		//일단 시작 인덱스까지 아무것도 없는 데이터 삽입
+		for(int i=1; i<today_info.get("start"); i++){
+			calendarData= new DateData(null, null, null, null);
+			dateList.add(calendarData);
+		}
+		
+		//날짜 삽입
+		for (int i = today_info.get("startDay"); i <= today_info.get("endDay"); i++) {
+			if(i==today_info.get("today")){
+				calendarData= new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()), String.valueOf(i), "today");
+			}else{
+				calendarData= new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()), String.valueOf(i), "normal_date");
+			}
+			dateList.add(calendarData);
+		}
+
+		//달력 빈곳 빈 데이터로 삽입
+		int index = 7-dateList.size()%7;
+		
+		if(dateList.size()%7!=0){
+			
+			for (int i = 0; i < index; i++) {
+				calendarData= new DateData(null, null, null, null);
+				dateList.add(calendarData);
+			}
+		}
+		
+		String yearchange = dateList.get(7).getYear().substring(2);
+		int monchange = Integer.parseInt(dateList.get(7).getMonth()) + 1;
+		String cDate = null;
+		
+		if(monchange < 10) {
+			cDate = yearchange + "/" + "0" + monchange;
+		} else {
+			cDate = yearchange + "/" + monchange;
+		}
+		
+		/*ArrayList<Member> dmList = cService.selectCalDMemberList(deptCode);*/
+		Pmember p = cService.selectCalPid(mNo);
+		
+		int pId = p.getpId();
+		
+		int ptid = cService.selectCalPtid(mNo);
+		
+		String tTitle = cService.selectCaltTitle(ptid);
+		System.out.println("tTitle = " + tTitle);
+		
+		ArrayList<Member> tmList = cService.selectCalTMemberList(pId);
+		
+		Calendar1 c = new Calendar1();
+		c.setcDate(cDate);
+		c.setmName(mNo);
+		
+		ArrayList<Calendar1> calList = cService.selectCalendarList(c);
+		
+		ArrayList<Annual> aList = cService.selectCalAnnualList(mNo);
+		
+		System.out.println("aList = " + aList);
+		
+		System.out.println("dateList = " + dateList);
+		System.out.println("today_info = " + today_info);
+		System.out.println("mNo = " + mNo);
+		System.out.println("calList = " + calList);
+		
+		//배열에 담음
+		mv.addObject("dateList", dateList);		//날짜 데이터 배열
+		mv.addObject("today_info", today_info);
+		/*mv.addObject("dmList", dmList);*/
+		mv.addObject("tmList", tmList);
+		mv.addObject("calList", calList);
+		mv.addObject("tTitle", tTitle);
 		mv.addObject("mNo", mNo);
 		mv.addObject("aList", aList);
 		mv.addObject("pageurlnum1", pageurlnum1);
 		mv.setViewName("calendar/calendarTeam");
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "calendarDept.do", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView calendarDept(ModelAndView mv, HttpServletRequest request, DateData dateData,
+								 String deptCode, int mNo, int pageurlnum, HttpSession session){
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
+		
+		Calendar cal = Calendar.getInstance();
+		DateData calendarData;
+		//검색 날짜
+		if(dateData.getDate().equals("")&&dateData.getMonth().equals("")){
+			dateData = new DateData(String.valueOf(cal.get(Calendar.YEAR)),String.valueOf(cal.get(Calendar.MONTH)),String.valueOf(cal.get(Calendar.DATE)),null);
+		}
+		//검색 날짜 end
+
+		Map<String, Integer> today_info =  dateData.today_info(dateData);
+		List<DateData> dateList = new ArrayList<DateData>();
+		
+		//실질적인 달력 데이터 리스트에 데이터 삽입 시작.
+		//일단 시작 인덱스까지 아무것도 없는 데이터 삽입
+		for(int i=1; i<today_info.get("start"); i++){
+			calendarData= new DateData(null, null, null, null);
+			dateList.add(calendarData);
+		}
+		
+		//날짜 삽입
+		for (int i = today_info.get("startDay"); i <= today_info.get("endDay"); i++) {
+			if(i==today_info.get("today")){
+				calendarData= new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()), String.valueOf(i), "today");
+			}else{
+				calendarData= new DateData(String.valueOf(dateData.getYear()), String.valueOf(dateData.getMonth()), String.valueOf(i), "normal_date");
+			}
+			dateList.add(calendarData);
+		}
+
+		//달력 빈곳 빈 데이터로 삽입
+		int index = 7-dateList.size()%7;
+		
+		if(dateList.size()%7!=0){
+			
+			for (int i = 0; i < index; i++) {
+				calendarData= new DateData(null, null, null, null);
+				dateList.add(calendarData);
+			}
+		}
+		
+		String yearchange = dateList.get(7).getYear().substring(2);
+		int monchange = Integer.parseInt(dateList.get(7).getMonth()) + 1;
+		String cDate = null;
+		
+		if(monchange < 10) {
+			cDate = yearchange + "/" + "0" + monchange;
+		} else {
+			cDate = yearchange + "/" + monchange;
+		}
+		
+		String dTitle = cService.selectCalDTitle(mNo);
+		System.out.println("dTitle = " + dTitle);
+		
+		ArrayList<Member> dmList = cService.selectCalDMemberList(deptCode);
+		/*Pmember p = cService.selectCalPid(mNo);
+		
+		System.out.println("p = " + p);
+		
+		int pId = p.getpId();
+		
+		ArrayList<Member> tmList = cService.selectCalTMemberList(pId);*/
+		
+		Calendar1 c = new Calendar1();
+		c.setcDate(cDate);
+		c.setmName(mNo);
+		
+		ArrayList<Calendar1> calList = cService.selectCalendarList(c);
+		
+		ArrayList<Annual> aList = cService.selectCalAnnualList(mNo);
+		
+		System.out.println("aList = " + aList);
+		
+		System.out.println("dateList = " + dateList);
+		System.out.println("today_info = " + today_info);
+		System.out.println("mNo = " + mNo);
+		System.out.println("calList = " + calList);
+		/*System.out.println("tmList = " + tmList);*/
+		System.out.println("dmList = " + dmList);
+		
+		//배열에 담음
+		mv.addObject("dateList", dateList);		//날짜 데이터 배열
+		mv.addObject("today_info", today_info);
+		mv.addObject("dmList", dmList);
+		/*mv.addObject("tmList", tmList);*/
+		mv.addObject("calList", calList);
+		mv.addObject("dTitle", dTitle);
+		mv.addObject("mNo", mNo);
+		mv.addObject("aList", aList);
+		mv.addObject("pageurlnum1", pageurlnum1);
+		mv.setViewName("calendar/calendarDept");
 		
 		return mv;
 	}
@@ -131,6 +345,94 @@ public class CalendarController {
 	
 	@RequestMapping("calOneday.do")
 	public ModelAndView calOnedayView(ModelAndView mv, Calendar1 c,
+								String cDate, int mNo, String deptCode, String jTitle) {
+		c.setcDate(cDate);
+		c.setmName(mNo);
+		
+		ArrayList<Calendar1> calList = cService.selectOnedayList(c);
+		System.out.println("c = " + c);
+		System.out.println("calList = " + calList);
+		
+		String calyear = cDate.substring(0, 4);
+		String calmonth = cDate.substring(4, 6);
+		String caldate = cDate.substring(6);
+		
+		Pmember p = cService.selectCalPid(mNo);
+		
+		int pId = p.getpId();
+		
+		ArrayList<Member> tmList = cService.selectCalTMemberList(pId);
+		
+		ArrayList<Member> dmList = cService.selectCalDMemberList(deptCode);
+		
+		System.out.println("1day tmList = " + tmList);
+		System.out.println("1day dmList = " + dmList);
+		
+		ArrayList<Integer> test = new ArrayList<>();
+		for(int i=0; i<16; i++) {
+			test.add(i);
+		}
+		String check = "";
+		
+		if(calList != null) {
+			for(int i = 0; i < calList.size(); i++) {
+				check = calList.get(i).getcBeginTime();
+				if(check.equals("9:00")) {
+					test.remove((Integer)0);
+				}else if(check.equals("9:30")) {
+					test.remove((Integer)1);
+				}else if(check.equals("10:00")) {
+					test.remove((Integer)2);
+				}else if(check.equals("10:30")) {
+					test.remove((Integer)3);
+				}else if(check.equals("11:00")) {
+					test.remove((Integer)4);
+				}else if(check.equals("11:30")) {
+					test.remove((Integer)5);
+				}else if(check.equals("13:00")) {
+					test.remove((Integer)6);
+				}else if(check.equals("13:30")) {
+					test.remove((Integer)7);
+				}else if(check.equals("14:00")) {
+					test.remove((Integer)8);
+				}else if(check.equals("14:30")) {
+					test.remove((Integer)9);
+				}else if(check.equals("15:00")) {
+					test.remove((Integer)10);
+				}else if(check.equals("15:30")) {
+					test.remove((Integer)11);
+				}else if(check.equals("16:00")) {
+					test.remove((Integer)12);
+				}else if(check.equals("16:30")) {
+					test.remove((Integer)13);
+				}else if(check.equals("17:00")) {
+					test.remove((Integer)14);
+				}else {
+					test.remove((Integer)15);
+				}
+			}
+		}
+		
+		System.out.println("test = " + test);
+		
+		if(calList != null) {
+			mv.addObject("calyear", calyear);
+			mv.addObject("calmonth", calmonth);
+			mv.addObject("caldate", caldate);
+			mv.addObject("calList", calList);
+			mv.addObject("tmList", tmList);
+			mv.addObject("dmList", dmList);
+			mv.addObject("mNo", mNo);
+			mv.addObject("cDate", cDate);
+			mv.addObject("test", test);
+			mv.addObject("jTitle", jTitle);
+			mv.setViewName("calendar/calendarOnedayView1");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("calOnedayTeam.do")
+	public ModelAndView calOnedayViewTeam(ModelAndView mv, Calendar1 c,
 								String cDate, int mNo, String deptCode) {
 		c.setcDate(cDate);
 		c.setmName(mNo);
@@ -211,7 +513,96 @@ public class CalendarController {
 			mv.addObject("mNo", mNo);
 			mv.addObject("cDate", cDate);
 			mv.addObject("test", test);
-			mv.setViewName("calendar/calendarOnedayView1");
+			mv.setViewName("calendar/calendarOnedayView2");
+		}
+		return mv;
+	}
+	
+	@RequestMapping("calOnedayDept.do")
+	public ModelAndView calOnedayViewDept(ModelAndView mv, Calendar1 c,
+								String cDate, int mNo, String deptCode) {
+		c.setcDate(cDate);
+		c.setmName(mNo);
+		
+		ArrayList<Calendar1> calList = cService.selectOnedayList(c);
+		System.out.println("c = " + c);
+		System.out.println("calList = " + calList);
+		
+		String calyear = cDate.substring(0, 4);
+		String calmonth = cDate.substring(4, 6);
+		String caldate = cDate.substring(6);
+		
+		/*System.out.println("mNo = " + mNo);
+		Pmember p = cService.selectCalPid(mNo);
+		System.out.println("p = " + p);
+		
+		int pId = p.getpId();*/
+		
+		/*ArrayList<Member> tmList = cService.selectCalTMemberList(pId);*/
+		
+		ArrayList<Member> dmList = cService.selectCalDMemberList(deptCode);
+		
+		/*System.out.println("1day tmList = " + tmList);*/
+		System.out.println("1day dmList = " + dmList);
+		
+		ArrayList<Integer> test = new ArrayList<>();
+		for(int i=0; i<16; i++) {
+			test.add(i);
+		}
+		String check = "";
+		
+		if(calList != null) {
+			for(int i = 0; i < calList.size(); i++) {
+				check = calList.get(i).getcBeginTime();
+				if(check.equals("9:00")) {
+					test.remove((Integer)0);
+				}else if(check.equals("9:30")) {
+					test.remove((Integer)1);
+				}else if(check.equals("10:00")) {
+					test.remove((Integer)2);
+				}else if(check.equals("10:30")) {
+					test.remove((Integer)3);
+				}else if(check.equals("11:00")) {
+					test.remove((Integer)4);
+				}else if(check.equals("11:30")) {
+					test.remove((Integer)5);
+				}else if(check.equals("13:00")) {
+					test.remove((Integer)6);
+				}else if(check.equals("13:30")) {
+					test.remove((Integer)7);
+				}else if(check.equals("14:00")) {
+					test.remove((Integer)8);
+				}else if(check.equals("14:30")) {
+					test.remove((Integer)9);
+				}else if(check.equals("15:00")) {
+					test.remove((Integer)10);
+				}else if(check.equals("15:30")) {
+					test.remove((Integer)11);
+				}else if(check.equals("16:00")) {
+					test.remove((Integer)12);
+				}else if(check.equals("16:30")) {
+					test.remove((Integer)13);
+				}else if(check.equals("17:00")) {
+					test.remove((Integer)14);
+				}else {
+					test.remove((Integer)15);
+				}
+			}
+		}
+		
+		System.out.println("test = " + test);
+		
+		if(calList != null) {
+			mv.addObject("calyear", calyear);
+			mv.addObject("calmonth", calmonth);
+			mv.addObject("caldate", caldate);
+			mv.addObject("calList", calList);
+			/*mv.addObject("tmList", tmList);*/
+			mv.addObject("dmList", dmList);
+			mv.addObject("mNo", mNo);
+			mv.addObject("cDate", cDate);
+			mv.addObject("test", test);
+			mv.setViewName("calendar/calendarOnedayView3");
 		}
 		return mv;
 	}

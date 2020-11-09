@@ -70,6 +70,23 @@ public class CalendarDao {
 		return (ArrayList)sqlSession.selectList("calendarMapper.selectCalAnnualList", mNo);
 	}
 
+	public String selectCalJTitle(int mNo) {
+		return sqlSession.selectOne("calendarMapper.selectCalJTitle", mNo);
+	}
+
+	public String selectCalDTitle(int mNo) {
+		return sqlSession.selectOne("calendarMapper.selectCalDTitle", mNo);
+	}
+	
+	public int selectCalPtid(int mNo) {
+		return sqlSession.selectOne("calendarMapper.selectCalPtid", mNo);
+	}
+
+	public String selectCaltTitle(int ptid) {
+		return sqlSession.selectOne("calendarMapper.selectCaltTitle", ptid);
+	}
+
+	
 	
 
 

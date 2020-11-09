@@ -155,7 +155,7 @@ a {
 	border-radius: 10px 10px 10px 10px;
 	/* background-color:skyblue; */
 	border: 2px solid skyblue;
-	padding-bottom: 200px;
+	padding-bottom: 400px;
 }
 
 #icon_menu {
@@ -883,23 +883,24 @@ div.message.right .corner {
 		<!-- 일정관리 -->
 		<h3 id="sideTitle">일정관리</h3>
 		<c:url var="calendar" value="calendar.do">
-			<c:param name="deptCode" value="${ deptCode }" />
-			<c:param name="mNo" value="${ mNo }" />
+			<c:param name="deptCode" value="${ loginUser.deptCode }" />
+			<c:param name="mNo" value="${ loginUser.mNo }" />
+			<c:param name="pageurlnum" value="3" />
 		</c:url>
 		<c:url var="calendarTeam" value="calendarTeam.do">
-			<c:param name="deptCode" value="${ deptCode }" />
-			<c:param name="mNo" value="${ mNo }" />
+			<c:param name="deptCode" value="${ loginUser.deptCode }" />
+			<c:param name="mNo" value="${ loginUser.mNo }" />
+			<c:param name="pageurlnum" value="3" />
 		</c:url>
 		<c:url var="calendarDept" value="calendarDept.do">
-			<c:param name="deptCode" value="${ deptCode }" />
-			<c:param name="mNo" value="${ mNo }" />
+			<c:param name="deptCode" value="${ loginUser.deptCode }" />
+			<c:param name="mNo" value="${ loginUser.mNo }" />
+			<c:param name="pageurlnum" value="3" />
 		</c:url>
-		<c:url var="wkinsertview" value="wkinsertview.do" />
-		<c:url var="wkList" value="wkList.do" />
 		<ul>
-			<li><a href="${ anninsert }">개인 일정</a></li>
-			<li><a href="${ annList }">팀원 일정</a></li>
-			<li><a href="${ annUseList }">부서원 일정</a></li>
+			<li><a href="${ calendar }">개인 일정</a></li>
+			<li><a href="${ calendarTeam }">팀원 일정</a></li>
+			<li><a href="${ calendarDept }">부서원 일정</a></li>
 		</ul>
 		</c:if>
 		

@@ -61,16 +61,6 @@
 	border-radius: 10px;
 }
 
-.cal_deptmember_input{
-	border: 2px solid skyblue;
-	margin: 0;
-	padding: 1px 0 0 5px;
-	width: 94%;
-	height: 83%;
-	font-size: 16px;
-	border-radius: 10px;
-}
-
 .cal_input_div {
 	margin: 0 15px 0 625px;
 	padding: 0px;
@@ -212,7 +202,11 @@
 				<p class="cal_ymd_p" >${ calyear }년${ calmonth }월 ${ caldate }일</p>
 			</div>
 			<div class="cal_name_div">
-				<input class="cal_deptmember_input" value=" ${ jTitle } ${ loginUser.mName }" readonly>
+				<select class="cal_deptmember_select" id="cal_deptmember_select" name="mName">
+						<c:forEach var="dm" items="${ dmList }">
+							<option value="${ dm.mNo }">${ dm.jobCode }  ${ dm.mName }</option>
+						</c:forEach>
+					</select>
 			</div>
 			<div class="cal_input_div">
 				<c:if test="${ loginUser.mNo eq mNo }">
@@ -362,11 +356,11 @@
 			$('#cal_teammember_select').change(function(){
 				var mNo = $("#cal_teammember_select option:selected").val();
 				var cDate = $(cDate);
-    			location.href="./calOneday.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
+    			location.href="./calOnedayDept.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
 			});
 			$('#cal_deptmember_select').change(function(){
 				var mNo = $("#cal_deptmember_select option:selected").val();
-				location.href="./calOneday.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
+				location.href="./calOnedayDept.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
 			});
 		});
     	

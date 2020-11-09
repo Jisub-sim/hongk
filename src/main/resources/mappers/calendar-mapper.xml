@@ -169,4 +169,30 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		FROM ANNUAL
 		WHERE MNO = #{mNo}
 	</select>
+	
+	<select id="selectCalJTitle" resultType="String">
+		SELECT JOB_TITLE
+		FROM MEMBER 
+		JOIN JOB USING(JOB_CODE)
+		WHERE MNO=#{mNo}
+	</select>
+	
+	<select id="selectCalDTitle" resultType="String">
+		SELECT DEPT_TITLE
+		FROM MEMBER
+		JOIN DEPT USING(DEPT_CODE)
+		WHERE MNO=#{mNo}
+	</select>
+	
+	<select id="selectCalPtid" resultType="_int">
+		SELECT PT_ID
+		FROM PMEMBER
+		WHERE MNO=#{mNo}
+	</select>
+	
+	<select id="selectCaltTitle" resultType="String">
+		SELECT PT_TITLE
+		FROM PTEAM
+		WHERE PT_ID=#{ptid}
+	</select>
 </mapper>

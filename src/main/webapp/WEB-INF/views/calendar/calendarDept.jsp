@@ -86,14 +86,6 @@
 	margin: auto;
 }
 
-.cal_depttitle_div{
-	width: 150px;
-	height: 35px;
-	margin: 50px 0 30px 5px;
-	padding: 0;
-	float: left;
-}
-
 .cal_depttitle_input1{
 	width: 141px;
 	height: 34px;
@@ -106,16 +98,22 @@
 	border-radius: 5px;
 }
 
+/* .cal_depttitle_div{
+	width: 150px;
+	height: 35px;
+	margin: 50px 0 30px 5px;
+	padding: 0;
+	float: left;
+}
+
 .cal_depttitle_input{
-	width: 141px;
-	height: 34px;
-	margin: 0;
-	padding: 0 0 0 5px;
-	font-size:15px;
-	block: inline-block;
+	width: 150px;
+	height: 32px;
+	margin: 2px 0 0 0;
+	padding: 2px 0 0 0;
 	border: 2px solid skyblue;
 	border-radius: 5px;
-}
+} */
 .cal_teammember_div, .cal_deptmember_div {
 	width: 150px;
 	height: 40px;
@@ -294,28 +292,36 @@
 						</c:forEach>
 					</select>
 				</div> --%>
+				<%-- <div class="cal_depttitle_div">
+					<input class="cal_depttitle_input" readonly>${ deptTitle }</input>
+				</div>  --%>
 				<div class="cal_deptmember_div">
 					<input class="cal_depttitle_input1" value="${ dTitle }" readonly>
 				</div>
 				<div class="cal_deptmember_div">
-					<input class="cal_depttitle_input" value="${ jTitle } ${ loginUser.mName }" readonly>
+					<select class="cal_deptmember_select" id="cal_deptmember_select"
+						name="mName">
+						<c:forEach var="dm" items="${ dmList }">
+							<option value="${ dm.mNo }">${dm.jobCode}   ${ dm.mName }</option>
+						</c:forEach>
+					</select>
 				</div>
 
 				<!--날짜 네비게이션  -->
 				<div class="navigation">
 					<a class="before_after_year"
-						href="./calendar.do?year=${today_info.search_year-1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarDept.do?year=${today_info.search_year-1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt;&lt; <!-- 이전해 -->
 					</a> <a class="before_after_month"
-						href="./calendar.do?year=${today_info.before_year}&month=${today_info.before_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarDept.do?year=${today_info.before_year}&month=${today_info.before_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt; <!-- 이전달 -->
 					</a> <span class="this_month"> &nbsp;${today_info.search_year}.
 						<c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}
 					</span> <a class="before_after_month"
-						href="./calendar.do?year=${today_info.after_year}&month=${today_info.after_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarDept.do?year=${today_info.after_year}&month=${today_info.after_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음달 --> &gt;
 					</a> <a class="before_after_year"
-						href="./calendar.do?year=${today_info.search_year+1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
+						href="./calendarDept.do?year=${today_info.search_year+1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음해 --> &gt;&gt;
 					</a>
 				</div>
@@ -340,20 +346,18 @@
 						<tr>
 							<c:forEach var="dateList" items="${dateList}"
 								varStatus="date_status">
-								<c:url var="calOneday" value="calOneday.do">
+								<c:url var="calOneday" value="calOnedayDept.do">
 									<c:if test="${ dateList.date < 10 }">
 										<c:param name="cDate"
 											value="${ today_info.search_year }${today_info.search_month}0${ dateList.date }" />
 										<c:param name="mNo" value="${ mNo }" />
 										<c:param name="deptCode" value="${ loginUser.deptCode }" />
-										<c:param name="jTitle" value="${ jTitle }"/>
 									</c:if>
 									<c:if test="${ dateList.date >= 10 }">
 										<c:param name="cDate"
 											value="${ today_info.search_year }${today_info.search_month}${ dateList.date }" />
 										<c:param name="mNo" value="${ mNo }" />
 										<c:param name="deptCode" value="${ loginUser.deptCode }" />
-										<c:param name="jTitle" value="${ jTitle }"/>
 									</c:if>
 								</c:url>
 								<c:choose>
@@ -719,11 +723,11 @@
 		$(function(){
 			$('#cal_teammember_select').change(function(){
 				var mNo = $("#cal_teammember_select option:selected").val();
-    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
+    			location.href="./calendarDept.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
 			});
 			$('#cal_deptmember_select').change(function(){
 				var mNo = $("#cal_deptmember_select option:selected").val();
-    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
+    			location.href="./calendarDept.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
 			});
 		});
 	</script>
