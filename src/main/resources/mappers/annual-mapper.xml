@@ -97,7 +97,6 @@
 		SELECT *
 		FROM ANNUAL
 		WHERE ANNUAL_NO=#{annual_no}
-		AND ANN_STATUS='W'
 	</select>
 	
 	 <update id="updateAnnual"  parameterType="Annual">
@@ -106,7 +105,7 @@
 		WHERE ANNUAL_NO=#{annual_no}
 	</update> 
 	
-	<update id="deleteAnnual" parameterType="_int">
+	<update id="deleteAnnual" parameterType="Annual">
 		UPDATE ANNUAL
 		SET ANN_STATUS='N'
 		WHERE ANNUAL_NO=#{annual_no}

@@ -124,10 +124,7 @@
         }
 
 
-        /* .working td {
-            border: 1px solid red;
-        } */
-
+ 
 
 
         /* 셀렉트 박스 스타일 */
@@ -156,16 +153,12 @@
             margin-top: 20px;
         }
 
-        select::-ms-expand {
+        /* select::-ms-expand {
             /* for IE 11 */
             display: none;
-        }
+        } */
 
-        table {
-           /*  font-family: 'Sunflower', sans-serif; */
-
-
-        }
+      
 
        
 
@@ -210,9 +203,6 @@
         }
 
 
-  * {
-        box-sizing: border-box;
-    }
 
   
     .date {

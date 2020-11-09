@@ -1,25 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
     <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>  
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
 <title>Insert title here</title>
 </head>
 <style>
  table.type09 {
         border-collapse: collapse;
-        text-align: left;
+        text-align: center;
         line-height: 1.5;
          margin-left:300px;
+         vertical-align: middle;
         width: 40%;
 
     }
@@ -30,6 +32,7 @@
         vertical-align: top;
         color: #369;
         border-bottom: 3px solid #036;
+          vertical-align: middle;
     }
 
     table.type09 tbody th {
@@ -39,6 +42,7 @@
         vertical-align: top;
         border-bottom: 1px solid #ccc;
         background: #f3f6f7;
+          vertical-align: middle;
     }
 
     table.type09 td {
@@ -75,22 +79,22 @@
  <table class="type09">
         <thead>
             <tr>
-                <th scope="cols">Ω≈√ª≥ªø™</th>
+                <th scope="cols">Ïã†Ï≤≠ÎÇ¥Ïó≠</th>
                 <th scope="cols"></th>
             </tr>
         </thead>
         <tbody>
             <tr>
             <%-- <c:forEach> --%>
-                <th scope="row">±Ÿπ´≈∏¿‘</th>
+                <th scope="row">Í∑ºÎ¨¥ÌÉÄÏûÖ</th>
                 <td>
-                    <c:if test="${work.work_type eq '1'  }">ø‹±Ÿ</c:if>
-                    <c:if test="${work.work_type eq '2' }">¡∂≈</c:if>
+                    <c:if test="${work.work_type eq '1'  }">Ïô∏Í∑º</c:if>
+                    <c:if test="${work.work_type eq '2' }">Ï°∞Ìá¥</c:if>
                 </td>
             </tr>
            <%--  </c:forEach> --%>
             <tr>
-                <th scope="row">Ω≈√ª≥Ø¬•</th>
+                <th scope="row">Ïã†Ï≤≠ÎÇ†Ïßú</th>
                 <td>
                   <fmt:formatDate var="work_date" type="date" value="${ work.work_date }" pattern="yyyy-MM-dd"/>
                    ${work_date } 
@@ -98,7 +102,7 @@
                 </td>
             </tr>
             <tr>
-                <th scope="row">Ω≈√ªΩ√∞£</th>
+                <th scope="row">Ïã†Ï≤≠ÏãúÍ∞Ñ</th>
                 <td>
                 <fmt:formatDate var="start_time" type="time" value="${ work.start_time }" pattern="HH:mm"/>
                  ${ start_time }
@@ -108,9 +112,9 @@
                 </td>
             </tr>
             
-           	<tr>
-                <th scope="row">Ω≈√ªªÁ¿Ø</th>
-                <td><textarea name="work_content" style="width:400px; height:200px;">${work.work_content}</textarea>
+           	<tr style="width:400px;">
+                <th scope="row">Ïã†Ï≤≠ÏÇ¨Ïú†</th>
+                <td><textarea name="work_content" style="width:400px; height:400px;">${work.work_content}</textarea>
                 <input type="hidden" value="${ work.work_no }" name="work_no">
                 </td>
             </tr>
@@ -121,7 +125,7 @@
     <c:url var="wkUseList" value="wkUseList.do">
 					<c:param name="page" value="${ currentPage }"/>
 				</c:url>
-					<button class="wk-bt" onclick="location.href='${ wkUseList }'">∏Ò∑œ</button>
+					<button class="wk-bt" style="margin-left: 600px;"onclick="location.href='${ wkUseList }'">Î™©Î°ù</button>
     
     <%-- 
 				<c:url var="anndelete" value="anndelete.do">
@@ -130,9 +134,9 @@
 				<c:url var="annList" value="annList.do">
 					<c:param name="page" value="${ currentPage }"/>
 				</c:url>
-					<button class="ann-bt" onclick="location.href='${ annList }'">∏Ò∑œ</button>
-					<button type="submit" class="ann-bt" >ºˆ¡§«œ±‚</button> 
-					<button class="ann-bt" onclick="location.href='${ anndelete }'">ªË¡¶«œ±‚</button>  --%>
+					<button class="ann-bt" onclick="location.href='${ annList }'">Î™©Î°ù</button>
+					<button type="submit" class="ann-bt" >ÏàòÏ†ïÌïòÍ∏∞</button> 
+					<button class="ann-bt" onclick="location.href='${ anndelete }'">ÏÇ≠Ï†úÌïòÍ∏∞</button>  --%>
 				
 </form>
 </body>

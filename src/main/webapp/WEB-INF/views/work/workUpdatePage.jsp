@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -120,15 +120,15 @@
      
  
 				
-				<c:url var="wkdelete" value="wkdelete.do">
+				<c:url var="workdelete" value="workdelete.do">
 					<c:param name="work_no" value="${ work.work_no }"/>
 				</c:url>
-				<c:url var="wkList" value="wkList.do">
+				 <c:url var="wkList" value="wkList.do">
 					<c:param name="page" value="${ currentPage }"/>
-				</c:url>
+				</c:url> 
 					<button class="wk-bt" onclick="location.href='${ wkList }'">목록</button>
 					<button type="submit" class="wk-bt" >수정하기</button> 
-					<button class="wk-bt" onclick="location.href='${ wkdelete }'">삭제하기</button> 
+					<button class="wk-bt" onclick="location.href='${ workdelete }'">삭제하기</button> 
 				
 </form>
 </body>

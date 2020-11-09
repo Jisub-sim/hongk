@@ -78,7 +78,7 @@
 		SELECT *
 		FROM WORK
 		WHERE WORK_NO=#{work_no}
-		AND WK_STATUS='W'
+		
 		
 	</select>
 	
@@ -107,7 +107,7 @@
 		AND WK_STATUS='W'	
 	</update>
 	
-	<update id="deleteWork" parameterType="_int">
+	<update id="deleteWork" parameterType="Work" >
 		UPDATE WORK
 		SET WK_STATUS='N'
 		WHERE WORK_NO=#{work_no}
