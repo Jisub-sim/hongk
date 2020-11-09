@@ -287,7 +287,7 @@
 					<select class="cal_deptmember_select" id="cal_deptmember_select"
 						name="mName">
 						<c:forEach var="dm" items="${ dmList }">
-							<option value="${ dm.mNo }">${dm.jobCode}${ dm.mName }</option>
+							<option value="${ dm.mNo }">${dm.jobCode}   ${ dm.mName }</option>
 						</c:forEach>
 					</select>
 				</div>
@@ -295,18 +295,18 @@
 				<!--날짜 네비게이션  -->
 				<div class="navigation">
 					<a class="before_after_year"
-						href="./calendar.do?year=${today_info.search_year-1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}">
+						href="./calendar.do?year=${today_info.search_year-1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt;&lt; <!-- 이전해 -->
 					</a> <a class="before_after_month"
-						href="./calendar.do?year=${today_info.before_year}&month=${today_info.before_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}">
+						href="./calendar.do?year=${today_info.before_year}&month=${today_info.before_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt; <!-- 이전달 -->
 					</a> <span class="this_month"> &nbsp;${today_info.search_year}.
 						<c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}
 					</span> <a class="before_after_month"
-						href="./calendar.do?year=${today_info.after_year}&month=${today_info.after_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}">
+						href="./calendar.do?year=${today_info.after_year}&month=${today_info.after_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음달 --> &gt;
 					</a> <a class="before_after_year"
-						href="./calendar.do?year=${today_info.search_year+1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}">
+						href="./calendar.do?year=${today_info.search_year+1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음해 --> &gt;&gt;
 					</a>
 				</div>
@@ -708,11 +708,11 @@
 		$(function(){
 			$('#cal_teammember_select').change(function(){
 				var mNo = $("#cal_teammember_select option:selected").val();
-    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
+    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
 			});
 			$('#cal_deptmember_select').change(function(){
 				var mNo = $("#cal_deptmember_select option:selected").val();
-    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
+    			location.href="./calendar.do?year=${today_info.search_year}&month=${today_info.search_month-1}&mNo="+mNo+"&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}";
 			});
 		});
 	</script>
