@@ -46,11 +46,16 @@ public class ApprovalController {
 private EAService eaService;
 	
 	
-/////// ea 메인 페이지
+/////// ea 메인 페이지 
 	@RequestMapping("app.do")
-	public ModelAndView approvalpage(HttpSession session, ModelAndView mv) {
+	public ModelAndView approvalpage(HttpSession session, ModelAndView mv, int pageurlnum) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mno = loginUser.getmNo();
+		
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
 		
 		int Wp= eaService.countWp(mno);
 		int Cp=eaService.countCp(mno);
@@ -65,7 +70,6 @@ private EAService eaService;
 		ArrayList<Electronic_Approval> listWp = eaService.listWp(mno);
 		ArrayList<Electronic_Approval> listref = eaService.listref(mno);
 		
-		System.out.println(listref);
 			
 		mv.addObject("eaC", eaC)
 		.addObject("listWp", listWp)
@@ -243,7 +247,6 @@ private EAService eaService;
 		}
 		// 기안 내용 
 		int result = eaService.insertea(ea);
-		
 		// 결재자 등록
 		for(int i = 0 ; i < approvers.length;  ) {
 			
@@ -257,7 +260,6 @@ private EAService eaService;
 					i++;
 				}
 		}
-		
 		// 참조자 등록
 			if(!ref.isEmpty()) {
 			String [] referrers = ref.split(","); // 받아온 참조자 정보 배열로 분리
@@ -276,8 +278,7 @@ private EAService eaService;
 					}
 				}
 			}
-			
-		// 파일이 업로드 되었다면 	
+		// 파일이 업로드 되었다면 (업로드 된 파일명이 ""가 아니라면)	
 		if(!file.getOriginalFilename().equals("")) {	
 			String OriginalFilename = file.getOriginalFilename();
 			System.out.println("넘어온 uploadFile : " + OriginalFilename);
@@ -561,6 +562,8 @@ private EAService eaService;
 			                        Work wk = eaService.selectwk(ea_no);
 			                        
 			                        int resultend = eaService.updatewkend(wk);
+			                        
+									
 									
 									if(result3 > 0) {
 										System.out.println("결재 완료. 결재 완료함에서 확인 가능");
@@ -571,6 +574,25 @@ private EAService eaService;
 						}else {
 							System.out.println("다음 결재자 존재");
 						}
+						
+						// 파일이 업로드 되었다면 (업로드 된 파일명이 ""가 아니라면)	
+//						if(!file.getOriginalFilename().equals("")) {	
+//							String OriginalFilename = file.getOriginalFilename();
+//							System.out.println("넘어온 uploadFile : " + OriginalFilename);
+//							String renameFileName = saveEAFile(file, request);
+//							System.out.println("renameFileName : " + renameFileName);
+//							
+//							Files f = new Files();
+//							if(renameFileName != null) {
+//								f.setOriginal_FileName(OriginalFilename);
+//								f.setReName_FileName(renameFileName);
+//								
+//								System.out.println("f : " + f);
+//							}
+//							
+//							int resultF = eaService.apFileinsert(f);
+//						}
+						
 						
 				}else {
 					throw new EAException("결재에 실패하였습니다.");
@@ -711,7 +733,6 @@ private EAService eaService;
 	public String siginsertPage() {
 		return "approval/sigFilUploadPage";
 	}
-	
 /////// 양식 추가 페이지
 	@RequestMapping("FormInsertPage.do")
 	public String FormInsertPage() {
@@ -1021,6 +1042,7 @@ private EAService eaService;
 			if(result > 0) {
 				mv.addObject("msg", "회수 되었습니다")
 				.setViewName("redirect:earequest.do");
+				
 				return mv;
 			}else {
 				throw new EAException("회수에 실패하였습니다.");
@@ -1028,6 +1050,8 @@ private EAService eaService;
 		}else {
 			mv.addObject("msg", "이미 결재가 진행 되었습니다. 회수가 불가능 합니다")
 			.setViewName("redirect:earequest.do");
+//			.setViewName("approval/eaRequestPage")
+			
 			return mv;
 		}
 	}

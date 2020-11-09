@@ -19,6 +19,8 @@
         border-collapse: collapse;
         text-align: left;
         line-height: 1.5;
+         margin-left:300px;
+        width: 40%;
 
     }
 
@@ -62,7 +64,7 @@
         color: white;
         width: 70px;
         height: 30px;
-        margin-left: 70px;
+        margin-left: 80px;
 
 
     }
@@ -98,15 +100,17 @@
             <tr>
                 <th scope="row">신청시간</th>
                 <td>
-                <fmt:formatDate var="start_time" type="date" value="${ work.start_time }" pattern="HH:mm"/>
-                <fmt:formatDate var="end_time" type="date" value="${ work.end_time }" pattern="HH:mm"/>
-                   ${ start_time } - ${end_time }
+                <fmt:formatDate var="start_time" type="time" value="${ work.start_time }" pattern="HH:mm"/>
+                 ${ start_time }
+                <fmt:formatDate var="end_time" type="time" value="${ work.end_time }" pattern="HH:mm"/>
+                   - ${end_time }
                     
                 </td>
             </tr>
-           <tr>
+            
+           	<tr>
                 <th scope="row">신청사유</th>
-                <td><textarea name="work_content" style="width:300px; height:200px;">${work.work_content}</textarea>
+                <td><textarea name="work_content" style="width:400px; height:200px;">${work.work_content}</textarea>
                 <input type="hidden" value="${ work.work_no }" name="work_no">
                 </td>
             </tr>
@@ -114,10 +118,10 @@
     </table>
    
     <br><br>
-    <c:url var="wkList" value="wkList.do">
+    <c:url var="wkUseList" value="wkUseList.do">
 					<c:param name="page" value="${ currentPage }"/>
 				</c:url>
-					<button class="wk-bt" onclick="location.href='${ wkList }'">목록</button>
+					<button class="wk-bt" onclick="location.href='${ wkUseList }'">목록</button>
     
     <%-- 
 				<c:url var="anndelete" value="anndelete.do">

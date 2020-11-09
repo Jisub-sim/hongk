@@ -1,5 +1,6 @@
 package com.kh.hongk.work.controller;
 
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,8 @@ import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.work.model.exception.WorkException;
 import com.kh.hongk.work.model.service.WorkService;
 import com.kh.hongk.work.model.vo.Work;
+
+import sun.util.calendar.LocalGregorianCalendar.Date;
 
 
 
@@ -48,11 +52,19 @@ public class WorkController {
 	
 	// 근무신청 클릭 시
 	 @RequestMapping("workinsert.do")
+
+	 public String WorkSelect(Work wk, Date start_time, Date end_time,
+			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no,
+			 @DateTimeFormat(pattern="HH:mm") Date fromDate) {
+
 	 public String WorkSelect(Work wk, 
 			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no ) {
+
 		 int wktype= Integer.parseInt(wk_type);
 		 Member loginUser = (Member)session.getAttribute("loginUser");
 			int mNo = loginUser.getmNo();
+			
+			System.out.println("변경 전 wk : " + wk);
 			
 			GregorianCalendar workDate = new GregorianCalendar(); 
 			workDate.setGregorianChange(wk.getWork_date());
@@ -156,7 +168,9 @@ public class WorkController {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
 		
+		
 		Work work = wkService.selectWork(work_no);
+		System.out.println("work가져오는가 : " + work);
 		mv.addObject("work", work)
 		  .setViewName("work/workUpdatePage");
 
@@ -191,7 +205,9 @@ public class WorkController {
 			Member loginUser = (Member)session.getAttribute("loginUser");
 			int mNo = loginUser.getmNo();
 			
+			
 			int result = wkService.deleteWork(work_no);
+			System.out.println("근무번호 : " + work_no);
 			
 			if(result > 0) {
 				return "redirect:wkList.do";

@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,13 +41,18 @@ import com.kh.hongk.project.model.vo.TrReply;
 
 @Controller
 public class ProjectController {
-	@Autowired
+	@Autowired 
 	private ProjectService pService;
 
 	private Logger logger = LoggerFactory.getLogger(ProjectController.class);
 
 	@RequestMapping("myProject.do")
-	public ModelAndView myProject(ModelAndView mv, HttpServletRequest request) {
+	public ModelAndView myProject(ModelAndView mv, HttpServletRequest request,
+			int pageurlnum, HttpSession session) {
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
 		// 내가 관련된 프로젝트 가져오기
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 		// System.out.println("프로젝트 mNo : " + mNo);
@@ -68,7 +74,10 @@ public class ProjectController {
 	public @ResponseBody ModelAndView projectDetail(int pId, ModelAndView mv,HttpServletRequest request) {
 		// pId에 맞는 Project 정보 가져오기
 		Project project = pService.projectDetail(pId);
-
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		project.setDateString(format.format(project.getpDate())); 
+		project.setPdateString(format.format(project.getDeadLine()));
+		
 		// pId에 맞는 pTeam 정보 가져오기
 		ArrayList<Pteam> ptlist = pService.selectTeamlist(pId);
 		// System.out.println("project : " + project);
@@ -96,8 +105,11 @@ public class ProjectController {
 		System.out.println(tl);
 		for(int i =0; i<completeTask.size();i++) {
 			for(int j=0;j<ptlist.size();j++) {
+				System.out.println(completeTask.get(i).getPtId());
+				System.out.println(ptlist.get(j).getPtId());
 				if(completeTask.get(i).getPtId()==ptlist.get(j).getPtId()) {
-					if(ptlist.get(i).gettCount() != 0) {
+					System.out.println(ptlist.get(j).gettCount());
+					if(ptlist.get(j).gettCount() != 0) {
 						double persentd = ((double)(completeTask.get(i).gettCount())/ptlist.get(j).gettCount())*100;
 						System.out.println(persentd);
 						int persent = (int)persentd;
@@ -271,6 +283,7 @@ public class ProjectController {
 		List<Integer> dList = new ArrayList<Integer>();
 		// 기존 인원과 새로 들어온 인원 비교
 		Iterator iter = originList.iterator();
+		if(!mlist.isEmpty()) {
 		while (iter.hasNext()) {
 			String index = (String) iter.next();
 
@@ -294,6 +307,7 @@ public class ProjectController {
 
 		for (String s : deleteList) {
 			dList.add(Integer.valueOf(s));
+		}
 		}
 		System.out.println(dList);
 		System.out.println(mList);
@@ -520,11 +534,13 @@ public class ProjectController {
 
 	@RequestMapping("taskClick.do")
 	public ModelAndView taskClick(int twId, ModelAndView mv,
-			@RequestParam(value="page", required=false) Integer page) {
+			@RequestParam(value="page", required=false) Integer page,int pId) {
 		System.out.println("taskCLick : " + twId);
 		Task t = pService.selectTask(twId);
+		if(t.getTwManager() != 0) {
 		Member m = pService.selectMemberOne(t.getTwManager());
 		t.setManager(m.getmName());
+		}
 		System.out.println(t);
 		
 		// file 전체 수 
@@ -534,6 +550,7 @@ public class ProjectController {
 		ArrayList<Files> flist = pService.selectFileList(twId,pi);
 		System.out.println(pi);
 		if(t != null) {
+			mv.addObject("pId",pId);
 			mv.addObject("pi",pi);
 			mv.addObject("flist",flist);
 			mv.addObject("t", t);
@@ -547,7 +564,7 @@ public class ProjectController {
 		t.setTwId(twId);
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 		t.setTwManager(mNo);
-		System.out.println(t);
+		System.out.println("getManager : " + t);
 		int result = pService.updateManager(t);
 		
 		if(result>0) {

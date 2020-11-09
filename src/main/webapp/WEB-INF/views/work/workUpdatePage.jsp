@@ -117,8 +117,9 @@
     </table>
    
     <br><br>
-    
+     
  
+				
 				<c:url var="wkdelete" value="wkdelete.do">
 					<c:param name="work_no" value="${ work.work_no }"/>
 				</c:url>

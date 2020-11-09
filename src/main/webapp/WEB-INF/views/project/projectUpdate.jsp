@@ -15,15 +15,16 @@ ul, li {
 }
 
 #back {
-	float: left;
-	padding-left: 50px;
-	padding-top: 20px;
+	
 }
 
 #save {
-	float: right;
-	padding: 20px;
-	margin-right: 80px;
+float: right;
+	cursor: pointer;
+	margin-right: 70px;
+	border: none;
+	background-color: white;
+	font-weight: 800;
 }
 
 #team_create {
@@ -34,6 +35,9 @@ ul, li {
 #team_create table {
 	margin-left: -5px;
 	text-align: left;
+}
+#m{
+	width:100px;
 }
 
 
@@ -127,6 +131,9 @@ li {
 	outline:0;
 	color:skyblue;
 }
+#button {
+	height: 20px;
+}
 </style>
 </head>
 <body>
@@ -135,8 +142,14 @@ li {
 	<div id="main">
 		<form action="proUpdate.do" method="post">
 		<input type="hidden" value="${pId}" name="pId">
-		<li><a href="project.do" id="back">뒤로가기</a> <input type="submit" id="save" value="등록하기">
-		</li>
+
+		<ul>
+			<li><a href="project.do" id="back">뒤로가기</a> 
+			<input type="submit" id="save" value="등록하기">
+		</li></ul>
+
+		
+		
 		<ul id="team_create">
 			<li>프로젝트명 <input type="text" size="100" id="tn" name="pTitle"
 				style="border: 2px solid skyblue;" value="${p.pTitle}"></li>
@@ -146,32 +159,276 @@ li {
 				<th id="m2">선택목록</th>
 			</table>
 			<div class="mem">
-				<li class="menu"><input type="checkbox" name="check" class="check" id="D1" value="D1 테스트 그룹"><a>D1 테스트 그룹</a>
+				<li class="menu"><input type="checkbox" name="check" class="check" id="D1" value="D1"><a>인사관리부</a>
 					<ul class="hide">
 				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
 					<c:if test="${m[i].deptCode eq 'D1' }">
-					<li value="${m[i].mNo }" class="D1">${m[i].jobCode}    ${m[i].mName}</li>
+					<li value="${m[i].mNo }" class="D1">
+						<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+					   ${m[i].mName}</li>
 					</c:if>
 				</c:forEach>
 				</ul></li>
 				
-				<li class="menu"><input type="checkbox" name="check" class="check" id="D2" value="D2 테스트 그룹"><a>D2 테스트 그룹</a>
+				<li class="menu"><input type="checkbox" name="check" class="check" id="D2" value="D2"><a>회계관리부</a>
 					<ul class="hide">
 				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
 					<c:if test="${m[i].deptCode eq 'D2' }">
-					<li value="${m[i].mNo }" class="D2">${m[i].jobCode}    ${m[i].mName}</li>
+					<li value="${m[i].mNo }" class="D2">
+						<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+					 ${m[i].mName}</li>
+					</c:if>
+				</c:forEach>
+				</ul></li>
+					<li class="menu"><input type="checkbox" name="check" class="check" id="D3" value="D3"><a>마케팅부</a>
+					<ul class="hide">
+				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
+					<c:if test="${m[i].deptCode eq 'D3' }">
+					<li value="${m[i].mNo }" class="D3">	<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+						${m[i].mName}</li>
 					</c:if>
 				</c:forEach>
 				</ul></li>
 				
-				<li class="menu"><input type="checkbox" name="check" class="check" id="D3" value="D3 테스트 그룹"><a>D3 테스트 그룹</a>
+				<li class="menu"><input type="checkbox" name="check" class="check" id="D4" value="D4"><a>국내영업부</a>
 					<ul class="hide">
 				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
-					<c:if test="${m[i].deptCode eq 'D3' }">
-					<li value="${m[i].mNo }" class="D3">${m[i].jobCode}    ${m[i].mName}</li>
+					<c:if test="${m[i].deptCode eq 'D4' }">
+					<li value="${m[i].mNo }" class="D4">	<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+						${m[i].mName}</li>
 					</c:if>
 				</c:forEach>
 				</ul></li>
+				
+					<li class="menu"><input type="checkbox" name="check" class="check" id="D5" value="D5"><a>해외영업부</a>
+					<ul class="hide">
+				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
+					<c:if test="${m[i].deptCode eq 'D5' }">
+					<li value="${m[i].mNo }" class="D5">	<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+						${m[i].mName}</li>
+					</c:if>
+				</c:forEach>
+				</ul></li>
+					<li class="menu"><input type="checkbox" name="check" class="check" id="D6" value="D6"><a>기술지원부</a>
+					<ul class="hide">
+				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
+					<c:if test="${m[i].deptCode eq 'D6' }">
+					<li value="${m[i].mNo }" class="D6">	<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+						${m[i].mName}</li>
+					</c:if>
+				</c:forEach>
+				</ul></li>
+				
+					<li class="menu"><input type="checkbox" name="check" class="check" id="D7" value="D7"><a>총무부</a>
+					<ul class="hide">
+				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
+					<c:if test="${m[i].deptCode eq 'D7' }">
+					<li value="${m[i].mNo }" class="D7">	<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+						${m[i].mName}</li>
+					</c:if>
+				</c:forEach>
+				</ul></li>
+				
+					<li class="menu"><input type="checkbox" name="check" class="check" id="D8" value="D8"><a>디자인부</a>
+					<ul class="hide">
+				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
+					<c:if test="${m[i].deptCode eq 'D8' }">
+					<li value="${m[i].mNo }" class="D8">	<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+						${m[i].mName}</li>
+					</c:if>
+				</c:forEach>
+				</ul></li>
+				
+					<li class="menu"><input type="checkbox" name="check" class="check" id="D9" value="D9"><a>연구개발팀</a>
+					<ul class="hide">
+				<c:forEach var="i" begin="0" end="${fn:length(m)-1}">
+					<c:if test="${m[i].deptCode eq 'D9' }">
+					<li value="${m[i].mNo }" class="D9">	<c:if test='${m[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${m[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+						${m[i].mName}</li>
+					</c:if>
+				</c:forEach>
+				</ul></li>
+				
 				
 				
 			</div>
@@ -181,17 +438,102 @@ li {
 						$("li").removeClass("selected");
 						$("#D2").prop("checked", false);
 						$("#D3").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D6").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D9").prop("checked", false);
 					});
 					$("#D2").click(function(){
 						$("li").removeClass("selected");
 						$("#D1").prop("checked", false);
 						$("#D3").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D6").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D9").prop("checked", false);
 					});
 					$("#D3").click(function(){
 						$("li").removeClass("selected");
 						$("#D1").prop("checked", false);
 						$("#D2").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D6").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D9").prop("checked", false);
 					});
+					$("#D4").click(function(){
+						$("li").removeClass("selected");
+						$("#D1").prop("checked", false);
+						$("#D2").prop("checked", false);
+						$("#D3").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D6").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D9").prop("checked", false);
+					});
+					$("#D5").click(function(){
+						$("li").removeClass("selected");
+						$("#D1").prop("checked", false);
+						$("#D2").prop("checked", false);
+						$("#D3").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D6").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D9").prop("checked", false);
+					});
+					$("#D6").click(function(){
+						$("li").removeClass("selected");
+						$("#D1").prop("checked", false);
+						$("#D2").prop("checked", false);
+						$("#D3").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D9").prop("checked", false);
+					});
+					$("#D7").click(function(){
+						$("li").removeClass("selected");
+						$("#D1").prop("checked", false);
+						$("#D2").prop("checked", false);
+						$("#D3").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D6").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D9").prop("checked", false);
+					});
+					$("#D8").click(function(){
+						$("li").removeClass("selected");
+						$("#D1").prop("checked", false);
+						$("#D2").prop("checked", false);
+						$("#D3").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D6").prop("checked", false);
+						$("#D9").prop("checked", false);
+					});
+					$("#D9").click(function(){
+						$("li").removeClass("selected");
+						$("#D1").prop("checked", false);
+						$("#D2").prop("checked", false);
+						$("#D3").prop("checked", false);
+						$("#D4").prop("checked", false);
+						$("#D5").prop("checked", false);
+						$("#D7").prop("checked", false);
+						$("#D8").prop("checked", false);
+						$("#D6").prop("checked", false);
+					});
+					
 					
 				});
 			</script>
@@ -208,7 +550,27 @@ li {
 			<div class="choose">
 				<c:if test="${!empty pm}">
 				<c:forEach var="i" begin="0" end="${fn:length(pm)-1}">					
-					<li value="${pm[i].mNo }">${pm[i].jobCode}    ${pm[i].mName}</li>
+					<li value="${pm[i].mNo }">	<c:if test='${pmList[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J7"}'>
+						사원
+						</c:if>  ${pm[i].mName}</li>
 				</c:forEach>
 				</c:if>
 

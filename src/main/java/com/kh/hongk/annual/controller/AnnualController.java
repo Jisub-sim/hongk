@@ -35,7 +35,7 @@ public class AnnualController {
 
 		Annual ann = annService.selectmyann(mNo);
 		Member member = annService.selectmember(mNo);
-		
+		 
 
 		mv.addObject("ann", ann)
 		  .addObject("member", member)
@@ -54,10 +54,7 @@ public class AnnualController {
 		int atype=Integer.parseInt(a_type);
 		ann.setAnnual_type(atype);
 		System.out.println("annual :" + ann );
-
-
 		System.out.println("멤버 아이디 : "+mid);
-
 
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
@@ -74,20 +71,15 @@ public class AnnualController {
 		int appromn= Integer.parseInt(mid);
 		Approval appro = new Approval(1,appromn);
 		appro.setEa_no(ea.getEa_no());
-
 		int result1 = annService.insertApprover(appro);
 		
-		
 		int result = 0;
-		
+		// 휴가타입 반차4일때
 		if(atype == 4) {
 			result = annService.halfTimeinsert(ann);
-			
 		}else {
 			result = annService.Annualinsert(ann);
 		}
-		
-
 		if(result > 0) {
 			return "redirect:annList.do";
 		} else {
@@ -111,7 +103,6 @@ public class AnnualController {
 
 		ArrayList<Annual> list = annService.selectList(mNo, pi);
 
-
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -121,7 +112,6 @@ public class AnnualController {
 		} else {
 			throw new AnnualException("휴가 내역 조회에 실패하였습니다.");
 		}
-
 			return mv;
 		}
 
@@ -152,7 +142,6 @@ public class AnnualController {
 	} else {
 		throw new AnnualException("휴가 내역 조회에 실패하였습니다.");
 	}
-
 		return mv;
 	}
 
@@ -188,15 +177,12 @@ public class AnnualController {
 		System.out.println("수정한 값 : " + ann );
 		int result = annService.updateAnnual(ann);
 
-
 		if(result > 0) {
 			mv.setViewName("redirect:annList.do");
 		}else {
 			throw new AnnualException("휴가신청 수정에 실패하였습니다.");
 		}
-
 		return mv;
-
 	}
 
 
@@ -205,6 +191,7 @@ public class AnnualController {
 	public String AnnualDelete(HttpSession session, int annual_no) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
+		System.out.println("휴가번호 : " + annual_no);
 
 
 		int result = annService.deleteAnnual(annual_no);

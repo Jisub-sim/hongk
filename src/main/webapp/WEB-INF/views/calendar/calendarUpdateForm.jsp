@@ -92,7 +92,7 @@
         <h3 class="cal_category">일정 수정</h3><br>
         <div class="cal_wrap">
         <form action="<c:url value="calOnedayUpdate.do"/>" id="cal_form" name="cal_form" onsubmit="return checkAll()">
-	        <input type="hidden" name="mName" value="${ loginUser.mNo }">
+	        <input type="hidden" name="cId" value="${ cal.cId }">
             <table class="cal_table">
                 <tr>
                     <td class="cal_td1"><p class="cal_td1_p">제목</p></td>

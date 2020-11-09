@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    
+    <link rel="stylesheet"
+   href="${pageContext.request.contextPath}/resources/css/approvalcss.css">
+    
+    
 <title>Insert title here</title>
 </head>
 <style>
@@ -73,6 +78,12 @@
     .annAllbt{
     	margin-left: 300px;
     }
+    
+    #smartEditor{
+    width:100%;
+    	height:35vh;
+    	resize: none;
+    }
 </style>
 <body>
 
@@ -87,6 +98,12 @@
         <tbody>
             <tr>
             <%-- <c:forEach> --%>
+     <%--        <td>
+            	글번호
+            </td>
+            <td>
+            ${ann.annual_no }
+            </td> --%>
                 <th scope="row">휴가종류</th>
                 <c:set var="ann_type" value="${ann.annual_type }"/>
                 <td>
@@ -123,7 +140,7 @@
             </tr>
             <tr>
                 <th scope="row">휴가사유</th>
-                <td><textarea name="annual_content" style="width:400px; height:200px;">${ann.annual_content}</textarea>
+                <td><textarea name="annual_content" id="smartEditor" style="width:400px; height:200px;">${ ann.annual_content }</textarea>
                 <input type="hidden" value="${ ann.annual_no }" name="annual_no">
                 </td>
             </tr>
@@ -133,6 +150,7 @@
     <br><br>
     
     
+				<c:if test="${ann.ann_status eq 'W'}">
 				<c:url var="anndelete" value="anndelete.do">
 					<c:param name="annual_no" value="${ ann.annual_no }"/>
 				</c:url>
@@ -144,6 +162,53 @@
 					<button type="submit" class="ann-bt" >수정하기</button> 
 					<button class="ann-bt" onclick="location.href='${ anndelete }'">삭제하기</button> 
 				</div>
+				</c:if>
+				
+				
+				
+				<c:if test="${ann.ann_status eq 'Y'}">
+				 <c:url var="annUseList" value="annUseList.do">
+					<c:param name="page" value="${ currentPage }"/>
+				</c:url>
+				
+				<div class="annAllbt">
+					<button class="ann-bt" onclick="location.href='${ annUseList }'">목록</button>
+				</div>
+				
+				</c:if>
 </form>
+
+  <script type="text/javascript">
+    var oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({ 
+    	oAppRef : oEditors,
+    	elPlaceHolder : "smartEditor", 
+    	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //경로를 꼭 맞춰주세요! 
+    	fCreator : "createSEditor2", htParams : { 
+    	// 툴바 사용 여부 (true:사용/ false:사용하지 않음) 
+    	bUseToolbar : true, 
+    	// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음) 
+    	bUseVerticalResizer : false, 
+    	// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음) 
+    	bUseModeChanger : false
+    	} 
+    }); 
+    
+    $(function() { 
+		$("#savebutton").click(function() { 
+			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
+			var content = document.getElementById("smartEditor").value;
+			document.getElementById("smartEditor").setAttribute('name','annual_content' );
+
+			var result = confirm("등록 하시겠습니까?"); 
+			if(result){ 
+				
+			}else{ 
+				return; 
+			} 
+		}); 
+	})
+	
+	</script>
 </body>
 </html>

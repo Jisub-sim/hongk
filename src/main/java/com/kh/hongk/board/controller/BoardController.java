@@ -44,9 +44,18 @@ public class BoardController {
 	private BoardService bService;
 
 	@RequestMapping("blist.do")
-	public ModelAndView boardList(ModelAndView mv, @RequestParam(value = "page", required = false) Integer page) {
+
+	public ModelAndView boardList(ModelAndView mv, int pageurlnum, HttpSession session,
+			@RequestParam(value="page", required=false) Integer page
+			) {
 		// 커맨드 객체 사용 시 해당 파라미터가 존재하지 않을 경우 null 값을 반환함
 		// 기본 자료형인 int는 null 값을 저장할 수 없어 오류 발생하므로 Integer로 정의함
+		
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
+		
 
 		// 1. 전체 게시글 수 리턴 받기
 		int listCount = bService.selectListCount();

@@ -4,13 +4,13 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="calendarMapper">
 	<resultMap type="Calendar" id="calendarResultSet">
-		<id property="cId" column="PID"/>
-		<result property="cDate" column="P_DATE"/>
-		<result property="cBeginTime" column="P_BEGIN_TIME"/>
-		<result property="cEndTime" column="P_END_TIME"/>
-		<result property="cKind" column="P_KIND"/>
-		<result property="cTitle" column="P_TITLE"/>
-		<result property="cPlace" column="P_PLACE"/>
+		<id property="cId" column="CID"/>
+		<result property="cDate" column="C_DATE"/>
+		<result property="cBeginTime" column="C_BEGIN_TIME"/>
+		<result property="cEndTime" column="C_END_TIME"/>
+		<result property="cKind" column="C_KIND"/>
+		<result property="cTitle" column="C_TITLE"/>
+		<result property="cPlace" column="C_PLACE"/>
 		<result property="mName" column="MNAME"/>
 		<result property="pTitle" column="PTITLE"/>
 	</resultMap>
@@ -53,21 +53,36 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		<result property="pId" column="PID"/>
 	</resultMap>
 	
+	<resultMap type="Annual" id="annualResultSet">
+		<id property="annual_no" column="ANNUAL_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="annual_start" column="ANNUAL_START"/>
+		<result property="annual_end" column="ANNUAL_END"/>
+		<result property="annual_day_count" column="ANNUAL_DAY_COUNT"/>
+		<result property="annual_day_use" column="ANNUAL_DAY_USE"/>
+		<result property="annual_day_remain" column="ANNUAL_DAY_REMAIN"/>
+		<result property="annual_type" column="ANNUAL_TYPE"/>
+		<result property="annual_content" column="ANNUAL_CONTENT"/>
+		<result property="annual_halftime" column="ANNUAL_HALFTIME"/>
+		<result property="annual_signupday" column="ANNUAL_SIGNUPDAY"/>
+		<result property="ann_status" column="ANN_STATUS"/>
+	</resultMap>
+	
 	<select id="selectCalendarList" resultMap="calendarResultSet">
 		SELECT *
-		FROM PLAN
-		WHERE P_DATE LIKE '%' || #{cDate} || '%'
+		FROM CALENDAR
+		WHERE C_DATE LIKE '%' || #{cDate} || '%'
 		AND MNAME = #{mName}
-		ORDER BY P_DATE ASC, LPAD(P_BEGIN_TIME, 5, '0') ASC
+		ORDER BY C_DATE ASC, LPAD(C_BEGIN_TIME, 5, '0') ASC
 	</select>
 	
 	<select id="selectOnedayList" resultMap="calendarResultSet">
-		SELECT PID, <!-- TO_NUMBER(TO_CHAR(P_DATE, 'RRRRMMDD')) --> TO_CHAR(P_DATE, 'RRRRMMDD') P_DATE, P_BEGIN_TIME, P_END_TIME, P_KIND, P_TITLE, P_PLACE, P.MNAME, PTITLE
-		FROM PLAN P
-		JOIN MEMBER M ON(P.MNAME=M.MNO)
-		WHERE P_DATE=TO_DATE(#{cDate}, 'YYMMDD')
+		SELECT CID, <!-- TO_NUMBER(TO_CHAR(C_DATE, 'RRRRMMDD')) --> TO_CHAR(C_DATE, 'RRRRMMDD') C_DATE, C_BEGIN_TIME, C_END_TIME, C_KIND, C_TITLE, C_PLACE, C.MNAME, PTITLE
+		FROM CALENDAR C
+		JOIN MEMBER M ON(C.MNAME=M.MNO)
+		WHERE C_DATE=TO_DATE(#{cDate}, 'YYMMDD')
 		AND MNO=#{mName}
-		ORDER BY LPAD(P_BEGIN_TIME, 5, '0') ASC
+		ORDER BY LPAD(C_BEGIN_TIME, 5, '0') ASC
 	</select>
 	
 	<select id="selectProjectTitleList" resultMap="projectResultSet">
@@ -76,35 +91,41 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 	</select>
 	
 	<select id="selectInsertCheck" resultMap="calendarResultSet">
-		SELECT PID
-		FROM PLAN
-		WHERE P_DATE=TO_DATE(#{cDate}, 'YY-MM-DD')
-		AND P_BEGIN_TIME=#{cBeginTime}
+		SELECT CID
+		FROM CALENDAR
+		WHERE C_DATE=TO_DATE(#{cDate}, 'YY-MM-DD')
+		AND C_BEGIN_TIME=#{cBeginTime}
+	</select>
+	
+	<select id="selectCalAnnualCheck" resultMap="annualResultSet">
+		SELECT *
+		FROM ANNUAL
+		WHERE ANNUAL_START=#{cDate} OR ANNUAL_END=#{cDate}
 	</select>
 	
 	<insert id="insertCalendar" parameterType="Calendar">
-		INSERT INTO PLAN VALUES(
-			SEQ_PID.NEXTVAL, #{cDate}, #{cBeginTime}, #{cEndTime},
-			#{cKind}, #{cTitle}, #{cPlace}, #{mName}, #{pTitle}
-		)
+		INSERT INTO CALENDAR VALUES(
+			SEQ_CID.NEXTVAL, #{cDate}, #{cBeginTime}, #{cEndTime},
+			#{cKind}, #{cTitle}, #{cPlace}, #{mName}, #{pTitle})
 	</insert>
 	
 	<select id="selectOnedayUpView" resultMap="calendarResultSet">
-		SELECT PID, TO_CHAR(P_DATE, 'RRRRMMDD') P_DATE, P_BEGIN_TIME, P_END_TIME, P_KIND, P_TITLE, P_PLACE, MNAME, PTITLE
-		FROM PLAN
-		WHERE PID=#{pId}
+		SELECT CID, TO_CHAR(C_DATE, 'RRRRMMDD') C_DATE, C_BEGIN_TIME, C_END_TIME, C_KIND, C_TITLE, C_PLACE, MNAME, PTITLE
+		FROM CALENDAR
+		WHERE CID=#{cId}
 	</select>
 	
 	<update id="updateCalendar" parameterType="_int">
-		UPDATE PLAN
-		SET P_DATE=#{cDate}, P_BEGIN_TIME=#{cBeginTime},
-			P_END_TIME=#{cEndTime}, P_KIND=#{cKind}, P_TITLE=#{cTitle}, 
-			P_PLACE=#{cPlace}, PTITLE=#{pTitle}
+		UPDATE CALENDAR
+		SET C_DATE=TO_DATE(#{cDate}, 'RRRRMMDD'), C_BEGIN_TIME=#{cBeginTime},
+			C_END_TIME=#{cEndTime}, C_KIND=#{cKind}, C_TITLE=#{cTitle}, 
+			C_PLACE=#{cPlace}, PTITLE=#{pTitle}
+		WHERE CID=#{cId}
 	</update>
 	
 	<delete id="delectCalendar" parameterType="_int">
-		DELETE FROM PLAN
-		WHERE PID=#{pId}
+		DELETE FROM CALENDAR
+		WHERE CID=#{cId}
 	</delete>
 	
 	<select id="selectCalPid" parameterType="_int" resultMap="pmemberResultSet">
@@ -122,10 +143,10 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		ORDER BY MNO ASC
 	</select>
 	
-	<select id="selectDeptTitle" parameterType="string">
-		SELECT DEPT_TITLE DEPTTITLE
+	<select id="selectDeptTitle" parameterType="String" resultType="String">
+		SELECT DEPT_TITLE
 		FROM DEPT
-		WHERE DEPT_CODE=${deptCode}
+		WHERE DEPT_CODE='${value}'
 	</select>
 	
 	<select id="selectCalTMemberList" resultMap="memberResultSet">
@@ -137,10 +158,15 @@ PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN"
 		ORDER BY MNO ASC
 	</select>
 	
-	<select id="selectTeamTitle" parameterType="string">
+	<select id="selectTeamTitle" parameterType="String" resultType="String">
 		SELECT PT_TITLE
 		FROM PTEAM
-		WHERE PID=#{pId}
+		WHERE PID='#{value}'
 	</select>
 	
+	<select id="selectCalAnnualList" resultMap="annualResultSet">
+		SELECT *
+		FROM ANNUAL
+		WHERE MNO = #{mNo}
+	</select>
 </mapper>

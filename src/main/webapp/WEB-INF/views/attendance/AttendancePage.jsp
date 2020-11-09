@@ -166,7 +166,7 @@
         }
 
         table {
-            font-family: 'Sunflower', sans-serif;
+            /* font-family: 'Sunflower', sans-serif; */
 
 
         }
