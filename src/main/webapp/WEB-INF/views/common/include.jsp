@@ -329,10 +329,6 @@ a {
 }
 
 
-/* <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
-                채팅창 디테일 css 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --> */
-
 #chatview{
     width:290px;
     height:484px;
@@ -648,7 +644,7 @@ border-radius:6px;
 
    <div class="sidebar">
       <header>
-       <c:if test="${ empty sessionScope.loginUser }">
+    <%--    <c:if test="${ empty sessionScope.loginUser }">
      	<form action="login.do" method="post">
         <table id="login_area">
         	<tr>
@@ -667,7 +663,7 @@ border-radius:6px;
         	</tr>
         </table>
         </form>
-        </c:if>
+        </c:if> --%>
          
         
         <c:if test="${ !empty sessionScope.loginUser }">
@@ -735,6 +731,7 @@ border-radius:6px;
                    </div>
                  <c:forEach var="m" items='${ mList }'>
                  	<c:if test="${ loginUser.mId ne m.mId }">
+                 	
 				<!-- 친구목록창 -->						
                  		<div id="friends">
                  		<!-- 친구 1명1명 -->
@@ -763,7 +760,7 @@ border-radius:6px;
                            <div class="cx"></div>
                        </div>
                  
-					<div class="roomName">${ Member.mId }님과대화</div>
+					<div class="roomName">${ Member.mName }님과대화</div>
 				
                    </div>
            <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
@@ -801,9 +798,6 @@ border-radius:6px;
         </div>
     </div>
     </div>
-      <div id="main">
-       
-        </div> 
     
 <!-- 스크립트  -->    
  <script>
@@ -854,6 +848,7 @@ border-radius:6px;
        $("#sendmessage input").focus(function(){
            if($(this).val() == ""){
                $(this).val("");
+            
            }
        });
       
@@ -864,29 +859,28 @@ border-radius:6px;
                var childTop = childOffset.top - parentOffset.top;
                var clone = $(this).find('img').eq(0).clone();
                var top = childTop+12+"px";
-               
                var mId = $(this).children('.tomId').val();
+               
                if(!confirm("메세지를 보내시겠습니까?")){
              	 return;
               }else{
-            	   $(function(){
+            	  
           			getChatList();	// 최초 페이지 로딩 시 댓글 불러오기
           			
           			setInterval(function(){
           				getChatList();	// 10초에 한번씩 지속적으로 댓글 리스트 불러오기(다른 회원이 작성한 댓글이 있다면 반영)
           			}, 10000); 
-          			  
+          			console.log(mId);	  
           			// 댓글 등록 ajax
           			$("#sendBtn").on("click", function(){
           				var chatContent = $("#message").val();
           				var fromId = $("loginUser.mId").val();
-
+          				console.log(mId);	  
           				$.ajax({
           					url: "addChat.do",
           					data : {chatContent:chatContent,fromId:fromId, mId:mId},
           					type : "post",
           					success : function(data){
-          						console.log(data);
           						if(data == "success"){
           							getChatList();
         							$("#message").val("");
@@ -897,7 +891,7 @@ border-radius:6px;
           					}
           				});
           			});
-				})
+			
 				function getChatList(){
             		
             		   $.ajax({
@@ -943,7 +937,7 @@ border-radius:6px;
                 						   $bubble.append($spandate);
             						   }
             					    
-            						   mId = "";
+            						   
             			           
             					   }
             				   }
@@ -953,8 +947,11 @@ border-radius:6px;
             	   }
               }
                                  
-          
-
+          	document.getElementById("close").onclick =function(){
+          		 mId = "";
+          	}
+          	
+               
            
                setTimeout(function(){$("#profile p").addClass("animate");$("#profile").addClass("animate");}, 100);
                setTimeout(function(){
