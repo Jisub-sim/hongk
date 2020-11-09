@@ -167,11 +167,11 @@ public class EADao {
 		return (ArrayList)sqlSession.selectList("eaMapper.selecListPEA",approver_no ,rowBounds);
 	}
 	// 참조 리스트
-	public ArrayList<Electronic_Approval> selectListrefea(int re_no, PageInfo pi) {
+	public ArrayList<Electronic_Approval> selectListrefea(int mno, PageInfo pi) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		return (ArrayList)sqlSession.selectList("eaMapper.selectListrefea",re_no ,rowBounds);
+		return (ArrayList)sqlSession.selectList("eaMapper.selectListrefea",mno ,rowBounds);
 	}
 	// 첫번째 결재자 결재 하였는가 
 	public Approval selectFirstApproval(int ea_no) {

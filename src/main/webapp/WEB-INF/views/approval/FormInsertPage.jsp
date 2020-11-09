@@ -48,7 +48,7 @@
        margin-left: 1em;
     }
     #smartEditor{
-    width:100%;
+       width:100%;
     	height:50vh;
     	resize: none;
     }
