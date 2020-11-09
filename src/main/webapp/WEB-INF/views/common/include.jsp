@@ -364,6 +364,7 @@ a {
 	outline: 0;
 }
 
+
 /* <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
                 채팅창 디테일 css 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --> */
@@ -375,6 +376,7 @@ a {
 	left: 96px;
 	display: none;
 	background: #fff;
+
 }
 /* <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
                 채팅창  디테일 상단  프로필
@@ -760,8 +762,6 @@ div.message.right .corner {
 		<script>alert('${msg}');</script>
 		<c:remove var="msg" />
 	</c:if>
-
-
 	<nav id="header">
 		<div id="logo_div">
 			<i class="fab fa-accusoft"></i> <a href="" id="logo_font">Hongk</a>
@@ -930,6 +930,7 @@ div.message.right .corner {
 
 
 		<!--    
+
          <c:url var="formList" value="formList.do"/>
         <c:url var="earequest" value="earequest.do"/>
         <c:url var="temporEAList" value="temporEAList.do"/>
@@ -954,6 +955,7 @@ div.message.right .corner {
         <li><br><b>기타</b></li>
         <li><a href="${ sigList }">서명관리</a></li>
         <!-- 양식 추가 가능한 권한은..? -->
+
 		<li><a href="${ FormInsertPage }">양식 추가</a></li>
 		</ul>
 	</div>
@@ -1007,6 +1009,7 @@ div.message.right .corner {
 
 					</div>
 					<!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
+
                            채팅창 디테일 내용
            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
@@ -1039,6 +1042,7 @@ div.message.right .corner {
 						<button class='btn btn-primary' id="sendBtn">전송</button>
 					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -1046,6 +1050,7 @@ div.message.right .corner {
 
 	<!-- 스크립트  -->
 	<script>
+
  var modal = document.querySelector(".modal");
  var trigger = document.querySelector(".trigger");
  var closeButton = document.querySelector(".close-button");
@@ -1093,6 +1098,7 @@ div.message.right .corner {
        $("#sendmessage input").focus(function(){
            if($(this).val() == ""){
                $(this).val("");
+            
            }
        });
       
@@ -1103,29 +1109,28 @@ div.message.right .corner {
                var childTop = childOffset.top - parentOffset.top;
                var clone = $(this).find('img').eq(0).clone();
                var top = childTop+12+"px";
-               
                var mId = $(this).children('.tomId').val();
+               
                if(!confirm("메세지를 보내시겠습니까?")){
              	 return;
               }else{
-            	   $(function(){
+            	  
           			getChatList();	// 최초 페이지 로딩 시 댓글 불러오기
           			
           			setInterval(function(){
           				getChatList();	// 10초에 한번씩 지속적으로 댓글 리스트 불러오기(다른 회원이 작성한 댓글이 있다면 반영)
           			}, 10000); 
-          			  
+          			console.log(mId);	  
           			// 댓글 등록 ajax
           			$("#sendBtn").on("click", function(){
           				var chatContent = $("#message").val();
           				var fromId = $("loginUser.mId").val();
-
+          				console.log(mId);	  
           				$.ajax({
           					url: "addChat.do",
           					data : {chatContent:chatContent,fromId:fromId, mId:mId},
           					type : "post",
           					success : function(data){
-          						console.log(data);
           						if(data == "success"){
           							getChatList();
         							$("#message").val("");
@@ -1136,7 +1141,7 @@ div.message.right .corner {
           					}
           				});
           			});
-				})
+			
 				function getChatList(){
             		
             		   $.ajax({
@@ -1182,7 +1187,7 @@ div.message.right .corner {
                 						   $bubble.append($spandate);
             						   }
             					    
-            						   mId = "";
+            						   
             			           
             					   }
             				   }
@@ -1192,8 +1197,11 @@ div.message.right .corner {
             	   }
               }
                                  
-          
-
+          	document.getElementById("close").onclick =function(){
+          		 mId = "";
+          	}
+          	
+               
            
                setTimeout(function(){$("#profile p").addClass("animate");$("#profile").addClass("animate");}, 100);
                setTimeout(function(){
