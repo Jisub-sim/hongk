@@ -2,23 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapper">
 	<resultMap type="Member" id="memberResultSet">
-		<id property="mNo" column="MNO"/>
-		<result property="mId" column="MID"/>
-		<result property="mPwd" column="MPWD"/>
-		<result property="mName" column="MNAME"/>
-		<result property="age" column="AGE"/>
-		<result property="gender" column="GENDER"/>
-		<result property="email" column="EMAIL"/>
-		<result property="address" column="ADDRESS"/>
-		<result property="phone" column="PHONE"/>
-		<result property="exNumber" column="EXNUMBER"/>
-		<result property="hireDate" column="HIRE_DATE"/>
-		<result property="entDate" column="ENT_DATE"/>
-		<result property="mLevel" column="M_LEVEL"/>
-		<result property="mStatus" column="M_STATUS"/>
-		<result property="deptCode" column="DEPT_CODE"/>
-		<result property="jobCode" column="JOB_CODE"/>	
+		<id property="mNo" column="MNO" />
+		<result property="mId" column="MID" />
+		<result property="mPwd" column="MPWD" />
+		<result property="mName" column="MNAME" />
+		<result property="age" column="AGE" />
+		<result property="gender" column="GENDER" />
+		<result property="email" column="EMAIL" />
+		<result property="address" column="ADDRESS" />
+		<result property="phone" column="PHONE" />
+		<result property="exNumber" column="EXNUMBER" />
+		<result property="hireDate" column="HIRE_DATE" />
+		<result property="entDate" column="ENT_DATE" />
+		<result property="mLevel" column="M_LEVEL" />
+		<result property="mStatus" column="M_STATUS" />
+		<result property="deptCode" column="DEPT_CODE" />
+		<result property="jobCode" column="JOB_CODE" />
+		<result property="deptTitle" column="DEPT_TITLE" />
+		<result property="jobTitle" column="JOB_TITLE" />
 	</resultMap>
+
+	<resultMap type="Files" id="fileResultSet">
+			<id property="file_no" column="FILE_NO"/>
+			<result property="ref_no" column="REF_FNO"/>
+			<result property="original_FileName" column="ORIGINAL_FILENAME"/>
+			<result property="reName_FileName" column="RENAME_FILENAME"/>
+			<result property="save_Date" column="SAVE_DATE"/>
+			<result property="File_type" column="FILE_TYPE"/>
+		</resultMap>
+
+	<select id="jobList" resultMap="memberResultSet">
+		SELECT *
+		FROM JOB
+	</select>
+
+	<select id="deptList" resultMap="memberResultSet">
+		SELECT *
+		FROM DEPT
+	</select>
+
+
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT
+		COUNT(*)
+		FROM MEMBER
+		WHERE MID=#{id}
+	</select>
+
+	<insert id="insertMember" parameterType="Member">
+		INSERT INTO MEMBER
+		VALUES (SEQ_MNO.NEXTVAL, #{mId}, #{mPwd}, #{mName}, #{age},#{gender},
+		#{email},
+		#{address}, #{phone}, #{exNumber},SYSDATE, null,
+		#{mLevel},DEFAULT,#{deptCode},#{jobCode}
+		)
+	</insert>
+
+	<update id="updateMember" parameterType="Member">
+		UPDATE MEMBER
+		SET
+		MNAME=#{mName}, GENDER=#{gender}, EMAIL=#{email}, AGE=#{age},
+		PHONE=#{phone}, ADDRESS=#{address}, MPWD =#{ mPwd }
+		WHERE MID=#{mId}
+	</update>
 	
 	<select id="selectOne" parameterType="Member" resultMap="memberResultSet">
 		<!-- SELECT *
@@ -27,8 +73,43 @@
 		AND M_STATUS='Y' -->
 		SELECT *
 		FROM MEMBER
+		JOIN DEPT USING (dept_code)
+		JOIN JOB USING (job_code)
 		WHERE MID = #{mId}
 		AND MPWD = #{mPwd}
 		AND M_STATUS = 'Y'
 	</select>
+	
+	<select id="selectattmember"  parameterType="Member" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		JOIN ATTENDANCE USING (mno) 
+		JOIN DEPT USING (dept_code)
+		JOIN JOB USING (job_code)
+		WHERE MID =  #{mId}
+		AND MPWD =  #{mPwd}
+		AND M_STATUS = 'Y'
+        AND TO_CHAR(WORK_ON, 'YYYYMMDD')= TO_CHAR(SYSDATE ,'YYYYMMDD')
+	</select>
+	
+	 <insert id="Fileinsert" parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, null, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'Pro', #{ mno }
+     	)
+     </insert>
+     
+     <select id="selectProFiles" resultMap="fileResultSet">
+     	SELECT *
+     	FROM FILES
+     	WHERE MNO = #{ mno }
+     	AND FILE_TYPE = 'Pro'
+     </select>
+     
+     <delete id="FileDelete" parameterType="_int">
+     	DELETE 
+     	FROM FILES
+     	WHERE FILE_NO = #{ file_no }
+     </delete>
+	
 </mapper>

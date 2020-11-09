@@ -2,14 +2,15 @@ package com.kh.hongk.approval.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.approval.model.exception.EAException;
 import com.kh.hongk.approval.model.service.EAService;
 import com.kh.hongk.approval.model.vo.Approval;
@@ -34,6 +36,7 @@ import com.kh.hongk.approval.model.vo.Sig_File;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
+import com.kh.hongk.work.model.vo.Work;
 
 @Controller
 public class ApprovalController {
@@ -122,10 +125,18 @@ private EAService eaService;
 		Form form = eaService.selectForm(fid);
 
 		if(form != null) {
-			if(form.getForm_name().equals("프로젝트")) {
+			if(form.getForm_name().contains("프로젝트")) {
 			mv.addObject("form",form)
 			.addObject("member", member)
 			.setViewName("approval/insertEAProjectPage");
+			}else if(form.getForm_name().contains("휴가")) {
+				mv.addObject("form",form)
+				.addObject("member", member)
+				.setViewName("annual/annualInsertForm");
+			}else if(form.getForm_name().contains("외근")) {
+				mv.addObject("form",form)
+				.addObject("member", member)
+				.setViewName("work/workInsertForm");
 			}else {
 				mv.addObject("form",form)
 				.addObject("member", member)
@@ -141,12 +152,72 @@ private EAService eaService;
 	// 임시 저장 
 	@RequestMapping("temeaform.do")
 	public String temeaform(Electronic_Approval ea, 
-				HttpServletRequest request) {
-		System.out.println(ea);
-		int result1 = eaService.temeaform(ea);
-		int result2 = 1; //eaService.addFile();
+				HttpServletRequest request, String app, String ref,
+				@RequestParam(value="uploadFile", required=false) MultipartFile file) {
 		
-		if(result1>0 && result2>0) {
+		System.out.println("넘어온 ref : " + ref);
+		System.out.println("넘어온 app : " + app);
+		
+		String [] approvers = app.split(","); // 받아온 결재자 정보 배열로 분리
+		
+		
+		for(int i = 0; i < approvers.length; i++) {
+			System.out.println("가져온 결재자 정보 : " + approvers[i]);
+		}
+		System.out.println(ea);
+		
+		int result1 = eaService.temeaform(ea);
+		
+		// 결재자 등록
+				for(int i = 0 ; i < approvers.length;  ) {
+					
+						Approval appro = new Approval(i+1,Integer.parseInt(approvers[i]));
+						appro.setEa_no(ea.getEa_no());
+						System.out.println(appro); 
+						
+						int resulta = eaService.insertApprover(appro);
+						
+						if(result1 > 0 ) {
+							i++;
+						}
+				}
+				// 참조자 등록
+					if(!ref.isEmpty()) {
+					String [] referrers = ref.split(","); // 받아온 참조자 정보 배열로 분리
+						System.out.println("참조자 있네요.");
+						System.out.println("referrers 길이 : " +referrers.length );
+					for(int i = 0 ; i < referrers.length;  ) {
+						int eano = ea.getEa_no();
+						Referrer refer = new Referrer(Integer.parseInt(referrers[i]),eano  );
+						refer.setEa_no(ea.getEa_no());
+						System.out.println(refer); 
+								
+						int result2 = eaService.insertRefer(refer);
+								
+						if(result1 > 0 ) {
+							i++;
+							}
+						}
+					}
+				// 파일이 업로드 되었다면 (업로드 된 파일명이 ""가 아니라면)	
+				if(!file.getOriginalFilename().equals("")) {	
+					String OriginalFilename = file.getOriginalFilename();
+					System.out.println("넘어온 uploadFile : " + OriginalFilename);
+					String renameFileName = saveEAFile(file, request);
+					System.out.println("renameFileName : " + renameFileName);
+					
+					Files f = new Files();
+					if(renameFileName != null) {
+						f.setOriginal_FileName(OriginalFilename);
+						f.setReName_FileName(renameFileName);
+						
+						System.out.println("f : " + f);
+					}
+					
+					int result4 = eaService.Fileinsert(f);
+				}	
+		
+		if(result1>0) {
 			System.out.println("임시저장 성공");
 			return "redirect:temporEAList.do";
 		}else {
@@ -157,7 +228,9 @@ private EAService eaService;
 	// 전자결재 등록 + 결재자도 등록 + 참조자도 등록
 	@RequestMapping("insertea.do")
 	public String insertea(Electronic_Approval ea,HttpServletRequest request
-						,int drafter, String app, String ref) {
+						,int drafter, String app, String ref,
+						@RequestParam(value="uploadFile", required=false) MultipartFile file) {
+		
 		System.out.println("넘어온 ref : " + ref);
 		System.out.println("넘어온 app : " + app);
 		
@@ -186,6 +259,7 @@ private EAService eaService;
 			if(!ref.isEmpty()) {
 			String [] referrers = ref.split(","); // 받아온 참조자 정보 배열로 분리
 				System.out.println("참조자 있네요.");
+				System.out.println("referrers 길이 : " +referrers.length );
 			for(int i = 0 ; i < referrers.length;  ) {
 				int eano = ea.getEa_no();
 				Referrer refer = new Referrer(Integer.parseInt(referrers[i]),eano  );
@@ -199,6 +273,24 @@ private EAService eaService;
 					}
 				}
 			}
+		// 파일이 업로드 되었다면 (업로드 된 파일명이 ""가 아니라면)	
+		if(!file.getOriginalFilename().equals("")) {	
+			String OriginalFilename = file.getOriginalFilename();
+			System.out.println("넘어온 uploadFile : " + OriginalFilename);
+			String renameFileName = saveEAFile(file, request);
+			System.out.println("renameFileName : " + renameFileName);
+			
+			Files f = new Files();
+			if(renameFileName != null) {
+				f.setOriginal_FileName(OriginalFilename);
+				f.setReName_FileName(renameFileName);
+				
+				System.out.println("f : " + f);
+			}
+			
+			int result4 = eaService.Fileinsert(f);
+		}	
+		
 		if(result>0) {
 			
 			return "redirect:earequest.do";
@@ -210,8 +302,10 @@ private EAService eaService;
 	// 전자결재 프로젝트 등록
 	@RequestMapping("inserteaP.do")
 	public String inserteaP(Electronic_Approval ea, HttpSession session,
-				Date pDate, Date deadLine, HttpServletRequest request,
-				String mid, String app, String ref) {
+				 HttpServletRequest request,
+				String mid, String app, String ref,
+				@RequestParam("pDate") @DateTimeFormat(pattern="yyyy-MM-dd") Date pDate,
+				@RequestParam("deadLine") @DateTimeFormat(pattern="yyyy-MM-dd") Date deadLine) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int drafter = loginUser.getmNo();
 		ea.setDrafter(drafter);
@@ -266,6 +360,7 @@ private EAService eaService;
 			throw new EAException("결재 등록에 실패하였습니다.");
 		}
 	}
+	
 	// 결재 디테일 뷰
 	@RequestMapping("eadetail.do")
 	public ModelAndView eaDetailPage(ModelAndView mv,int ea_no, String CurPage) {
@@ -276,13 +371,19 @@ private EAService eaService;
 		ArrayList<Approval> ap = eaService.apList(ea_no);
 		// 전자 서명
 		ArrayList<Sig_File> sig = eaService.sigList(ea_no);
+		// 참조자 리스트
+		ArrayList<Referrer> ref = eaService.reList(ea_no);
+		// 첨부파일
+		Files f = eaService.selectFile(ea_no);
 		
 		if(ea != null) {
 			System.out.println("CurPage : " + CurPage);
 			System.out.println("결재기록 : " + ap);
 			mv.addObject("ea",ea)
 			.addObject("ap",ap)
+			.addObject("ref",ref)
 			.addObject("sig",sig)
+			.addObject("f", f)
 			.addObject("CurPage",CurPage)
 			.setViewName("approval/detailEAPage");
 		}else {
@@ -398,7 +499,8 @@ private EAService eaService;
 	
 	// 결재하기(update)
 	@RequestMapping("apInsert.do")
-	public ModelAndView appinsert(Approval ap , HttpSession session, ModelAndView mv) {
+	public ModelAndView appinsert(Approval ap , HttpSession session, ModelAndView mv,
+			HttpServletRequest request, @RequestParam(value="uploadFile", required=false) MultipartFile file) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int approver_no = loginUser.getmNo();
 		ap.setApprover_no(approver_no);	
@@ -424,41 +526,72 @@ private EAService eaService;
 				System.out.println("앞 순서 결재자가 결재하였습니다. 결재 진행해 주세요");
 			}	
 		 }	
-				int result = eaService.apInsert(ap);
-				if(result>0) {
+			int result = eaService.apInsert(ap);
+			if(result>0) {
 					// 2.반려 처리 하였는가
 					int ea_no = ap.getEa_no();
-					if(ap.getApproval_status().equals("N")) {
-						// 해당 결재 반려로 상태 변경
-						int result1 = eaService.eaupdateN(ea_no);
-						
-						if(result1 > 0) {
-							System.out.println("결재 반려처리 완료");
-						}else {
-							throw new EAException("반려에 실패하였습니다.");
+						if(ap.getApproval_status().equals("N")) {
+							// 해당 결재 반려로 상태 변경
+							int result1 = eaService.eaupdateN(ea_no);
+							
+							if(result1 > 0) {
+								System.out.println("결재 반려처리 완료");
+							}else {
+								throw new EAException("반려에 실패하였습니다.");
+							}
 						}
-					}
-					System.out.println("다음 결재 여부 : " + nextap);
+						System.out.println("다음 결재 여부 : " + nextap);
 					
 						// 다음 결재자 없다면(마지막 결재라면). 방금 결재가 마지막 결재이며 결재 승인인 경우 해당 결재도 Y
 						if(nextap == null) {
-							if(ap.getApproval_status().equals("Y")) {
-								int result3 =  eaService.EAupdateY(ea_no);
-								
-								int resultP =  eaService.PEAupdateY(ea_no);
-								
-								if(result3 > 0) {
-									System.out.println("결재 완료. 결재 완료함에서 확인 가능");
-								}else {
-									throw new EAException("최종결재에 실패하였습니다.");
+								if(ap.getApproval_status().equals("Y")) {
+									int result3 =  eaService.EAupdateY(ea_no);
+									
+									int resultP =  eaService.PEAupdateY(ea_no);
+									
+									int resultann = eaService.annupdateY(ea_no);
+									Annual ann = eaService.selectAnn(ea_no);
+									int resultam = eaService.amupdateY(ann);
+									
+									int resultwk = eaService.wkupdateY(ea_no);
+			                        Work wk = eaService.selectwk(ea_no);
+			                        
+			                        int resultend = eaService.updatewkend(wk);
+			                        
+									
+									
+									if(result3 > 0) {
+										System.out.println("결재 완료. 결재 완료함에서 확인 가능");
+									}else {
+										throw new EAException("최종결재에 실패하였습니다.");
+									}
 								}
-							}
 						}else {
 							System.out.println("다음 결재자 존재");
 						}
+						
+						// 파일이 업로드 되었다면 (업로드 된 파일명이 ""가 아니라면)	
+//						if(!file.getOriginalFilename().equals("")) {	
+//							String OriginalFilename = file.getOriginalFilename();
+//							System.out.println("넘어온 uploadFile : " + OriginalFilename);
+//							String renameFileName = saveEAFile(file, request);
+//							System.out.println("renameFileName : " + renameFileName);
+//							
+//							Files f = new Files();
+//							if(renameFileName != null) {
+//								f.setOriginal_FileName(OriginalFilename);
+//								f.setReName_FileName(renameFileName);
+//								
+//								System.out.println("f : " + f);
+//							}
+//							
+//							int resultF = eaService.apFileinsert(f);
+//						}
+						
+						
 				}else {
 					throw new EAException("결재에 실패하였습니다.");
-				}
+			}
 		mv.setViewName("redirect:wEAList.do");
 		return mv;
 	}
@@ -675,7 +808,7 @@ private EAService eaService;
 		int currentPage = page != null ? page : 1; // 현재 페이지 계산
 				
 		PageInfo pi = Pagination.getPageInfo(currentPage, listCount, 10, 15); // 페이지 
-		
+		search.setMno(drafter);
 		
 		
 		ArrayList<Electronic_Approval> searchList = eaService.EAsearch(search,pi);
@@ -922,8 +1055,13 @@ private EAService eaService;
 	public ModelAndView updateEaPage(ModelAndView mv, int ea_no) {
 		Electronic_Approval list = eaService.updateEaPage(ea_no);
 		
+		ArrayList<Approval> ap = eaService.apList(ea_no);
+		ArrayList<Referrer> ref = eaService.reList(ea_no);
+		
 		if( list != null ) {
 			mv.addObject("list", list)
+			.addObject("ap",ap)
+			.addObject("ref",ref)
 			.setViewName("approval/updateEAPage");
 			return mv;
 		}else {
@@ -1049,9 +1187,76 @@ private EAService eaService;
 			
 			return renameFileName;
 		}
+		// [EA] 결재 저장을 위한 별도의 메소드
+		public String saveEAFile(MultipartFile file, HttpServletRequest request) {
+			// 파일이 저장 될 경로 설정
+			String root = request.getSession().getServletContext().getRealPath("resources");
+			
+			String savePath = root + "\\EAFileUpload";
+			
+			File folder = new File(savePath);
+			
+			if(!folder.exists())	// 사진을 저장하고자 하는 경로가 존재하지 않는다면
+				folder.mkdirs();	// 포함 된 경로를 모두 생성함
+			
+			// 파일 Rename -> 현재 시간 년월일시분초.확장자
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			String originFileName = file.getOriginalFilename(); // -> 원래 이름으로부터 확장자 추출
+			String renameFileName = sdf.format(new Date()) 
+					+ originFileName.substring(originFileName.lastIndexOf("."));
+			String renamePath = folder + "\\" + renameFileName;
+			
+			
+			try {
+				file.transferTo(new File(renamePath));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			return renameFileName;
+		}
 	
-	
-	
-	
-	
+		// 서명 변경
+		@RequestMapping("useSig.do")
+		public String useSig(int sig_no, HttpSession session) {
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		int mno = loginUser.getmNo();
+			
+		System.out.println("sig_no");
+		// sig_File 등록 전 , 이 전에 등록한 파일들 status = N 
+		int resultD = eaService.sigN(mno);
+		
+		int resultU = eaService.sigUpdate(sig_no);
+		
+		return "redirect:sigList.do";
+		
+		}
+		// 전자 서명 삭제
+		@RequestMapping("delSig.do")
+		public String delSig(int sig_no, HttpSession session) {
+			Member loginUser = (Member)session.getAttribute("loginUser");
+			int mno = loginUser.getmNo();
+				
+			System.out.println("sig_no");
+			// files 삭제
+			int resultF = eaService.delfiles(sig_no);
+			
+			// sig_File 삭제
+			int resultS = eaService.delSig(sig_no);
+			
+			return "redirect:sigList.do";
+			
+			}
+		
+		
+		// 사원명 조회
+		@RequestMapping("searchMname.do")
+		@ResponseBody
+		public String searchMname(String searchName) {
+			System.out.println("searchName : " + searchName);
+			
+			ArrayList<Member> list = eaService.searchMname(searchName);
+			Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create(); 
+			System.out.println("검색한 사원 리스트 : " + list);
+			return gson.toJson(list);
+		}
 }

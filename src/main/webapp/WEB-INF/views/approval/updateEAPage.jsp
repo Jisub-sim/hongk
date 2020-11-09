@@ -72,13 +72,17 @@
     </tr>
     <tr>
         <td>결재자</td>
-        <td><input type="text" class="ea_line" id="approverbt"  onclick="location.href='approverList.do'" ></td>
+        <td><input type="text" class="ea_line" value="<c:forEach var="a" items="${ ap }">
+				${ a.mName } &nbsp;
+			</c:forEach>"></td>
         <td>기안부서</td>
         <td>${ list.deptTitle }<input type="hidden" name="ea_no" value="${ list.ea_no }"></td>
     </tr>
     <tr>
         <td>참조자</td>
-        <td><input type="text" class="ea_line"></td>
+        <td><input type="text" class="ea_line" value="<c:forEach var="r" items="${ ref }">
+							${ r.mName } &nbsp;
+						</c:forEach>"></td>
         <td>기안일자</td>
         <td><fmt:formatDate var="draftng_date" type="date" value="${list.draftng_date}" pattern="yyyy-MM-dd"/>
 							${draftng_date }</td>

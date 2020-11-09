@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="annualMapper">
+	<resultMap type="Annual" id="annualResultSet">
+		<id property="annual_no" column="ANNUAL_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="annual_start" column="ANNUAL_START"/>
+		<result property="annual_end" column="ANNUAL_END"/>
+		<result property="annual_day_count" column="ANNUAL_DAY_COUNT"/>
+		<result property="annual_day_use" column="ANNUAL_DAY_USE"/>
+		<result property="annual_day_remain" column="ANNUAL_DAY_REMAIN"/>
+		<result property="annual_type" column="ANNUAL_TYPE"/>
+		<result property="annual_content" column="ANNUAL_CONTENT"/>
+		<result property="annual_halftime" column="ANNUAL_HALFTIME"/>
+		<result property="annual_signupday" column="ANNUAL_SIGNUPDAY"/>
+		<result property="ann_status" column="ANN_STATUS"/>
+		
+	</resultMap>
+	
+	<resultMap type="Member" id="memberResultSet">
+		<id property="mNo" column="MNO"/>
+		<result property="mId" column="MID"/>
+		<result property="mPwd" column="MPWD"/>
+		<result property="mName" column="MNAME"/>
+		<result property="age" column="AGE"/>
+		<result property="gender" column="GENDER"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="exNumber" column="EXNUMBER"/>
+		<result property="hireDate" column="HIRE_DATE"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="mLevel" column="M_LEVEL"/>
+		<result property="mStatus" column="M_STATUS"/>
+		<result property="deptCode" column="DEPT_CODE"/>
+		<result property="jobCode" column="JOB_CODE"/>	
+		<result property="deptTitle" column="DEPT_TITLE"/>
+		<result property="jobTitle" column="JOB_TITLE"/>	
+	</resultMap>
+	
+	<insert id="insertannual" parameterType="Annual">
+	INSERT INTO ANNUAL VALUES(
+		SEQ_ANNO.NEXTVAL, #{mno}, #{annual_start}, #{annual_end},
+		 #{annual_day_use},
+		 #{annual_type},
+		#{annual_content}, #{annual_halftime},SYSDATE, 'W', #{annual_title},
+		SEQ_EAID.CURRVAL
+	)
+	</insert>
+	
+	<insert id="halfTimeinsert" parameterType="Annual">
+	INSERT INTO ANNUAL VALUES(
+		SEQ_ANNO.NEXTVAL, #{mno}, #{annual_start}, #{annual_end},
+		 0.5,
+		 #{annual_type},
+		#{annual_content}, #{annual_halftime},SYSDATE, 'W', #{annual_title},
+		SEQ_EAID.CURRVAL
+	)
+	
+	</insert>
+	
+	
+	
+	<select id="selectList" parameterType="_int" resultMap="annualResultSet">
+		SELECT *
+		FROM ANNUAL
+		WHERE ANN_STATUS='W'
+		AND MNO=#{mno}
+		ORDER BY ANNUAL_NO DESC
+	</select>
+	
+	<select id="selectmyann" parameterType="_int" resultMap="annualResultSet">
+		SELECT  *
+    	FROM annualmanagement
+    	WHERE MNO=#{mno}
+   	 	AND AM_STATUS='Y'
+	
+	</select>
+	
+	<select id="selectmember" parameterType="_int" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		JOIN DEPT USING(DEPT_CODE)
+		JOIN JOB USING(JOB_CODE)
+		WHERE MNO=#{mno}
+	</select>
+	
+	<select id="selectListCount" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+		FROM ANNUAL
+		WHERE ANN_STATUS='W'
+		AND MNO=#{mno}
+	
+	</select>
+	
+	<select id="selectOne" resultType="_int" resultMap="annualResultSet">
+		SELECT *
+		FROM ANNUAL
+		WHERE ANNUAL_NO=#{annual_no}
+		AND ANN_STATUS='W'
+	</select>
+	
+	 <update id="updateAnnual"  parameterType="Annual">
+		UPDATE ANNUAL
+		SET ANNUAL_CONTENT=#{annual_content}
+		WHERE ANNUAL_NO=#{annual_no}
+	</update> 
+	
+	<update id="deleteAnnual" parameterType="_int">
+		UPDATE ANNUAL
+		SET ANN_STATUS='N'
+		WHERE ANNUAL_NO=#{annual_no}
+	</update>
+	
+	<select id="selectListendCount" resultType="_int" parameterType="_int">
+	SELECT COUNT(*)
+		FROM ANNUAL
+		WHERE ANN_STATUS='Y'
+		AND MNO=#{mno}
+	</select>
+	
+	<select id="selectendList" resultType="_int" resultMap="annualResultSet">
+		SELECT *
+		FROM ANNUAL
+		WHERE MNO=#{mno}
+		AND ANN_STATUS='Y'
+	</select>
+	
+	<select id="selectAnn" resultMap="annualResultSet">
+		SELECT *
+		FROM ANNUAL
+		WHERE EA_NO=#{ea_no}
+		
+	</select>
+	
+	<update id="amupdateY" parameterType="Annual">
+		UPDATE ANNUALMANAGEMENT
+		SET ANNUAL_DAY_REMAIN= ANNUAL_DAY_REMAIN-#{annual_day_use}
+		WHERE MNO=#{mno}
+		AND AM_STATUS='Y'
+	</update>
+	
+</mapper>

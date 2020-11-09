@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.approval.model.vo.Approval;
 import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.approval.model.vo.Form;
@@ -17,6 +18,7 @@ import com.kh.hongk.approval.model.vo.Sig_File;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Project;
+import com.kh.hongk.work.model.vo.Work;
 
 @Repository("eaDao") //DB와 접근하는 클래스에 부여하는 어노테이션
 public class EADao {
@@ -118,6 +120,10 @@ public class EADao {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return (ArrayList)sqlSession.selectList("eaMapper.selectREAList",drafter ,rowBounds);
+	}
+	// 참조자 리스트
+	public ArrayList<Referrer> reList(int ea_no) {
+		return (ArrayList)sqlSession.selectList("eaMapper.reList",ea_no);
 	}
 	// 결재 기록
 	public ArrayList<Approval> apList(int ea_no) {
@@ -331,8 +337,55 @@ public class EADao {
 	public int sigN(int mno) {
 		return sqlSession.update("eaMapper.sigN", mno);
 	}
-	
-	
+	// 결재 파일 등록
+	public int Fileinsert(Files f) {
+		return sqlSession.insert("eaMapper.Fileinsert", f);
+	}
+	// 결재시 파일 등록
+	public int apFileinsert(Files f) {
+		return sqlSession.insert("eaMapper.apFileinsert", f);
+	}
+	// 첨부 파일 불러오기
+	public Files selectFile(int ea_no) {
+		return sqlSession.selectOne("eaMapper.selectFile", ea_no);
+	}
+	// 서명 변경
+	public int sigUpdate(int sig_no) {
+		return sqlSession.update("eaMapper.sigUpdate", sig_no);
+	}
+	// 서명 삭제
+	public int delfiles(int sig_no) {
+		return sqlSession.delete("eaMapper.delfiles", sig_no);
+	}
+	public int delSig(int sig_no) {
+		return sqlSession.delete("eaMapper.delSig", sig_no);
+	}
+	// 사원명 조회
+		public ArrayList<Member> searchMname(String searchName) {
+		return  (ArrayList)sqlSession.selectList("eaMapper.searchMname", searchName);
+		}
+	// 휴가 승인 완료
+	public int annupdateY(int ea_no) {
+		return sqlSession.update("eaMapper.annupdateY", ea_no);
+	}
+	// 휴가 정보 가져오기
+	public Annual selectAnn(int ea_no) {
+		return sqlSession.selectOne("annualMapper.selectAnn", ea_no);
+	}
+	// 휴가 잔여 변경
+	public int amupdateY(Annual ann) {
+		return sqlSession.update("annualMapper.amupdateY", ann);
+	}
+	public int wkupdateY(int ea_no) {
+	   return sqlSession.update("eaMapper.wkupdateY",ea_no );
+	 }
+	public Work selectwk(int ea_no) {
+	  return sqlSession.selectOne("workMapper.selectwk", ea_no);
+	 }
+	// 퇴근시간 변경
+	public int updatewkend(Work wk) {
+		return sqlSession.update("workMapper.updatewkend", wk);
+	}
 	
 	
 
