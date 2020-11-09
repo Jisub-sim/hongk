@@ -120,7 +120,6 @@
 							</tr>		
                        	</c:if>
 						</c:forEach>
-                       
                     </table>
                 </div>
             </div>

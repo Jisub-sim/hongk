@@ -47,8 +47,6 @@ public class HomeController {
 	public ModelAndView home(Locale locale, Model model, HttpServletRequest request,ModelAndView mv,Integer page) {
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
 		
-		//System.out.println(mNo);
-		
 		int listCount = bService.selectListCount();
 
 		int currentPage = page != null ? page : 1;
