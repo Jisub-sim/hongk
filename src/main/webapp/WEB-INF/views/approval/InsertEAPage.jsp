@@ -70,7 +70,6 @@
         <td width="15%">서식 번호</td>
         <td width="35%">${form.form_no}</td>
         <input type="hidden" name="form_no" value="${ form.form_no }">
-        <input type="hidden" name="ea_type" value="${ form.form_type }">
    		<input type="hidden" name="drafter" value="${ loginUser.mNo }">
    		<input type="hidden" name="app" id="app" >
    		<input type="hidden" name="ref" id="ref" >

@@ -180,7 +180,29 @@ hr {
 				<div class="mem">
 
 					<c:forEach var="i" begin="0" end="${fn:length(pmList)}">
-						<li value="${pmList[i].mNo }" class="menu">${pmList[i].jobCode}
+						<li value="${pmList[i].mNo}" class="menu">
+						<c:if test='${pmList[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+					
 							${pmList[i].mName}</li>
 					</c:forEach>
 

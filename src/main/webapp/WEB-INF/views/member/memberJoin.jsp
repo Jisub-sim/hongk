@@ -88,16 +88,7 @@
 <!--                 </tr> -->
                 <tr>
                         <td> 권한</td>
-                        <td>
-                        	<select name="mLevel" style="width:100%; height:100%;">
-                           		<option>-----</option>
-                                <option value="1">권한1</option>
-                                <option value="2">권한2</option>
-                                <option value="3">권한3</option>
-                                <option value="4">권한4</option>
-                                <option value="5">권한5</option>
-                            </select>
-                            </td>
+                        <td><input type="text" name="mLevel"></td>
                         <td></td>
                     </tr>
                     <tr>

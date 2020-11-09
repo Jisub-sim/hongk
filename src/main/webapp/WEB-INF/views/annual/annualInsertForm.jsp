@@ -298,7 +298,7 @@
 		$("#savebutton").click(function() { 
 			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
 			var content = document.getElementById("smartEditor").value;
-			document.getElementById("smartEditor").setAttribute('name','annual_content' );
+			document.getElementById("smartEditor").setAttribute('name','ea_content' );
 
 			var result = confirm("등록 하시겠습니까?"); 
 			if(result){ 

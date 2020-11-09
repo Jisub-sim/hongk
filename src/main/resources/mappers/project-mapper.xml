@@ -265,9 +265,9 @@
 		WHERE PT_ID=#{ptId}
 	
 	</update>
-	<update id="updateProgress" parameterType="_int">
+	<update id="updateProgress" parameterType="Project">
 		UPDATE PROJECT
-		SET PROGRESS=#{ progress }
+		SET PROGRESS=#{progress}
 		WHERE PID=#{pId}
 	
 	</update>
@@ -375,7 +375,10 @@
         FROM TWORK
         JOIN PTEAM USING(PT_ID)
         WHERE PID=#{pId}
+        AND PT_STATUS='Y'
         GROUP BY PT_ID
+        
+        
 	</select> 
 	
 	<select id="selectCompleteTask" resultMap="PteamResultSet">
@@ -384,6 +387,7 @@
         JOIN PTEAM USING(PT_ID)
         WHERE PID=#{pId}
         AND TW_STATUS = 'N'
+        AND PT_STATUS='Y'
         GROUP BY PT_ID
 	</select>
 	

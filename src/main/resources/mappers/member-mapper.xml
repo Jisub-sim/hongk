@@ -99,7 +99,7 @@
      	)
      </insert>
      
-     <select id="selectProFiles"  parameterType="_int" resultMap="fileResultSet">
+     <select id="selectProFiles" resultMap="fileResultSet">
      	SELECT *
      	FROM FILES
      	WHERE MNO = #{ mno }
