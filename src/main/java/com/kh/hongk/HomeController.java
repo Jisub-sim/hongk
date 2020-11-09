@@ -21,9 +21,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.approval.model.service.EAService;
 import com.kh.hongk.approval.model.vo.Electronic_Approval;
+
+import com.kh.hongk.approval.model.vo.PageInfo;
+import com.kh.hongk.board.model.service.BoardService;
+import com.kh.hongk.board.model.vo.Board;
+import com.kh.hongk.board.model.vo.Pagination;
+
 import com.kh.hongk.calendar.model.service.CalendarService;
 import com.kh.hongk.calendar.model.vo.Calendar1;
 import com.kh.hongk.calendar.model.vo.DateData;
+
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.service.ProjectService;
 import com.kh.hongk.project.model.vo.Pmember;
@@ -45,17 +52,26 @@ public class HomeController {
 	@Autowired
 	private EAService eaService;
 	@Autowired
-	private CalendarService cService;
-	
+	private BoardService bService;
 	
 	@RequestMapping(value = "/home.do", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, Model model, HttpServletRequest request, ModelAndView mv, DateData dateData) {
+	public ModelAndView home(Locale locale, Model model, HttpServletRequest request,ModelAndView mv,Integer page) {
 		int mNo = ((Member) request.getSession().getAttribute("loginUser")).getmNo();
-		System.out.println(mNo);
+		
+		int listCount = bService.selectListCount();
+
+		int currentPage = page != null ? page : 1;
+		
+		PageInfo pi =  Pagination.getPageInfo(currentPage, listCount, 10, 10);
+
+	
 		
 		ArrayList<Electronic_Approval> listWp = eaService.listWp(mNo);
 		
 		ArrayList<Project> list = pService.selectmyProjectMain(mNo);
+		
+		ArrayList<Board> boardlist = bService.selectList(pi);
+		System.out.println("boardlist : "  + boardlist);		
 		SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
 		int manager = 0;
 		String mName = "";
@@ -74,6 +90,11 @@ public class HomeController {
 			mv.addObject("listWp", listWp);
 		}
 		
+
+		if (boardlist != null) {
+			mv.addObject("boardlist", boardlist);
+		}
+
 		/* 캘린더 */
 		String cname = ((Member) request.getSession().getAttribute("loginUser")).getmName();
 		String deptCode = ((Member) request.getSession().getAttribute("loginUser")).getDeptCode();
@@ -176,6 +197,7 @@ public class HomeController {
 		mv.addObject("cname", cname);
 		mv.addObject("aList", aList);
 		
+
 		mv.setViewName("home");
 		return mv;
 	}
