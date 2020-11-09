@@ -156,17 +156,20 @@ color: red;
 							<td>
 							<c:if test="${n.b_Level == 1 }"><i id="blink" class="fas fa-bullhorn"></i></c:if>
 							</td>
-							<td><c:if test="${ !empty loginUser }">
+							<td>
+								<c:if test="${ !empty loginUser }">
 									<c:url var="bdetail" value="bdetail.do">
 										<c:param name="bId" value="${ n.bId }" />
 										<c:param name="page" value="${ pi.currentPage }" />
 									</c:url>
 									<a href="${ bdetail }">${ n.bTitle }</a>
-								</c:if> <c:if test="${ empty loginUser }">
-							${ n.bTitle }
-						</c:if></td>
-							<td>${ n.createDate }</td>
-						</tr>
+								</c:if>
+								<c:if test="${ empty loginUser }">
+									${ n.bTitle }
+								</c:if>
+							</td>
+								<td>${ n.createDate }</td>
+							</tr>
 					</c:forEach>
 				</table>
 			</div>
