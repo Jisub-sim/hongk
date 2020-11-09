@@ -14,11 +14,12 @@
   src="https://code.jquery.com/jquery-3.5.1.min.js"
   integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
   crossorigin="anonymous"></script>
-    <!-- <link rel="stylesheet" href="gw.css"> -->
+     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/include.css"> 
     <script src="https://kit.fontawesome.com/5218f6fd6d.js" crossorigin="anonymous"></script>
     <!--아이콘 참조 사이트 font awesome-->
-    
-    <style>
+</head>
+<style>
+@charset "UTF-8";
      @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"); 
 	
 	body {
@@ -243,31 +244,21 @@ a {
     position:absolute;
     width:290px;
     height:484px;
+    overflow-y:scroll;  
     
 }
 #topmenu{
     display: flex;
     padding: 0px;
     margin: 0px;
-    height:69px;
+    height:60px;
     width:290px;
     border-bottom:1px solid #d8dfe3;  
 }
-#topmenu span{
-    width: 50%;
-    text-align: center;
-    padding-top: 20px;
-}
-
-
-
-#topmenu span.friends{margin-bottom:-1px;}
-#topmenu span.chats{background-position:-95px 25px; cursor:pointer;}
-#topmenu span.chats:hover{background-position:-95px -46px; cursor:pointer;}
 
 .friend{
     height:70px;
-    border-bottom:1px solid #e7ebee;        
+    border-bottom:1px solid #e7ebee;
     position:relative;
 }
 .friend:hover{
@@ -319,9 +310,8 @@ a {
 .friend .status.inactive{background:#eaeef0;}
 #search{
     background:#e3e9ed url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/search.png") -11px 0 no-repeat;
-    height:60px;
+    height:65px;
     width:290px;
-    position:absolute;
     bottom:0;
     left:0;
 }
@@ -331,7 +321,6 @@ a {
     border:none;
     padding:0;
     font-size:14px;
-    font-family:"Open Sans", sans-serif; 
     font-weight:400px;
     color:#8198ac;
 }
@@ -351,7 +340,6 @@ a {
     top:100px;
     left:96px; 
     display:none;
-    
     background:#fff;
 }
 /* <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
@@ -374,22 +362,12 @@ a {
 
 
 #chat-messages{
-    opacity:0;
-    margin-top:30px;
+  
     width:290px;
     height:373px;
     overflow-y:scroll;  
     overflow-x:hidden;
-    padding-right: 20px;
-    -webkit-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-       -moz-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-        -ms-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-         -o-transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-            transition: all 200ms cubic-bezier(0.000, 0.995, 0.990, 1.000);
-}
-#chat-messages.animate{
-    opacity:1;
-    margin-top:0;
+    padding-right: 20px;  
 }
 #chat-messages label{
     color:#aab8c2;
@@ -407,6 +385,7 @@ a {
 }
 #chat-messages div.message.right{
       padding: 0 58px 30px 0;
+      /* /*  */
       margin-right: -19px;
       margin-left: 19px;
 }
@@ -425,8 +404,9 @@ a {
 .message .bubble{   
     background:#f0f4f7;
     font-size:13px;
+    margin-top: 5px;
     font-weight:600;
-    padding:12px 13px;
+    padding:10px;
     border-radius:5px 5px 5px 0px;
     color:#8495a3;
     position:relative;
@@ -442,12 +422,12 @@ a {
     width:7px;
     height:7px;
     left:-5px;
-    bottom:0;
 }
 div.message.right .corner{
     background:url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/bubble-cornerR.png") 0 0 no-repeat;
     left:auto;
     right:-5px;
+    
 }
 .bubble span{
       color: #aab8c2;
@@ -598,8 +578,49 @@ overflow:hidden;
 border-radius:6px; 
 }
 
-    </style>
-</head>
+#mainwrap{
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+    flex-wrap: wrap;
+}
+
+#mainwrap{
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+    flex-wrap: wrap;
+}
+
+.Division{
+    margin: 10px;
+    width: 430px;
+    height: 350px;
+    text-align: center;
+    border-radius: 5px;   
+}
+
+.Divisiontext{
+    background-color:  skyblue;
+    padding: 5px;
+    height: 30px;
+    border-radius : 10px 10px 0px 0px;
+    font-size: 20px;
+}
+.projecttable{
+    width: 100%;
+    border-collapse: collapse;
+    border-bottom: 1px solid gray;
+}
+
+.projecttable th {
+    padding: 3px;
+    border-bottom: 1px solid gray;
+}
+
+</style>
 <body>
 	<c:if test="${ !empty msg }">
 		<script>alert('${msg}');</script>
@@ -617,12 +638,11 @@ border-radius:6px;
             <c:url var="board" value="blist.do"/>
             
         <ul id="navi_font">
-            <li><a href="${ approval }"class="navi_font">전자결재</a></li>
-            <li><a href="${ project }" class="navi_font">프로젝트</a></li>
-            <li><a href="" class="navi_font">일정관리</a></li>
-            <li><a href="${ board }" class="navi_font">게시판</a></li>
-            <%-- <li><a href="${ chat }" class="navi_font">마이페이지</a></li> --%>
-            <li><a href="" class="navi_font">마이페이지</a></li>
+            <li id="1"><a href="${ approval }"class="navi_font">전자결재</a></li>
+            <li id="2"><a href="${ project }" class="navi_font">프로젝트</a></li>
+            <li id="3"><a href="" class="navi_font">일정관리</a></li>
+            <li id="1"><a href="${ board }" class="navi_font">게시판</a></li>
+            <li id="1"><a href="" class="navi_font">마이페이지</a></li>
         </ul>    
     </nav>
 
@@ -649,22 +669,29 @@ border-radius:6px;
         </form>
         </c:if>
          
+        
         <c:if test="${ !empty sessionScope.loginUser }">
-        	<img src="/img/pro.jpg" width="140px" height="140px" />
+			<c:if test="${ !empty sessionScope.file }">
+            	<img src="${pageContext.request.contextPath}/resources/ProfileFileUpload/${ file.reName_FileName }" >
+            </c:if>
+            <c:if test="${ empty sessionScope.file }">
+            	<img src="${pageContext.request.contextPath}/resources/ProfileFileUpload/profileDefault.PNG" width="140px" height="140px" />
+            </c:if>
         <h4>${ loginUser.mName } / ${ loginUser.jobCode } / ${ loginUser.deptCode }</h4>
         <c:url var="logout" value="logout.do"/>
-       	<a href="${logout}">로그아웃</button>
+       	<button a href="${logout}">로그아웃</button>
         </c:if> 
       </header>
+      
        <h3 id="sideTitle">게시판</h3>
-         <c:url var="board" value="flist.do"/>
       <ul>
-        <li><a href="notice.html" style="color: orange">공지사항</a></li>
-        <li><a href="propose.html">제안 게시판</a></li>
-        <li><a href="department.html">부서 게시판</a></li>
-        <li><a href="${ board }">자유 게시판</a></li>
-        <li><a href="myProject.do">내 프로젝트보기</a></li>
+        <li><a href="#" style="color: orange">공지사항</a></li>
+        <li><a href="#">제안 게시판</a></li>
+        <li><a href="#">부서 게시판</a></li>
+        <li><a href="#">자유 게시판</a></li>
+        <%-- <li><a href="myProject.do">내 프로젝트보기</a></li> --%>
       </ul>
+      
           <!--    
          <c:url var="formList" value="formList.do"/>
         <c:url var="earequest" value="earequest.do"/>
@@ -702,10 +729,9 @@ border-radius:6px;
             <div id="chatbox">
                <div id="friendslist">
                    <div id="topmenu">
-                       <span style="color:skyblue;" class="friends"> <i class="far fa-user fa-2x"></i></span>
-                       <span style="color:skyblue;" class="chats"> <i class="far fa-comments fa-2x"></i></span> 
-                      
-                      
+                      <span id="search">
+                          <input type="search" name="" id="searchfield" value="사원 검색" /> 
+                       </span>
                    </div>
                  <c:forEach var="m" items='${ mList }'>
                  	<c:if test="${ loginUser.mId ne m.mId }">
@@ -722,16 +748,8 @@ border-radius:6px;
 	                        	</div>
                  		</div>
                  	</c:if>
-                 </c:forEach>
-           <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
-                           친구검색창 
-           //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-                       <div id="search">
-                           <input type="text" id="searchfield" value="사원 검색" />
-                       </div>
-                       
-                   </div>                
-                   
+                 </c:forEach>                  
+                </div>                
                </div>  
            
            <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
@@ -745,7 +763,7 @@ border-radius:6px;
                            <div class="cx"></div>
                        </div>
                  
-					<div class="roomName">${ m.mId }님과대화</div>
+					<div class="roomName">${ Member.mId }님과대화</div>
 				
                    </div>
            <!-- //////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////////////////
@@ -783,8 +801,11 @@ border-radius:6px;
         </div>
     </div>
     </div>
+      <div id="main">
+       
+        </div> 
     
-<!-- 스크립트 ㄴㄴㄴㄴ -->    
+<!-- 스크립트  -->    
  <script>
  var modal = document.querySelector(".modal");
  var trigger = document.querySelector(".trigger");
@@ -843,8 +864,9 @@ border-radius:6px;
                var childTop = childOffset.top - parentOffset.top;
                var clone = $(this).find('img').eq(0).clone();
                var top = childTop+12+"px";
+               
                var mId = $(this).children('.tomId').val();
-               if(!confirm("채팅 ㄱ?")){
+               if(!confirm("메세지를 보내시겠습니까?")){
              	 return;
               }else{
             	   $(function(){
@@ -867,6 +889,7 @@ border-radius:6px;
           						console.log(data);
           						if(data == "success"){
           							getChatList();
+        							$("#message").val("");
           						}
           					},
           					error : function(e){
@@ -884,6 +907,7 @@ border-radius:6px;
             			   success : function(data){
             				  $chardiv = $("#chat-messages")
             				  $chardiv.html("");
+            				  
             				   if(data.length > 0) {
             					   for(var key in data){
             						   
@@ -918,15 +942,20 @@ border-radius:6px;
             						   }
                 						   $bubble.append($spandate);
             						   }
+            					    
+            						   mId = "";
+            			           
             					   }
             				   }
             				   	
             			   
             		   })
             	   }
-              } /* else 닫기 */
-               $(clone).css({'top': top}).addClass("floatingImg").appendTo("#chatbox");                                    
-               
+              }
+                                 
+          
+
+           
                setTimeout(function(){$("#profile p").addClass("animate");$("#profile").addClass("animate");}, 100);
                setTimeout(function(){
                    $("#chat-messages").addClass("animate");
@@ -934,13 +963,8 @@ border-radius:6px;
                    setTimeout(function(){$('.cx, .cy').addClass('s2');}, 100);
                    setTimeout(function(){$('.cx, .cy').addClass('s3');}, 200);         
                }, 150);                                                        
-               
-             //   $('.floatingImg').animate({
-             //       'width': "68px",
-             //       'left':'108px',
-             //       'top':'20px'
-             //   }, 200);
-               
+          
+            
                var name = $(this).find("p strong").html();
                var email = $(this).find("p span").html();                                                      
                $("#profile p").html(name);
@@ -972,9 +996,5 @@ border-radius:6px;
  </script>
  
  <%--   <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/chating.js?v=1.3"></script> --%> 
-    <!-- <div id="main">
-
-
-        </div> -->
 </body>
 </html>
