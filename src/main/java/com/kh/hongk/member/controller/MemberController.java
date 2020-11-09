@@ -1,7 +1,12 @@
 package com.kh.hongk.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,14 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.hongk.member.exception.MemberException;
 import com.kh.hongk.member.model.service.MemberService;
+import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 
-@SessionAttributes({"loginUser","msg"})
+@SessionAttributes({"loginUser","msg","file"})
 @Controller
 public class MemberController {
 	@Autowired
@@ -64,6 +71,11 @@ public class MemberController {
 					}
 				
 			}
+			int mno = loginUser.getmNo();
+			
+			Files newProfile = mService.selectProFiles(mno);
+			model.addAttribute("file", newProfile);
+			
 			System.out.println("로그인유저 : " + loginUser);
 			return "redirect:home.do";
 			
@@ -124,11 +136,13 @@ public class MemberController {
 		
 	// 회원 정보 수정 메소드
 	@RequestMapping("mupdate.do")
-	public String memberUpdate(Member m,
+	public String memberUpdate(Member m,HttpServletRequest request,
 					   String post, String address1, String address2,
-					 Model model, RedirectAttributes rd, HttpSession session) {
+					 Model model, RedirectAttributes rd, HttpSession session,
+					 @RequestParam(value="uploadFile", required=false) MultipartFile file) {
 		Member loginUser = (Member)session.getAttribute("loginUser");	
 		String mpwd = loginUser.getmPwd();
+		int mno = loginUser.getmNo();
 		
 		m.setAddress(post + "," + address1 + "," + address2);
 		
@@ -136,11 +150,50 @@ public class MemberController {
 			m.setmPwd(mpwd);
 		}
 			
+		// 프로필 사진 변경이 존재 한다면
+		if(!file.getOriginalFilename().equals("")) {		
+			String OriginalFilename = file.getOriginalFilename();
+			System.out.println("넘어온 uploadFile : " + OriginalFilename);
+			String renameFileName = saveFile(file, request);
+			System.out.println("renameFileName : " + renameFileName);
+					
+			Files f = new Files();
+			if(renameFileName != null) {
+				f.setOriginal_FileName(OriginalFilename);
+				f.setReName_FileName(renameFileName);
+				f.setMno(mno);
+						
+				System.out.println("f : " + f);
+			}
+					
+			// 등록된 프로필 파일이 있는가
+			Files Profile = mService.selectProFiles(mno);
+			System.out.println("등록된 프로필 파일이 있는가 : " + Profile);
+			if(Profile != null ) {
+				int file_no = Profile.getFile_no();
+				// 있다면 기존 파일 삭제
+				int resultDF = mService.FileDelete(file_no);
+				if(resultDF > 0) {
+					System.out.println("기존 프로필 파일 삭제 완료");
+				}else {
+					System.out.println("기존 프로필 파일 삭제 실패");
+				}
+			}
+					
+			// Files 에 등록
+			int resultF = mService.Fileinsert(f);
+			if(resultF>0 ) {
+				Files newProfile = mService.selectProFiles(mno);
+				model.addAttribute("file", newProfile);
+			}
+		}		
+		
 		int result = mService.updateMember(m);
+		Member Nmember = mService.selectattmember(m);
 			
 		if(result > 0) {
 			// mypage.jsp에서 넘어온 수정정보인 Member m을 세션에 저장 된 loginUser 객체로 바꿈
-			model.addAttribute("loginUser", m);
+			model.addAttribute("loginUser", Nmember);
 			rd.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
 		}else {
 			throw new MemberException("회원 정보 수정에 실패하였습니다.");
@@ -148,4 +201,33 @@ public class MemberController {
 			
 		return "redirect:home.do";
 	}
+	
+	// [SIG] 서명파일 저장을 위한 별도의 메소드
+			public String saveFile(MultipartFile file, HttpServletRequest request) {
+				// 파일이 저장 될 경로 설정
+				String root = request.getSession().getServletContext().getRealPath("resources");
+				
+				String savePath = root + "\\ProfileFileUpload";
+				
+				File folder = new File(savePath);
+				
+				if(!folder.exists())	// 사진을 저장하고자 하는 경로가 존재하지 않는다면
+					folder.mkdirs();	// 포함 된 경로를 모두 생성함
+				
+				// 파일 Rename -> 현재 시간 년월일시분초.확장자
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+				String originFileName = file.getOriginalFilename(); // -> 원래 이름으로부터 확장자 추출
+				String renameFileName = sdf.format(new Date()) 
+						+ originFileName.substring(originFileName.lastIndexOf("."));
+				String renamePath = folder + "\\" + renameFileName;
+				
+				
+				try {
+					file.transferTo(new File(renamePath));
+				} catch (IllegalStateException | IOException e) {
+					e.printStackTrace();
+				}
+				
+				return renameFileName;
+			}
 }

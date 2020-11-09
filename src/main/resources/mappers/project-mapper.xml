@@ -57,6 +57,7 @@
 		<result property="ptStatus" column="PT_STATUS"/>
 		<result property="pId" column="PID"/>	
 		<result property="mCount" column="COUNT(MNO)"/>	
+		<result property="tCount" column="COUNT(TW_ID)"/>
 	</resultMap>
 	<resultMap type="Task" id="TaskResultSet">
 		<id property="twId" column="TW_ID"/>
@@ -69,6 +70,53 @@
 		<result property="twWriter" column="TW_WRITER"/>
 		<result property="twManager" column="TW_MANAGER"/>
 	</resultMap>
+	
+	<resultMap type="Files" id="FilesResultSet">
+		<id property="file_no" column="FILE_NO"/>
+		<result property="ref_no" column="REF_FNO"/>
+		<result property="original_FileName" column="ORIGINAL_FILENAME"/>
+		<result property="reName_FileName" column="RENAME_FILENAME"/>
+		<result property="save_Date" column="SAVE_DATE"/>
+		<result property="File_type" column="FILE_TYPE"/>
+		<result property="mNo" column="MNO"/>
+		<result property="mName" column="MNAME"/>
+	</resultMap>
+	
+	<resultMap type="Reply" id="ReplyResultSet"> 
+		<id property="wrId" column="WR_ID"/>
+		<result property="wrContent" column="WR_CONTENT"/>
+		<result property="wrStatus" column="WR_STATUS"/>
+		<result property="wrDate" column="WR_DATE"/>
+		<result property="twId" column="TW_ID"/>
+		<result property="mNo" column="MNO"/>
+		<result property="mName" column="MNAME"/>
+	
+	</resultMap>
+	
+	<resultMap type="Request" id="RequestResultSet">
+		<id property="trId" column="TR_ID"/>
+		<result property="trTitle" column="TR_TITLE"/>
+		<result property="trContent" column="TR_CONTENT"/>
+		<result property="trType" column="TR_TYPE"/>
+		<result property="priority" column="PRIORITY"/>
+		<result property="trDate" column="TR_DATE"/>
+		<result property="trStatus" column="TR_STATUS"/>
+		<result property="ptId" column="PT_ID"/>
+		<result property="trWriter" column="TR_WRITER"/>
+		<result property="trManager" column="TR_MANAGER"/>
+	</resultMap>
+	
+	<resultMap type="TrReply" id="TrReplyResultSet">
+		<id property="rrId" column="RR_ID"/>
+		<result property="rrTitle" column="RR_TITLE"/>
+		<result property="rrContent" column="RR_CONTENT"/>
+		<result property="rrDate" column="RR_DATE"/>
+		<result property="rrStatus" column="RR_STATUS"/>
+		<result property="trId" column="TR_ID"/>
+		<result property="mNo" column="MNO"/>
+		<result property="mName" column="MNAME"/>
+	</resultMap>
+	
 	<select id="selectmyProject" parameterType="Project" resultMap="projectResultSet">
 		<!-- SELECT P.PID,PTITLE,PCONTENT,PROGRESS,PDATE,DEADLINE,PSTATUS,MANAGER
 		FROM PROJECT P, PMEMBER M
@@ -76,11 +124,17 @@
 		AND P.PID = M.PID
 		ORDER BY PDATE -->
 	
-	 
+	 <!-- 
         select *
         from project 
         where manager =#{mNo}
-        order by pdate
+        order by pdate -->
+        SELECT *
+        FROM PROJECT
+        WHERE PID IN (SELECT PID
+        FROM PMEMBER 
+        WHERE MNO=#{mNo}
+        AND PM_STATUS='Y')
 	</select>
 	
 	<select id="projectDetail" parameterType="_int" resultMap="projectResultSet2">
@@ -146,12 +200,21 @@
 	<update id="updatePMember" parameterType="Pmember"> 
 		UPDATE PMEMBER
 	    SET PT_ID = SEQ_PTID.CURRVAL
-	    WHERE MNO IN 
-	    <foreach collection="TmList" item="item" open="(" close=")" separator=",">
-	    #{item}
-	    </foreach>
+	    WHERE MNO = #{tCount}
 	    AND PID=#{pId}	    
         AND PM_STATUS='Y'
+	</update>
+	
+	<update id="updatePDMember" parameterType="Pmember">
+		UPDATE PMEMBER
+        SET PT_ID= SEQ_PTID.CURRVAL
+        WHERE MNO IN (SELECT MNO 
+                        FROM PMEMBER 
+                        JOIN MEMBER USING(MNO)
+                        WHERE DEPT_CODE = #{mList}
+                        AND PM_STATUS ='Y'
+                        AND PID=#{pId})
+       	AND PM_STATUS ='Y'
 	</update>
 	
 	<insert id="insertPMember" parameterType="Project">
@@ -202,9 +265,9 @@
 		WHERE PT_ID=#{ptId}
 	
 	</update>
-	<update id="updateProgress" parameterType="_int">
+	<update id="updateProgress" parameterType="Project">
 		UPDATE PROJECT
-		SET PROGRESS=#{ progress }
+		SET PROGRESS=#{progress}
 		WHERE PID=#{pId}
 	
 	</update>
@@ -232,6 +295,7 @@
             AND PID=#{pId}
             AND PM_STATUS='Y'
             AND PT_STATUS='Y')
+        ORDER BY TW_STATUS DESC
 	</select>
 	
 	<select id="selectWriter" resultMap="memberResultSet">
@@ -239,4 +303,143 @@
 		FROM MEMBER
 		WHERE MNO=#{m}
 	</select>
+	
+	<select id="selectTask" resultMap="TaskResultSet">
+		SELECT *
+		FROM TWORK
+		WHERE TW_ID=#{twId}	
+	</select>
+	
+	<update id="updateManager" parameterType="_int">
+		UPDATE TWORK
+		SET TW_MANAGER=#{twManager}
+		WHERE TW_ID=#{twId}
+	</update> 
+	<update id="updateRequestManager" parameterType="_int">
+		UPDATE TREQUEST
+		SET TR_MANAGER=#{trManager}
+		WHERE TR_ID=#{trId}
+	</update> 
+	<insert id="insertFile"  parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, #{ref_no}, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'TASK',#{mNo})
+		
+	</insert>
+	<insert id="insertAFile"  parameterType="Files">
+     	INSERT INTO FILES VALUES(
+     		SEQ_FID.NEXTVAL, SEQ_TRID.CURRVAL, #{original_FileName}, #{reName_FileName},
+     			SYSDATE, 'ASK',#{mNo})
+		
+	</insert>
+	
+	<select id="selectFileList" resultMap="FilesResultSet">
+		SELECT FILE_NO, REF_FNO,ORIGINAL_FILENAME,RENAME_FILENAME,SAVE_DATE,FILE_TYPE,MNAME
+		FROM FILES
+        JOIN MEMBER USING (MNO)
+		WHERE FILE_TYPE = 'TASK'
+		AND REF_FNO = #{twId}
+		
+	</select>
+	<select id="fListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FILES
+		WHERE REF_FNO = #{twId}
+		AND FILE_TYPE = 'TASK' 
+	</select>
+	
+	<insert id="insertReply" parameterType="Reply">
+		INSERT INTO TWREPLY VALUES(SEQ_WRID.NEXTVAL,#{wrContent},'Y',SYSDATE,#{twId},#{mNo})
+	</insert>
+	
+	<select id="selectReplyList" resultMap="ReplyResultSet">
+		SELECT WR_ID,WR_CONTENT,WR_STATUS,WR_DATE,TW_ID,MNAME
+		FROM TWREPLY
+		JOIN MEMBER USING (MNO)
+		WHERE TW_ID=#{twId}
+		AND WR_STATUS='Y'
+	</select>
+	
+	<update id="deleteReply" parameterType="_int">
+		UPDATE TWREPLY
+		SET WR_STATUS='N'
+		WHERE WR_ID=#{twId}
+	</update>
+	<update id="deleteRReply" parameterType="_int">
+		UPDATE TRREPLY
+		SET RR_STATUS='N'
+		WHERE RR_ID=#{rrId}
+	</update>
+	<select id="selectTaskCount" resultMap="PteamResultSet">
+		SELECT PT_ID,COUNT(TW_ID)
+        FROM TWORK
+        JOIN PTEAM USING(PT_ID)
+        WHERE PID=#{pId}
+        AND PT_STATUS='Y'
+        GROUP BY PT_ID
+        
+        
+	</select> 
+	
+	<select id="selectCompleteTask" resultMap="PteamResultSet">
+		SELECT PT_ID,COUNT(TW_ID)
+        FROM TWORK
+        JOIN PTEAM USING(PT_ID)
+        WHERE PID=#{pId}
+        AND TW_STATUS = 'N'
+        AND PT_STATUS='Y'
+        GROUP BY PT_ID
+	</select>
+	
+	<update id="twStatusUpdate" parameterType="_int">
+		UPDATE TWORK
+		SET TW_STATUS='N'
+		WHERE TW_ID=#{twId}
+	</update>
+	
+	<select id="selectOtherTeam" resultMap="PteamResultSet">
+		SELECT *
+        FROM PTEAM
+        WHERE PT_ID != #{ptId}
+        AND PID = #{pId}
+        AND PT_STATUS='Y'
+	</select>
+	
+	<insert id="insertRequest" parameterType="Request">
+		INSERT INTO TREQUEST VALUES(SEQ_TRID.NEXTVAL,#{trTitle},#{trContent},#{trType},#{priority},SYSDATE,'Y',#{ptId},#{trWriter},null)
+	</insert>
+	
+	<select id="selectRequestList" resultMap="RequestResultSet">		
+		SELECT *
+		FROM TREQUEST
+		WHERE TR_STATUS='Y'
+		AND PT_ID= #{ptId}
+	</select>
+	
+	<select id="selectAsk" resultMap="RequestResultSet">
+		SELECT *
+		FROM TREQUEST
+		WHERE TR_ID=#{trId}
+	</select>
+	
+	<insert id="insertTrReply" parameterType="TrReply">
+		INSERT INTO TRREPLY VALUES(SEQ_RRID.NEXTVAL,#{rrTitle},#{rrContent},SYSDATE,'Y',#{trId},#{mNo})
+	</insert>
+	
+	<select id="selectTrlist" resultMap="TrReplyResultSet">
+		SELECT RR_ID,RR_TITLE,RR_CONTENT,RR_STATUS,RR_DATE,TR_ID,MNAME
+		FROM TRREPLY
+		JOIN MEMBER USING (MNO)
+		WHERE TR_ID=#{trId}
+		AND RR_STATUS IN ('Y','C')		
+	</select>
+	
+	<select id="selectAskFile" resultMap="FilesResultSet">
+		SELECT FILE_NO, REF_FNO,ORIGINAL_FILENAME,RENAME_FILENAME,SAVE_DATE,FILE_TYPE,MNAME
+		FROM FILES
+        JOIN MEMBER USING (MNO)
+		WHERE FILE_TYPE = 'ASK'
+		AND REF_FNO = #{trId}
+	</select>
+	
 </mapper>

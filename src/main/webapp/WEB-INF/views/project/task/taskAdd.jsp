@@ -138,7 +138,7 @@ hr {
 	margin-left:50px;
 }
 #taskT{
-	margin-left:15px;
+	margin-left:15px;	
 }
 </style>
 </head>
@@ -148,7 +148,9 @@ hr {
 	<div id="main">
 
 		<form action="taskadd.do" method="post">
-	
+			<c:url var="project" value="project.do">
+				<c:param name="pId" value="${pId}"/>
+			</c:url>
 			<ul>
 				<li><a href="${ project }" id="back">뒤로가기</a> <input type="submit" id="save" value="등록하기">
 				</li>
@@ -178,7 +180,29 @@ hr {
 				<div class="mem">
 
 					<c:forEach var="i" begin="0" end="${fn:length(pmList)}">
-						<li value="${pmList[i].mNo }" class="menu">${pmList[i].jobCode}
+						<li value="${pmList[i].mNo}" class="menu">
+						<c:if test='${pmList[i].jobCode eq "J1"}'>
+						대표
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J2"}'>
+						부사장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J3"}'>
+						부장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J4"}'>
+						차장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J5"}'>
+						과장
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J6"}'>
+						대리
+						</c:if>
+						<c:if test='${pmList[i].jobCode eq "J7"}'>
+						사원
+						</c:if>
+					
 							${pmList[i].mName}</li>
 					</c:forEach>
 

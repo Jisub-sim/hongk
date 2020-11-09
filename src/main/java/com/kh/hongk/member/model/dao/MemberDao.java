@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 
 @Repository("mDao")
@@ -36,6 +37,18 @@ public class MemberDao {
 	
 	public Member selectattmember(Member m) {
 		return sqlSession.selectOne("memberMapper.selectattmember", m);
+	}
+	// 프로필 사진 등록
+	public int Fileinsert(Files f) {
+		return sqlSession.insert("memberMapper.Fileinsert", f);
+	}
+	// 등록된 프로필이 있는가
+	public Files selectProFiles(int mno) {
+		return sqlSession.selectOne("memberMapper.selectProFiles", mno);
+	}
+	// 기존 프로필 파일 삭제
+	public int FileDelete(int file_no) {
+		return  sqlSession.delete("memberMapper.FileDelete", file_no);
 	}
 
 }

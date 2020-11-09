@@ -155,73 +155,84 @@
      vertical-align: middle;
      margin-top : 20px;
     }
+    
+      #smartEditor{
+    width:100%;
+    	height:35vh;
+    	resize: none;
+    }
+</style>
 </style>
 </style>
 <body>
 <jsp:include page="../common/include.jsp" />
 <div id="main">
 <br>
-<h2>±Ù¹«½ÅÃ»¼­</h2>
+<h2>ê·¼ë¬´ì‹ ì²­ì„œ</h2>
 <br>
 <table class="type01">
         <tr>
-            <th scope="row">±â¾ÈÀÚ</th>
+            <th scope="row">ê¸°ì•ˆì</th>
             <td>${member.mName }</td>
         </tr>
         <tr>
-            <th scope="row">±â¾ÈºÎ¼­</th>
+            <th scope="row">ê¸°ì•ˆë¶€ì„œ</th>
             <td>${member.deptTitle }</td>
         </tr>
         <tr>
-            <th scope="row">±â¾ÈÀÏ</th>
+            <th scope="row">ê¸°ì•ˆì¼</th>
             <td><fmt:formatDate value="${nowDate}" pattern="yyyy-MM-dd" /></td>
         </tr>
         <!-- <tr>
-            <th scope="row">¹®¼­ ¹øÈ£</th>
+            <th scope="row">ë¬¸ì„œ ë²ˆí˜¸</th>
             <td></td>
         </tr> -->
     </table>
     <form action="workinsert.do" method="POST">
     <table class="type02">
     	<tr>
-    		<th scope="row" width="15%">*Á¦¸ñ</th>
+    		<th scope="row" width="15%">*ì œëª©</th>
     		<td width="85%"><input type="text" name="work_title"> </td>
     	</tr>
         <tr>
-            <th scope="row">*±Ù¹«±¸ºĞ</th>
+            <th scope="row">*ê·¼ë¬´êµ¬ë¶„</th>
             <td><select id="work_type" name="wk_type">
             	<option selected>----</option>
-            	<option value="1">¿Ü±Ù</option>
-            	<option value="2">Á¶Åğ</option>
+            	<option value="1">ì™¸ê·¼</option>
+            	<option value="2">ì¡°í‡´</option>
             </select></td>
         </tr>
         <tr>
-            <th scope="row">*±Ù¹«ÀÏ</th>
+            <th scope="row">*ê·¼ë¬´ì¼</th>
             <td>
                 <p><input type="date" class="datecalnder" name="work_date">
                     <!-- <input type="time" class="datetime" name="start_time"> - <input type="time" class="datetime" name="end_time"> -->
             </td>
         </tr>
         <tr>
-            <th scope="row">*±Ù¹«½Ã°£</th>
+            <th scope="row">*ê·¼ë¬´ì‹œê°„</th>
             <td>
                 <input  type="time"class="disabledInput"  name="start_time" > &nbsp; - &nbsp; 
                 <input  type="time" class="disabledInput"  name="end_time" >
                 
-<!--                 type="text" placeholder="±Ù¹«½Ã°£ Ç¥½Ã" disabled -->
+<!--                 type="text" placeholder="ê·¼ë¬´ì‹œê°„ í‘œì‹œ" disabled -->
             </td>
         </tr>
 
         <tr>
-            <th scope="row">*½ÅÃ» »çÀ¯</th>
+            <th scope="row">*ì‹ ì²­ ì‚¬ìœ </th>
             <td>
                  <div>
+
 	                <textarea name="work_content" id="smartEditor" rows="10" cols="100" >${ work.work_content }</textarea>
+
+	                <textarea name="smartEditor" id="smartEditor" rows="10" cols="100" >${ form.form_content }</textarea>
+
 	            </div>
             </td>
         </tr>
         <tr>
-        <th>´ã´çÀÚ</th>
+        <th>ë‹´ë‹¹ì</th>
         <td><input type="text" class="ea_line" id="managerBt" required></td>
         <input type="hidden" name="mid" id="mid" >
         <input type="hidden" name="form_no" value="${ form.form_no }">
@@ -232,7 +243,7 @@
 
     </table>
     <div class="worksm">
-        <button type="submit" class=" btclick" id="savebutton">½ÅÃ»ÇÏ±â</button>
+        <button type="submit" class=" btclick" id="savebutton">ì‹ ì²­í•˜ê¸°</button>
     </div>
     
     </form>
@@ -241,13 +252,13 @@
      nhn.husky.EZCreator.createInIFrame({ 
      	oAppRef : oEditors,
      	elPlaceHolder : "smartEditor", 
-     	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //°æ·Î¸¦ ²À ¸ÂÃçÁÖ¼¼¿ä! 
+     	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //ê²½ë¡œë¥¼ ê¼­ ë§ì¶°ì£¼ì„¸ìš”! 
      	fCreator : "createSEditor2", htParams : { 
-     	// Åø¹Ù »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+     	// íˆ´ë°” ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
      	bUseToolbar : true, 
-     	// ÀÔ·ÂÃ¢ Å©±â Á¶Àı¹Ù »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+     	// ì…ë ¥ì°½ í¬ê¸° ì¡°ì ˆë°” ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
      	bUseVerticalResizer : false, 
-     	// ¸ğµå ÅÇ(Editor | HTML | TEXT) »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+     	// ëª¨ë“œ íƒ­(Editor | HTML | TEXT) ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
      	bUseModeChanger : false
      	} 
      }); 
@@ -256,9 +267,13 @@
  		$("#savebutton").click(function() { 
  			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
  			var content = document.getElementById("smartEditor").value;
+
  			document.getElementById("smartEditor").setAttribute('name','work_content' );
 
- 			var result = confirm("µî·Ï ÇÏ½Ã°Ú½À´Ï±î?"); 
+ 			document.getElementById("smartEditor").setAttribute('name','ea_content' );
+
+
+ 			var result = confirm("ë“±ë¡ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"); 
  			if(result){ 
  				
  			}else{ 
@@ -267,7 +282,7 @@
  		}); 
  	})
      
-    // ´ã´çÀÚ ¼±ÅÃ
+    // ë‹´ë‹¹ì ì„ íƒ
            $(function(){
                $("#managerBt").click(function(){
                   window.open('${managerList}','window_name','width=1000,height=700,left=130,top=250,location=no,status=no,scrollbars=yes');

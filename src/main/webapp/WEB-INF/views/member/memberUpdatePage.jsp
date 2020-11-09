@@ -48,7 +48,7 @@
 
    <div id="main">
       <br><br>
-		<form action="mupdate.do" method="post" id="updateForm">
+		<form action="mupdate.do" method="post" id="updateForm" enctype="multipart/form-data">
     <table class="ea_table" id="minserttable" style="width:70%">
             <thead>
                 <th colspan="3">
@@ -82,6 +82,10 @@
 					<td>비밀번호 확인</td>
                     <td><input type="password" name="mPwd" id="newP2"></td>
                     <td></td>
+				</tr>
+				<tr>
+					<td> 프로필 등록 </td>
+					<td><input type="file" id="imagefileupload" name="uploadFile"  style="border:1px solid gray;"></td>
 				</tr>
 				<tr>
 					<td>성별</td>

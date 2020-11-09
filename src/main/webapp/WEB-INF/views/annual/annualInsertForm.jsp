@@ -26,11 +26,11 @@
 
 
 <!--    
-   // jQuery UI CSSÆÄÀÏ 
+   // jQuery UI CSSíŒŒì¼ 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
-// jQuery ±âº» jsÆÄÀÏ
+// jQuery ê¸°ë³¸ jsíŒŒì¼
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
-// jQuery UI ¶óÀÌºê·¯¸® jsÆÄÀÏ
+// jQuery UI ë¼ì´ë¸ŒëŸ¬ë¦¬ jsíŒŒì¼
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>   -->
 <link rel="stylesheet"
    href="${pageContext.request.contextPath}/resources/css/approvalcss.css">
@@ -167,24 +167,24 @@
 <jsp:include page="../common/include.jsp" />
 <div id="main">
 <br>
-<h2>ÈŞ°¡½ÅÃ»¼­</h2>
+<h2>íœ´ê°€ì‹ ì²­ì„œ</h2>
  <table class="type01">
  
         <tr>
-            <th scope="row">±â¾ÈÀÚ</th>
+            <th scope="row">ê¸°ì•ˆì</th>
             <td>${member.mName }</td>
         </tr>
         <tr>
-            <th scope="row">±â¾ÈºÎ¼­</th>
+            <th scope="row">ê¸°ì•ˆë¶€ì„œ</th>
             <td>${member.deptTitle }</td>
         </tr>
         <tr>
-            <th scope="row">±â¾ÈÀÏ</th>
+            <th scope="row">ê¸°ì•ˆì¼</th>
             <td><fmt:formatDate value="${nowDate}" pattern="yyyy-MM-dd" /></td>
 
         </tr>
         <%-- <tr>
-            <th scope="row">¹®¼­ ¹øÈ£</th>
+            <th scope="row">ë¬¸ì„œ ë²ˆí˜¸</th>
             <td>${ann.annual_no }</td>
         </tr> --%>
     </table>
@@ -192,62 +192,77 @@
     <table class="type02">
         
         <tr>
-        <th scope="row" width="15%"> Á¦¸ñ</th>
+        <th scope="row" width="15%"> ì œëª©</th>
+
         <td  width="85%"> <input style="width:500px; height:30px;" type="text" name="annual_title"></td>
+
+        <td  width="85%"> <input type="text" name="annual_title"></td>
+
         </tr>
         <tr>
-            <th scope="row">ÈŞ°¡ Á¾·ù</th>
+            <th scope="row">íœ´ê°€ ì¢…ë¥˜</th>
             <td><select id="annual_type" name="a_type">
                     <option selected>----</option>
-                    <option value="0">¿¬Â÷À¯±ŞÈŞ°¡</option>
-                    <option value="1">º´°¡</option>
-                    <option value="2">°æÁ¶</option>
-                    <option value="3">¿ùÂ÷</option>
-                    <option value="4">¹İÂ÷</option>
+                    <option value="0">ì—°ì°¨ìœ ê¸‰íœ´ê°€</option>
+                    <option value="1">ë³‘ê°€</option>
+                    <option value="2">ê²½ì¡°</option>
+                    <option value="3">ì›”ì°¨</option>
+                    <option value="4">ë°˜ì°¨</option>
 
                 </select></td>
         </tr>
         <tr>
-            <th scope="row">±â°£ ¹× ÀÏ½Ã</th>
+            <th scope="row">ê¸°ê°„ ë° ì¼ì‹œ</th>
             <td>
             <!-- onchange="ceil()" -->
-               	½ÃÀÛÀÏ &nbsp; : &nbsp;  <input style=height:30px;" type="date" class="datepicker" name="annual_start" id="annual_start" > &nbsp; - &nbsp;
-               	Á¾·áÀÏ &nbsp; : &nbsp; <input style=height:30px;" type="date" class="datepicker" name="annual_end" id="annual_end" >
+               	ì‹œì‘ì¼ &nbsp; : &nbsp;  <input style=height:30px;" type="date" class="datepicker" name="annual_start" id="annual_start" > &nbsp; - &nbsp;
+               	ì¢…ë£Œì¼ &nbsp; : &nbsp; <input style=height:30px;" type="date" class="datepicker" name="annual_end" id="annual_end" >
                 
-                <p>»ç¿ëÀÏ¼ö : &nbsp; <input style="width:300px; height:30px;" type="text" name="annual_day_use" id="annual_day_use">&nbsp;ÀÏ</p>
+                <p>ì‚¬ìš©ì¼ìˆ˜ : &nbsp; <input style="width:300px; height:30px;" type="text" name="annual_day_use" id="annual_day_use">&nbsp;ì¼</p>
             </td>
         </tr>
         <tr>
-            <th scope="row">¹İÂ÷ ¿©ºÎ</th>
+            <th scope="row">ë°˜ì°¨ ì—¬ë¶€</th>
+
             <td><div style=" float: left; display: block; text-align: center; vertical-align: middle;">
-                    <input type="radio" id="radio" name="annual_halftime" value="am" > <!-- <p class="up">¿ÀÀü</p>&nbsp; -->
-                    <label for="radio">¿ÀÀü</label>
-                        <input type="radio" id="radio" name="annual_halftime" value="pm" > <!-- <p class="up">¿ÀÈÄ</p>&nbsp; -->
-                         <label for="radio">¿ÀÈÄ</label>
+                    <input type="radio" id="radio" name="annual_halftime" value="am" > <!-- <p class="up">ì˜¤ì „</p>&nbsp; -->
+                    <label for="radio">ì˜¤ì „</label>
+                        <input type="radio" id="radio" name="annual_halftime" value="pm" > <!-- <p class="up">ì˜¤í›„</p>&nbsp; -->
+                         <label for="radio">ì˜¤í›„</label>
                          <input type="radio" id="radio" name="annual_halftime" value="none" > 
-                         <label for="radio">¾øÀ½</label>
+                         <label for="radio">ì—†ìŒ</label>
                          </div>
+
+            <td>
+                   <p> <input type="radio" name="annual_halftime" value="am" > <span class="up">ì˜¤ì „</span>&nbsp;
+                        <input type="radio" name="annual_halftime" value="pm" > <span class="up">ì˜¤í›„</span></p>
+                         <input type="radio" name="annual_halftime" value="none" > <span class="up">ì—†ìŒ</span></p>
+
             </td>
         </tr>
         <tr>
-            <th scope="row">¿¬Â÷ ÀÏ¼ö</th>
+            <th scope="row">ì—°ì°¨ ì¼ìˆ˜</th>
             <td>
-                <p style="width: 200px;" name="annual_day_count">ÀüÃ¼¿¬Â÷¼ö: ${ann.annual_day_count } </p>
-                <p style="width: 200px;" name="annual_day_remain">ÀÜ¿©¿¬Â÷: ${ann.annual_day_remain }</p>
+                <p style="width: 200px;" name="annual_day_count">ì „ì²´ì—°ì°¨ìˆ˜: ${ann.annual_day_count } </p>
+                <p style="width: 200px;" name="annual_day_remain">ì”ì—¬ì—°ì°¨: ${ann.annual_day_remain }</p>
             </td>
         </tr>
 
         <tr>
-            <th scope="row">ÈŞ°¡ »çÀ¯</th>
+            <th scope="row">íœ´ê°€ ì‚¬ìœ </th>
             <td>
 	             <div>
+
 	                <textarea name="annual_content" id="smartEditor" rows="10" cols="100" >${ ann.annual_content }</textarea>
+
+	                <textarea name="smartEditor" id="smartEditor" rows="10" cols="100" >${ form.form_content }</textarea>
+
 	            </div>
             </td>
         </tr>
         
         <tr>
-        <th>´ã´çÀÚ</th>
+        <th>ë‹´ë‹¹ì</th>
         <td><input style="width:500px; height:30px;" type="text" class="ea_line" id="managerBt" required></td>
         <input type="hidden" name="mid" id="mid" >
         <input type="hidden" name="form_no" value="${ form.form_no }">
@@ -258,7 +273,7 @@
     </table>
     
     <div class="aunnalsm">
-        <button type="submit" class=" btclick" id="savebutton">½ÅÃ»ÇÏ±â</button>
+        <button type="submit" class=" btclick" id="savebutton">ì‹ ì²­í•˜ê¸°</button>
     </div>
     
     </div>
@@ -268,13 +283,13 @@
     nhn.husky.EZCreator.createInIFrame({ 
     	oAppRef : oEditors,
     	elPlaceHolder : "smartEditor", 
-    	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //°æ·Î¸¦ ²À ¸ÂÃçÁÖ¼¼¿ä! 
+    	sSkinURI : "${pageContext.request.contextPath}/resources/se2/SmartEditor2Skin.html", //ê²½ë¡œë¥¼ ê¼­ ë§ì¶°ì£¼ì„¸ìš”! 
     	fCreator : "createSEditor2", htParams : { 
-    	// Åø¹Ù »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+    	// íˆ´ë°” ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
     	bUseToolbar : true, 
-    	// ÀÔ·ÂÃ¢ Å©±â Á¶Àı¹Ù »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+    	// ì…ë ¥ì°½ í¬ê¸° ì¡°ì ˆë°” ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
     	bUseVerticalResizer : false, 
-    	// ¸ğµå ÅÇ(Editor | HTML | TEXT) »ç¿ë ¿©ºÎ (true:»ç¿ë/ false:»ç¿ëÇÏÁö ¾ÊÀ½) 
+    	// ëª¨ë“œ íƒ­(Editor | HTML | TEXT) ì‚¬ìš© ì—¬ë¶€ (true:ì‚¬ìš©/ false:ì‚¬ìš©í•˜ì§€ ì•ŠìŒ) 
     	bUseModeChanger : false
     	} 
     }); 
@@ -283,9 +298,12 @@
 		$("#savebutton").click(function() { 
 			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
 			var content = document.getElementById("smartEditor").value;
-			document.getElementById("smartEditor").setAttribute('name','annual_content' );
 
-			var result = confirm("µî·Ï ÇÏ½Ã°Ú½À´Ï±î?"); 
+			document.getElementById("smartEditor").setAttribute('name','annual_content' );
+  	document.getElementById("smartEditor").setAttribute('name','ea_content' );
+
+
+			var result = confirm("ë“±ë¡ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?"); 
 			if(result){ 
 				
 			}else{ 
@@ -293,7 +311,7 @@
 			} 
 		}); 
 	})
-    // ´ã´çÀÚ ¼±ÅÃ
+    // ë‹´ë‹¹ì ì„ íƒ
            $(function(){
                $("#managerBt").click(function(){
                   window.open('${managerList}','window_name','width=1000,height=700,left=130,top=250,location=no,status=no,scrollbars=yes');
@@ -323,11 +341,11 @@ while(true) {
     } else {
         var tmp = temp_date.getDay();
         if(tmp == 0 || tmp == 6) {
-            // ÁÖ¸»
-            console.log("ÁÖ¸»");
+            // ì£¼ë§
+            console.log("ì£¼ë§");
         } else {
-            // ÆòÀÏ
-            console.log("ÆòÀÏ");
+            // í‰ì¼
+            console.log("í‰ì¼");
             count++;         
         }
         temp_date.setDate(date1.getDate() + 1); 

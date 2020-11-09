@@ -17,7 +17,8 @@ public class Project {
 	
 	private String memberList;
 	private List mList;
-	
+	private String dateString;
+	private String pdateString;
 	public Project() {}
 	
 	public Project(int pId, String pTitle, String pContent, String progress, Date pDate, Date deadLine, String pStatus,
@@ -57,7 +58,7 @@ public class Project {
 	}
 
 	public Project(int pId, String pTitle, String pContent, String progress, Date pDate, Date deadLine, String pStatus,
-			int manager, String mName, String memberList, List mList) {
+			int manager, String mName, String memberList, List mList, String dateString, String pdateString) {
 		super();
 		this.pId = pId;
 		this.pTitle = pTitle;
@@ -70,6 +71,8 @@ public class Project {
 		this.mName = mName;
 		this.memberList = memberList;
 		this.mList = mList;
+		this.dateString = dateString;
+		this.pdateString = pdateString;
 	}
 
 	public int getpId() {
@@ -147,12 +150,31 @@ public class Project {
 		this.mList = mList;
 	}
 
+	public String getDateString() {
+		return dateString;
+	}
+
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
+
+	public String getPdateString() {
+		return pdateString;
+	}
+
+	public void setPdateString(String pdateString) {
+		this.pdateString = pdateString;
+	}
+
 	@Override
 	public String toString() {
 		return "Project [pId=" + pId + ", pTitle=" + pTitle + ", pContent=" + pContent + ", progress=" + progress
 				+ ", pDate=" + pDate + ", deadLine=" + deadLine + ", pStatus=" + pStatus + ", manager=" + manager
-				+ ", mName=" + mName + ", memberList=" + memberList + ", mList=" + mList + "]";
+				+ ", mName=" + mName + ", memberList=" + memberList + ", mList=" + mList + ", dateString=" + dateString
+				+ ", pdateString=" + pdateString + "]";
 	}
+
+
 
 	
 }

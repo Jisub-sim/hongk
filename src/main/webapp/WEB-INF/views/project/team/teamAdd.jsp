@@ -14,16 +14,15 @@ ul, li {
 	list-style-type: none;
 }
 
-#back {
-	float: left;
-	padding-left: 50px;
-	padding-top: 20px;
-}
 
 #save {
 	float: right;
-	padding: 20px;
-	margin-right: 80px;
+	cursor: pointer;
+	margin-right: 70px;
+	border: none;
+	background-color: white;
+	font-weight: 800;
+	
 }
 
 #team_create {
@@ -135,8 +134,12 @@ li {
 	<div id="main">
 		<form action="teaminsert.do" method="post">
 		<input type="hidden" value="${pId}" name="pId">
+		<ul>
 		<li><a href="teamcare.do" id="back">뒤로가기</a> <input type="submit" id="save" value="등록하기">
 		</li>
+		</ul>
+		
+			<hr>
 		<ul id="team_create">
 			<li>팀명 <input type="text" size="100" id="tn" name="ptTitle"
 				style="border: 2px solid skyblue;"></li>

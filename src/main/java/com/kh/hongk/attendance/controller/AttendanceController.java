@@ -39,7 +39,7 @@ public class AttendanceController {
 		
 		Date ot = null;
 		Date nt = null;
-		try {
+		try { 
 			Date currentTime = new Date();
 			SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 			SimpleDateFormat f = new SimpleDateFormat("HH:mm");
@@ -139,10 +139,15 @@ public class AttendanceController {
 	
 	@RequestMapping("attlist.do")
 	public ModelAndView AttendanceList(ModelAndView mv,  HttpSession session, 
-			@RequestParam(value="page", required=false) Integer page) {
+			@RequestParam(value="page", required=false) Integer page, int pageurlnum) {
 		
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
+		
+		int pageurlnum1 = pageurlnum;
+		if(pageurlnum1 != 0) {
+			session.setAttribute("pageurlnum1", pageurlnum1);
+		}
 		
 		// 페이징 처리를 위해 개시글 개수 구해오기
 		int allListCount = attService.selectallListCount(mNo);

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="workMapper">
+	<resultMap type="Work" id="WorkResultSet">
+		<id property="work_no" column="WORK_NO"/>
+		<result property="mno" column="MNO"/>
+		<result property="work_date" column="WORK_DATE"/>
+		<result property="work_time" column="TIME"/>
+		<result property="work_content" column="WORK_CONTENT"/>
+		<result property="work_type" column="WORK_TYPE"/>
+		<result property="start_time" column="START_TIME"/>
+		<result property="end_time" column="END_TIME"/>
+		<result property="wk_status" column="WK_STATUS"/>
+		<result property="work_title" column="WORK_TITLE"/>
+	</resultMap>
+	<resultMap type="Member" id="memberResultSet">
+		<id property="mNo" column="MNO"/>
+		<result property="mId" column="MID"/>
+		<result property="mPwd" column="MPWD"/>
+		<result property="mName" column="MNAME"/>
+		<result property="age" column="AGE"/>
+		<result property="gender" column="GENDER"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="phone" column="PHONE"/>
+		<result property="exNumber" column="EXNUMBER"/>
+		<result property="hireDate" column="HIRE_DATE"/>
+		<result property="entDate" column="ENT_DATE"/>
+		<result property="mLevel" column="M_LEVEL"/>
+		<result property="mStatus" column="M_STATUS"/>
+		<result property="deptCode" column="DEPT_CODE"/>
+		<result property="jobCode" column="JOB_CODE"/>	
+		<result property="deptTitle" column="DEPT_TITLE"/>
+		<result property="jobTitle" column="JOB_TITLE"/>	
+	</resultMap>
+	
+	<!-- 외근 타입 1 조퇴 타입2 -->
+	<insert id="insertwork" parameterType="Work">
+	INSERT INTO WORK VALUES(
+		SEQ_WNO.NEXTVAL, #{ mno }, #{work_date}, null,
+		 #{ work_content },#{ work_type} , #{ start_time },
+		#{ end_time }, 'W', #{work_title}, SEQ_EAID.CURRVAL
+		
+	)
+	</insert>
+	
+	<!-- <select id="selectmywk" parameterType="_int" resultMap="WorkResultSet">
+		SELECT *
+		FROM WORK
+		WHERE MNO = #{mno}
+		AND WK_STATUS='W'
+	
+	</select> -->
+	
+	<select id="selectmember" parameterType="_int" resultMap="memberResultSet">
+		SELECT *
+		FROM MEMBER
+		JOIN DEPT USING(DEPT_CODE)
+		JOIN JOB USING(JOB_CODE)
+		WHERE MNO=#{mno}
+	</select>
+	
+	<select id="selectListCount" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM WORK
+		WHERE WK_STATUS='Y'
+		AND MNO=#{mno}
+	</select>
+	
+	<select id="selectList" parameterType="_int" resultMap="WorkResultSet">
+		SELECT *
+		FROM WORK
+		WHERE MNO=#{mno}
+		ORDER BY WORK_NO DESC
+	</select>
+	
+	<select id="selectWork" resultType="_int" resultMap="WorkResultSet">
+		SELECT *
+		FROM WORK
+		WHERE WORK_NO=#{work_no}
+		AND WK_STATUS='W'
+		
+	</select>
+	
+	<select id="selectwk" resultMap="WorkResultSet">
+		SELECT *
+		FROM WORK
+		WHERE EA_NO=#{ea_no}
+		
+	
+	</select>
+	
+	<update id="updatewkend" parameterType="Work">
+		UPDATE ATTENDANCE
+		SET WORK_OFF = #{end_time}
+		WHERE TO_CHAR(work_on, 'yyyyMMdd') = to_char(#{work_date}, 'yyyyMMdd')
+	
+	</update>
+	
+	<update id="updateWork" parameterType="Work">
+		UPDATE WORK
+		SET WORK_CONTENT=#{work_content}
+		<!-- 	WORK_DATE=#{work_date},
+			WORK_START=#{work_start},
+			WORK_END=#{work_end} -->
+		WHERE WORK_NO=#{work_no}
+		AND WK_STATUS='W'	
+	</update>
+	
+	<update id="deleteWork" parameterType="_int">
+		UPDATE WORK
+		SET WK_STATUS='N'
+		WHERE WORK_NO=#{work_no}
+	</update>
+	
+	
+	
+	
+
+</mapper>

@@ -23,14 +23,14 @@
     width:46%;
     float:left;
     margin-left: 2.4%;
-    
+    overflow:scroll;
 }
 #ask{
     height:250px;
     width:46%;
     float:right;
     margin-right: 2.4%;
-    
+    overflow:scroll;
 }
 #progress{
     width:100px;
@@ -48,7 +48,7 @@ hr{
     float:left;
 }
 #update{
-    width:165px;
+    width:110px;
     float:right;
     border:none;
 }
@@ -158,7 +158,7 @@ ul, li{
             <li>프로젝트명 : ${ p.pTitle } </li>
             <li>내용 : ${ p.pContent }
             <li>책임자 정보(생성자) : ${ p.mName }</li>
-            <li>기간 : ${ p.pDate } ~ ${ p.deadLine }</li>
+            <li>기간 : ${ p.dateString } ~ ${ p.pdateString }</li>
         </ul>
         
 
@@ -176,8 +176,10 @@ ul, li{
                 <tr>                
                     <td>${ pt.ptTitle }</td>
                     <td>${ pt.mCount }</td>
-                    <td>5</td>
-                    <td>30%</td>                    
+                    <td><c:if test="${ pt.tCount == null }">0</c:if>
+                  	<c:if test="${ pt.tCount != null }">${ pt.tCount }</c:if>
+                    </td>
+                    <td>${pt.persent}%</td>                    
                 </tr>
               	</c:forEach>
             </table>
@@ -189,34 +191,36 @@ ul, li{
         <div class="project" id="task">
             <table id="task_style">
                 <th colspan="4">업무목록<a href="${taskaddForm}" class="plus">+</a></th>
+                  <c:if test="${tl.isEmpty()}">
+                       	<tr><td>요청사항이 없습니다.</td></tr>
+                      </c:if>
+                      <c:if test="${!tl.isEmpty()}">
                 <c:forEach var="tl" items="${tl}">
-                <c:if test="${tl.twStatus eq 'Y'}">
                 <tr>                
-                    <td class="task_name"><a href="taskclick.do">${tl.twTitle}</a></td>
+               		<c:url var="task" value="taskClick.do">
+						<c:param name="twId" value="${tl.twId}"/>
+						<c:param name="pId" value="${p.pId}"/>
+					</c:url>
+                    <td class="task_name"><a href="${task}">${tl.twTitle}</a></td>
                     <c:if test="${tl.manager ne null}">
                     <td class="task_mana">${tl.manager}</td>
                     </c:if>
+          
                     <c:if test="${tl.manager eq null }">
                     <td class="task_mana"></td>
                     </c:if>
-					<td class="task_status">미완료</td>
+					<td class="task_status">
+					<c:if test="${tl.twStatus eq 'Y'}">
+					미완료
+					</c:if>
+					<c:if test="${tl.twStatus eq 'N' }">
+					완료
+					</c:if>
+					</td>
                     <td class="task_date">${tl.twEnd}</td>
                 </tr>
-                </c:if>
-                <c:if test="${tl.twStatus eq 'N' }">
-                  <tr>                
-                    <td class="task_name"><a href="taskclick.do">${tl.twTitle}</a></td>
-                    <c:if test="${tl.manager ne null}">
-                    <td class="task_mana">${tl.manager}</td>
-                    </c:if>
-                    <c:if test="${tl.manager eq null }">
-                    <td class="task_mana"></td>
-                    </c:if>
-					<td class="task_status">완료</td>
-                    <td class="task_date">${tl.twEnd}</td>
-                </tr>
-                </c:if>
                 </c:forEach>
+                </c:if>
              <!--    <tr>
                         <td class="task_name">오늘까지 이거해라</td>
                         <td class="task_mana">담당자</td>
@@ -227,20 +231,36 @@ ul, li{
         </div>
         <div class="project" id="ask">
                 <table id="ask_style">
-                        <th colspan="4">요청사항<a href="askadd.do" class="plus">+</a></th>
+                <c:url var="askaddForm" value="askaddForm.do">
+        		<c:param name="pId" value="${p.pId}"/>
+        	</c:url>
+                        <th colspan="4">요청사항<a href="${askaddForm}" class="plus">+</a></th>
+                       <c:if test="${!rqList.isEmpty()}">
+                       
+                     	 <c:forEach var="rq" items="${rqList}">
+                        <tr>
+                        <c:url var="askclick" value="askClick.do">
+								<c:param name="trId" value="${rq.trId}"/>
+								<c:param name="pId" value="${p.pId}"/>
+							</c:url>
                         
-                        <tr>
-                            <td class="task_name">업무명</td>
-                            <td class="task_mana">담당자</td>
-							<td class="task_status">상태</td>
-                            <td class="task_date">게시일</td>
-                        </tr>
-                        <tr>
-                                <td class="task_name">오늘까지 이거해주세요</td>
-                                <td class="task_mana">담당자</td>
-                                <td class="task_status">상태</td>
-                                <td class="task_date">2020-10-03</td>
+                                <td class="task_name"><a href="${askclick}">${rq.trTitle}</a></td>
+                                <c:if test="${rq.trManager eq 0 }">
+                                	<td class="task_mana">담당자없음</td> 
+                                </c:if>
+                                <c:if test="${rq.trManager ne 0}">
+                                	<td class="task_mana">${rq.manager}</td>
+                                </c:if>
+                                
+                                <td class="task_status">${rq.trType}</td>
+                         		<td class="task_date">${rq.trDate}</td>
                             </tr>
+                            
+                      </c:forEach>
+                      </c:if>
+                      <c:if test="${rqList.isEmpty()}">
+                       	<tr><td>요청사항이 없습니다.</td></tr>
+                      </c:if>
                     </table>
 
         </div>
