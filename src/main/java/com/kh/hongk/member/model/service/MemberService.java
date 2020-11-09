@@ -34,7 +34,4 @@ public interface MemberService {
 
 	public ArrayList<Electronic_Approval> listWp(int mno);
 
-
-
-
 }

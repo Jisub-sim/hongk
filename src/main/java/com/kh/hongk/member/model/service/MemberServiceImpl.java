@@ -76,7 +76,6 @@ public class MemberServiceImpl implements MemberService{
 		return mDao.FileDelete(file_no);
 	}
 	
-
 	public ArrayList<Electronic_Approval> listWp(int mno) {
 		return mDao.listWp(mno);
 

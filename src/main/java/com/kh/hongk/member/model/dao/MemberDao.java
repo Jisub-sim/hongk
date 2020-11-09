@@ -55,7 +55,7 @@ public class MemberDao {
 	public ArrayList<Member> selectList() {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectList");
 	}
-
+	
 	public ArrayList<Electronic_Approval> listWp(int mno) {
 		return (ArrayList)sqlSession.selectList("eaMapper.listWp", mno);
 
