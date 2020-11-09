@@ -30,12 +30,8 @@ public interface MemberService {
 	// 기존 프로필 파일 삭제
 	public int FileDelete(int file_no);
 
-
 	public ArrayList<Member> selectList();
 
 	public ArrayList<Electronic_Approval> listWp(int mno);
-
-
-
 
 }
