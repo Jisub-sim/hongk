@@ -22,8 +22,6 @@
 	color: #000000;
 }
 
-
-
 .divDotText {
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -88,7 +86,7 @@
 	margin: auto;
 }
 
-.cal_depttitle_div{
+/* .cal_depttitle_div{
 	width: 150px;
 	height: 35px;
 	margin: 50px 0 30px 5px;
@@ -103,9 +101,8 @@
 	padding: 2px 0 0 0;
 	border: 2px solid skyblue;
 	border-radius: 5px;
-}
-
-.cal_teammember_div, .cal_deptmember_div{
+} */
+.cal_teammember_div, .cal_deptmember_div {
 	width: 150px;
 	height: 40px;
 	margin: 50px 0 30px 10px;
@@ -113,7 +110,7 @@
 	float: left;
 }
 
-.cal_teammember_select, .cal_deptmember_select{
+.cal_teammember_select, .cal_deptmember_select {
 	border: 2px solid skyblue;
 	width: 100%;
 	height: 38px;
@@ -124,7 +121,7 @@
 .navigation {
 	margin-top: 50px;
 	margin-bottom: 30px;
-	margin-left: 40px;
+	margin-left: 195px;
 	width: 400px;
 	height: 40px;
 	text-align: center;
@@ -220,13 +217,41 @@
 	overflow-y: auto;
 }
 
-.cal_wrap::-webkit-scrollbar{
+.cal_wrap::-webkit-scrollbar {
 	display: none;
 }
 
 .cal_text {
 	width: 149px;
 	height: 21.5px;
+	margin: 1px 0 0 0;
+	padding: 1px 0 0 2px;
+	font-size: 13px;
+	background-color: #f7d872;
+	border: 1px solid #f7d872;
+	border-radius: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cal_text2 {
+	width: 149px;
+	height: 47px;
+	margin: 1px 0 0 0;
+	padding: 1px 0 0 2px;
+	font-size: 13px;
+	background-color: #f7d872;
+	border: 1px solid #f7d872;
+	border-radius: 5px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cal_text3 {
+	width: 149px;
+	height: 123px;
 	margin: 1px 0 0 0;
 	padding: 1px 0 0 2px;
 	font-size: 13px;
@@ -244,7 +269,7 @@
 	<jsp:include page="../common/include.jsp" />
 
 	<div id="main">
-	
+
 		<form name="calendarFrm" id="calendarFrm" action="" method="GET">
 
 			<div class="calendar">
@@ -255,13 +280,14 @@
 						</c:forEach>
 					</select>
 				</div> --%>
-				<div class="cal_depttitle_div">
-					<input class="cal_depttitle_input" readonly><%-- ${ deptTitle } --%></input>
-				</div> 
+				<%-- <div class="cal_depttitle_div">
+					<input class="cal_depttitle_input" readonly>${ deptTitle }</input>
+				</div>  --%>
 				<div class="cal_deptmember_div">
-					<select class="cal_deptmember_select" id="cal_deptmember_select" name="mName">
+					<select class="cal_deptmember_select" id="cal_deptmember_select"
+						name="mName">
 						<c:forEach var="dm" items="${ dmList }">
-							<option value="${ dm.mNo }">${dm.jobCode}  ${ dm.mName }</option>
+							<option value="${ dm.mNo }">${dm.jobCode}${ dm.mName }</option>
 						</c:forEach>
 					</select>
 				</div>
@@ -310,59 +336,167 @@
 										<c:param name="cDate"
 											value="${ today_info.search_year }${today_info.search_month}0${ dateList.date }" />
 										<c:param name="mNo" value="${ mNo }" />
-										<c:param name="deptCode" value="${ loginUser.deptCode }"/>
+										<c:param name="deptCode" value="${ loginUser.deptCode }" />
 									</c:if>
 									<c:if test="${ dateList.date >= 10 }">
 										<c:param name="cDate"
 											value="${ today_info.search_year }${today_info.search_month}${ dateList.date }" />
 										<c:param name="mNo" value="${ mNo }" />
-										<c:param name="deptCode" value="${ loginUser.deptCode }"/>
+										<c:param name="deptCode" value="${ loginUser.deptCode }" />
 									</c:if>
 								</c:url>
 								<c:choose>
-									<%-- <c:when test="${dateList.value=='today'}">
+									<c:when test="${dateList.value=='today'}">
 										<td class="today" OnClick="location.href='${ calOneday }'">
 											<div class="date">${dateList.date}</div>
 											<div class="cal_wrap">
-												<c:if test=${ !empty  }>
-													휴가
+												<c:if test="${ !empty aList }">
+													<c:forEach var="a" items="${ aList }">
+														<c:if test="${ dateList.date < 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+																<c:choose>
+																	<c:when test="${ a.annual_halftime eq 'am' }">
+																		<div class="cal_text2">오전반차</div>
+																	</c:when>
+																	<c:when test="${ a.annual_halftime eq 'pm' }">
+																	</c:when>
+																	<c:otherwise>
+																		<div class="cal_text3">휴가</div>
+																	</c:otherwise>
+																</c:choose>
+															</c:if>
+														</c:if>
+														<c:if test="${ dateList.date >= 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+																<c:choose>
+																	<c:when test="${ a.annual_halftime eq 'am' }">
+																		<div class="cal_text2">오전반차</div>
+																	</c:when>
+																	<c:when test="${ a.annual_halftime eq 'pm' }">
+																	</c:when>
+																	<c:otherwise>
+																		<div class="cal_text3">휴가</div>
+																	</c:otherwise>
+																</c:choose>
+															</c:if>
+														</c:if>
+													</c:forEach>
 												</c:if>
-												<c:if test=${ empty }></c:if>
 												<c:if test="${ !empty calList }">
 													<c:forEach var="c" items="${ calList }">
 														<c:if test="${ dateList.date < 10 }">
 															<c:if
 																test="${ c.cDate.substring(8, 10) eq 0+dateList.date }">
-																<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+																<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+																	${ c.cTitle }</div>
 															</c:if>
 														</c:if>
 														<c:if test="${ dateList.date >= 10 }">
 															<c:if
 																test="${ c.cDate.substring(8, 10) eq dateList.date }">
-																<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+																<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+																	${ c.cTitle }</div>
+															</c:if>
+														</c:if>
+													</c:forEach>
+												</c:if>
+												<c:if test="${ !empty aList }">
+													<c:forEach var="a" items="${ aList }">
+														<c:if test="${ dateList.date < 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+																<c:if test="${ a.annual_halftime eq 'pm' }">
+																	<div class="cal_text2">오후반차</div>
+																</c:if>
+															</c:if>
+														</c:if>
+														<c:if test="${ dateList.date >= 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+																<c:if test="${ a.annual_halftime eq 'pm' }">
+																	<div class="cal_text2">오후반차</div>
+																</c:if>
 															</c:if>
 														</c:if>
 													</c:forEach>
 												</c:if>
 											</div>
 										</td>
-									</c:when> --%>
+									</c:when>
 									<c:when test="${date_status.index%7==6}">
 										<td class="sat_day" OnClick="location.href='${ calOneday }'">
 											<div class="sat">${dateList.date}</div>
 											<div class="cal_wrap">
+												<c:if test="${ !empty aList }">
+													<c:forEach var="a" items="${ aList }">
+														<c:if test="${ dateList.date < 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+																<c:choose>
+																	<c:when test="${ a.annual_halftime eq 'am' }">
+																		<div class="cal_text2">오전반차</div>
+																	</c:when>
+																	<c:when test="${ a.annual_halftime eq 'pm' }">
+																	</c:when>
+																	<c:otherwise>
+																		<div class="cal_text3">휴가</div>
+																	</c:otherwise>
+																</c:choose>
+															</c:if>
+														</c:if>
+														<c:if test="${ dateList.date >= 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+																<c:choose>
+																	<c:when test="${ a.annual_halftime eq 'am' }">
+																		<div class="cal_text2">오전반차</div>
+																	</c:when>
+																	<c:when test="${ a.annual_halftime eq 'pm' }">
+																	</c:when>
+																	<c:otherwise>
+																		<div class="cal_text3">휴가</div>
+																	</c:otherwise>
+																</c:choose>
+															</c:if>
+														</c:if>
+													</c:forEach>
+												</c:if>
 												<c:if test="${ !empty calList }">
 													<c:forEach var="c" items="${ calList }">
 														<c:if test="${ dateList.date < 10 }">
 															<c:if
 																test="${ c.cDate.substring(8, 10) eq 0+dateList.date }">
-																<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+																<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+																	${ c.cTitle }</div>
 															</c:if>
 														</c:if>
 														<c:if test="${ dateList.date >= 10 }">
 															<c:if
 																test="${ c.cDate.substring(8, 10) eq dateList.date }">
-																<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+																<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+																	${ c.cTitle }</div>
+															</c:if>
+														</c:if>
+													</c:forEach>
+												</c:if>
+												<c:if test="${ !empty aList }">
+													<c:forEach var="a" items="${ aList }">
+														<c:if test="${ dateList.date < 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+																<c:if test="${ a.annual_halftime eq 'pm' }">
+																	<div class="cal_text2">오후반차</div>
+																</c:if>
+															</c:if>
+														</c:if>
+														<c:if test="${ dateList.date >= 10 }">
+															<c:if
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+																<c:if test="${ a.annual_halftime eq 'pm' }">
+																	<div class="cal_text2">오후반차</div>
+																</c:if>
 															</c:if>
 														</c:if>
 													</c:forEach>
@@ -376,17 +510,73 @@
 							<td class="sun_day" OnClick="location.href='${ calOneday }'">
 								<div class="sun">${dateList.date}</div>
 								<div class="cal_wrap">
+									<c:if test="${ !empty aList }">
+										<c:forEach var="a" items="${ aList }">
+											<c:if test="${ dateList.date < 10 }">
+												<c:if
+													test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+													<c:choose>
+														<c:when test="${ a.annual_halftime eq 'am' }">
+															<div class="cal_text2">오전반차</div>
+														</c:when>
+														<c:when test="${ a.annual_halftime eq 'pm' }">
+														</c:when>
+														<c:otherwise>
+															<div class="cal_text3">휴가</div>
+														</c:otherwise>
+													</c:choose>
+												</c:if>
+											</c:if>
+											<c:if test="${ dateList.date >= 10 }">
+												<c:if
+													test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+													<c:choose>
+														<c:when test="${ a.annual_halftime eq 'am' }">
+															<div class="cal_text2">오전반차</div>
+														</c:when>
+														<c:when test="${ a.annual_halftime eq 'pm' }">
+														</c:when>
+														<c:otherwise>
+															<div class="cal_text3">휴가</div>
+														</c:otherwise>
+													</c:choose>
+												</c:if>
+											</c:if>
+										</c:forEach>
+									</c:if>
 									<c:if test="${ !empty calList }">
 										<c:forEach var="c" items="${ calList }">
 											<c:if test="${ dateList.date < 10 }">
 												<c:if
 													test="${ c.cDate.substring(8, 10) eq 0+dateList.date }">
-													<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+													<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+														${ c.cTitle }</div>
 												</c:if>
 											</c:if>
 											<c:if test="${ dateList.date >= 10 }">
 												<c:if test="${ c.cDate.substring(8, 10) eq dateList.date }">
-													<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+													<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+														${ c.cTitle }</div>
+												</c:if>
+											</c:if>
+										</c:forEach>
+									</c:if>
+									<c:if test="${ !empty aList }">
+										<c:forEach var="a" items="${ aList }">
+											<c:if test="${ dateList.date < 10 }">
+												<c:if
+													test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+													<c:if test="${ a.annual_halftime eq 'pm' }">
+														<div class="cal_text2">오후반차</div>
+													</c:if>
+												</c:if>
+											</c:if>
+											<c:if test="${ dateList.date >= 10 }">
+												<c:if
+													test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+													<c:if test="${ a.annual_halftime eq 'pm' }">
+														<div class="cal_text2">오후반차</div>
+													</c:if>
 												</c:if>
 											</c:if>
 										</c:forEach>
@@ -398,17 +588,101 @@
 								<td class="normal_day" OnClick="location.href='${ calOneday }'">
 									<div class="date">${dateList.date}</div>
 									<div class="cal_wrap">
+										<c:if test="${ !empty aList }">
+											<c:forEach var="a" items="${ aList }">
+												<c:if test="${ dateList.date < 10 }">
+													<c:if
+														test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+														<c:choose>
+															<c:when test="${ a.annual_halftime eq 'am' }">
+																<div class="cal_text2">오전반차</div>
+															</c:when>
+															<c:when test="${ a.annual_halftime eq 'pm' }">
+															</c:when>
+															<c:otherwise>
+																<div class="cal_text3">휴가</div>
+															</c:otherwise>
+														</c:choose>
+													</c:if>
+													<c:if test="${ a.annual_day_use > 1 }">
+														<c:if test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10)+1 eq 0+dateList.date}">
+															<c:choose>
+															<c:when test="${ a.annual_halftime eq 'am' }">
+																<div class="cal_text2">오전반차</div>
+															</c:when>
+															<c:when test="${ a.annual_halftime eq 'pm' }">
+															</c:when>
+															<c:otherwise>
+																<div class="cal_text3">휴가</div>
+															</c:otherwise>
+														</c:choose>
+													</c:if>
+													</c:if>
+												</c:if>
+												<c:if test="${ dateList.date >= 10 }">
+													<c:if
+														test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+														<c:choose>
+															<c:when test="${ a.annual_halftime eq 'am' }">
+																<div class="cal_text2">오전반차</div>
+															</c:when>
+															<c:when test="${ a.annual_halftime eq 'pm' }">
+															</c:when>
+															<c:otherwise>
+																<div class="cal_text3">휴가</div>
+															</c:otherwise>
+														</c:choose>
+													</c:if>
+													<c:if test="${ a.annual_day_use > 1 }">
+														<c:if test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10)+1 eq 0+dateList.date}">
+															<c:choose>
+															<c:when test="${ a.annual_halftime eq 'am' }">
+																<div class="cal_text2">오전반차</div>
+															</c:when>
+															<c:when test="${ a.annual_halftime eq 'pm' }">
+															</c:when>
+															<c:otherwise>
+																<div class="cal_text3">휴가</div>
+															</c:otherwise>
+														</c:choose>
+													</c:if>
+													</c:if>
+												</c:if>
+											</c:forEach>
+										</c:if>
 										<c:if test="${ !empty calList }">
 											<c:forEach var="c" items="${ calList }">
 												<c:if test="${ dateList.date < 10 }">
 													<c:if
 														test="${ c.cDate.substring(8, 10) eq 0+dateList.date }">
-														<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+														<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+															${ c.cTitle }</div>
 													</c:if>
 												</c:if>
 												<c:if test="${ dateList.date >= 10 }">
 													<c:if test="${ c.cDate.substring(8, 10) eq dateList.date }">
-														<div class="cal_text">${c.cBeginTime}~${c.cEndTime} ${ c.cTitle }</div>
+														<div class="cal_text">${c.cBeginTime}~${c.cEndTime}
+															${ c.cTitle }</div>
+													</c:if>
+												</c:if>
+											</c:forEach>
+										</c:if>
+										<c:if test="${ !empty aList }">
+											<c:forEach var="a" items="${ aList }">
+												<c:if test="${ dateList.date < 10 }">
+													<c:if
+														test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+														<c:if test="${ a.annual_halftime eq 'pm' }">
+															<div class="cal_text2">오후반차</div>
+														</c:if>
+													</c:if>
+												</c:if>
+												<c:if test="${ dateList.date >= 10 }">
+													<c:if
+														test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+														<c:if test="${ a.annual_halftime eq 'pm' }">
+															<div class="cal_text2">오후반차</div>
+														</c:if>
 													</c:if>
 												</c:if>
 											</c:forEach>
@@ -419,7 +693,6 @@
 							</c:choose>
 							</c:forEach>
 					</tbody>
-
 				</table>
 			</div>
 		</form>

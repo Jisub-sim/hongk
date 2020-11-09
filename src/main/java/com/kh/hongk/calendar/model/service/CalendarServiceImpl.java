@@ -1,16 +1,17 @@
 package com.kh.hongk.calendar.model.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.calendar.model.dao.CalendarDao;
 import com.kh.hongk.calendar.model.vo.Calendar1;
 import com.kh.hongk.member.model.vo.Member;
 import com.kh.hongk.project.model.vo.Pmember;
 import com.kh.hongk.project.model.vo.Project;
+import com.kh.hongk.project.model.vo.Pteam;
 
 @Service("cService")
 public class CalendarServiceImpl implements CalendarService{
@@ -31,6 +32,11 @@ public class CalendarServiceImpl implements CalendarService{
 	public ArrayList<Calendar1> selectInsertCheck(Calendar1 c) {
 		return cDao.selectInsertCheck(c);
 	}
+	
+	@Override
+	public ArrayList<Annual> selectCalAnnualCheck(String cDate) {
+		return cDao.selectCalAnnualCheck(cDate);
+	}
 
 	@Override
 	public int insertCalendar(Calendar1 c) {
@@ -48,8 +54,8 @@ public class CalendarServiceImpl implements CalendarService{
 	}
 
 	@Override
-	public int updateCalendar(int cId) {
-		return cDao.updateCalendar(cId);
+	public int updateCalendar(Calendar1 c) {
+		return cDao.updateCalendar(c);
 	}
 
 	@Override
@@ -63,11 +69,6 @@ public class CalendarServiceImpl implements CalendarService{
 	}
 	
 	@Override
-	public ArrayList<String> selectDeptTitle(String deptCode) {
-		return cDao.selectDeptTitle(deptCode);
-	}
-
-	@Override
 	public Pmember selectCalPid(int mNo) {
 		return cDao.selectCalPid(mNo);
 	}
@@ -78,9 +79,12 @@ public class CalendarServiceImpl implements CalendarService{
 	}
 
 	@Override
-	public ArrayList<String> selectTeamTitle(int pId) {
-		return cDao.selectTeamTitle(pId);
+	public ArrayList<Annual> selectCalAnnualList(int mNo) {
+		return cDao.selectCalAnnualList(mNo);
 	}
+
+	
+
 
 	
 
