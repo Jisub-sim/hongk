@@ -17,10 +17,10 @@
  <style>
   table.type1 {
         border-collapse: collapse;
-        text-align: left;
+        text-align: center;
         line-height: 1.5;
         width: 900px;
-        margin-left:50px;
+        margin-left:100px;
 
     }
 
@@ -31,6 +31,7 @@
         color: #369;
         /* border-bottom: 3px solid #036; */
         border-width: 3px solid #036;
+        width: 400px;
 
 
 
@@ -40,17 +41,19 @@
         width: 150px;
         padding: 10px;
         font-weight: bold;
-        vertical-align: top;
+        vertical-align: center;
         border-bottom: 1px solid #ccc;
         background: #f3f6f7;
         border-top: 3px solid #036;
+        text-align: center;
     }
 
     table.type1 td {
         width: 350px;
         padding: 10px;
-        vertical-align: top;
+        vertical-align: center;
         border-bottom: 1px solid #ccc;
+         text-align: center;
     }
 
     .ann-bt {
@@ -68,24 +71,23 @@
     .annualmain {
             border: 3px solid rgba(128, 128, 128, 0.363);
             width: 1000px;
-            height: 250px;
+            height: 280px;
             border-radius: 20px;
-            margin-top: 40px;
+            margin-top: 10px;
             margin-left: 50px;
         }
         
       .annualAll {
             border-radius: 20px;
             border: 3px solid #59d4d4e0;
-            width: 190px;
+            width: 200px;
             height: 120px;
-            margin-left: 50px;
-            margin-bottom: 10px;
+            margin-left: 100px;
+            margin-bottom: 20px;
             margin-top:-30px;
             text-align: center;
             vertical-align: middle;
             float: left;
-            padding-bottom: 20px;
 
         }  
         
@@ -119,11 +121,7 @@
   * {
         box-sizing: border-box;
     }
-    .List{
-    
-    margin-left:50px;
-    }
-        
+
     </style>
 
 <body>
@@ -131,7 +129,8 @@
 <div id="main">
 <section class="annualmain">
 
-        <h1>&nbsp;&nbsp;&nbsp;연차</h1>
+        <h2 style="text-align: center; vertical-align: middle;">&nbsp;&nbsp;&nbsp;연차사용내역</h2>
+        <br>
         <br>
         <div class="annualAll">
             <h2>전체</h2>
@@ -151,7 +150,6 @@
 
     </section>
     <br><br>
-    <h2 class="List">사용내역</h2>
 <table class="type1">
         <thead>
             <tr>
@@ -189,7 +187,7 @@
                     ${annual_start }</td>
                <td><fmt:formatDate var="annual_end" type="date" value="${ ann.annual_end }" pattern="yyyy-MM-dd"/>
                     ${ annual_end }</td>
-                <td>${ann.annual_day_use }</td>
+                <td>${ann.annual_day_use }일</td>
                <%--  <td>${ann.annual_content }</td> --%>
                 <td>${ann.annual_title }</td>
                 <td>${ann.annual_signupday }</td>
@@ -238,89 +236,7 @@
     	</c:if>
     </div>
    
- <%-- <h2>내 연차 내역</h2>
 
-    <table class="type1">
-        <thead>
-            <tr>
-                <th scope="cols">사원명</th>
-                <th scope="cols">사원 번호</th>
-                <th scope="cols">직급</th>
-                <th scope="cols">사용 연차</th>
-                <th scope="cols">남은 연차</th>
-                <th scope="cols" style="width: 3.5em;">총 연차</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            <c:if test="${ !empty sessionScope.loginUser }">
-                <td>${ loginUser.mName }</td>
-                <td>${loginUser.jobCode }</td>
-                <td>${loginUser.deptCode }</td>
-                <td>1</td>
-                <td>19</td>
-                <td>20</td>
-            </tr>
-			</c:if>
-        </tbody>
-    </table>
-
-    <br><br>
-
-    <h2>사용 내역</h2>
-    <table class="type1">
-        <thead>
-            <tr>
-                <th scope="cols">이름</th>
-                <th scope="cols" style="width:241px;">연차 사용 시작 날짜</th>
-                <th scope="cols" style="width:241px;" >연차 사용 끝난 날짜</th>
-                <th scope=" cols">사용 연차</th>
-                <th scope="cols">사용 내용</th>
-
-            </tr>
-        </thead>
-        <tbody>
-        
-            <tr>
-                <td>김몰라</td>
-                <td>2020.08.09</td>
-                <td>2020.08.11</td>
-                <td>3</td>
-                <td>여름휴가사용</td>
-            </tr>
-
-        </tbody>
-    </table>
-
-    <h2>휴가신청내역</h2>
-    <table class="type1">
-        <thead>
-            <tr>
-                <th scope="cols">사원명</th>
-                <th scope="cols">신청날짜</th>
-                <th scope="cols">휴가구분</th>
-                <th scope="cols">신청일수</th>
-                <th scope="cols">전자결재상태</th>
-                <th scope="cols" style="width:150px">신청내역</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>김몰라</td>
-                <td>2020.08.09</td>
-                <td>연차</td>
-                <td>2</td>
-                <td>진행중</td>
-                <td><a href="annListDatail.do"
-                 onclick="window.open(this.href, '_blank','width=500,height=500,toolbars=no,scrollbars=no'); return false;">자세히보기</a></td>
-            </tr>
-
-        </tbody>
-        <button type="submit" class="ann-bt">추가</button>
-    <button type="submit" class="ann-bt">목록</button>
-        
-    </table> --%>
 </div>
 
 </body>

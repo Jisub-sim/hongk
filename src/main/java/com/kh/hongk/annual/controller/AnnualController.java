@@ -16,9 +16,9 @@ import com.kh.hongk.annual.model.service.AnnualService;
 import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.annual.model.vo.PageInfo;
 import com.kh.hongk.annual.model.vo.Pagination;
-import com.kh.hongk.approval.model.service.EAService;
 import com.kh.hongk.approval.model.vo.Approval;
 import com.kh.hongk.approval.model.vo.Electronic_Approval;
+import com.kh.hongk.approval.model.vo.Form;
 import com.kh.hongk.member.model.vo.Member;
 
 @Controller
@@ -28,7 +28,7 @@ public class AnnualController {
 
 	// 휴가신청페이지 이동
 	@RequestMapping("anninsert.do")
-	public ModelAndView annualInsertPage(ModelAndView mv, HttpSession session) {
+	public ModelAndView annualInsertPage(ModelAndView mv, HttpSession session, Form form) {
 
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
@@ -39,6 +39,7 @@ public class AnnualController {
 
 		mv.addObject("ann", ann)
 		  .addObject("member", member)
+		  .addObject("form",form)
 		  .setViewName("annual/annualInsertForm");
 
 
@@ -49,14 +50,11 @@ public class AnnualController {
 
 	// 휴가신청 클릭 시 
 	@RequestMapping("annTypeSelect.do")
-	public String AnnualTypeSelect(Annual ann, String a_type,String mid, Electronic_Approval ea, HttpSession session) {
+	public String AnnualTypeSelect(Annual ann, String a_type,String mid, Electronic_Approval ea, HttpSession session, int form_no) {
 		int atype=Integer.parseInt(a_type);
 		ann.setAnnual_type(atype);
 		System.out.println("annual :" + ann );
-
-
 		System.out.println("멤버 아이디 : "+mid);
-
 
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
@@ -65,6 +63,7 @@ public class AnnualController {
 		
 		// 전자결재
 		ea.setDrafter(mNo);
+		ea.setForm_no(form_no);
 		ea.setEa_title(ann.getAnnual_title());
 		ea.setEa_content(ann.getAnnual_content());
 
@@ -72,20 +71,15 @@ public class AnnualController {
 		int appromn= Integer.parseInt(mid);
 		Approval appro = new Approval(1,appromn);
 		appro.setEa_no(ea.getEa_no());
-
 		int result1 = annService.insertApprover(appro);
 		
-		
 		int result = 0;
-		
+		// 휴가타입 반차4일때
 		if(atype == 4) {
 			result = annService.halfTimeinsert(ann);
-			
 		}else {
 			result = annService.Annualinsert(ann);
 		}
-		
-
 		if(result > 0) {
 			return "redirect:annList.do";
 		} else {
@@ -109,7 +103,6 @@ public class AnnualController {
 
 		ArrayList<Annual> list = annService.selectList(mNo, pi);
 
-
 		if(list != null) {
 			mv.addObject("list", list);
 			mv.addObject("pi", pi);
@@ -119,7 +112,6 @@ public class AnnualController {
 		} else {
 			throw new AnnualException("휴가 내역 조회에 실패하였습니다.");
 		}
-
 			return mv;
 		}
 
@@ -150,7 +142,6 @@ public class AnnualController {
 	} else {
 		throw new AnnualException("휴가 내역 조회에 실패하였습니다.");
 	}
-
 		return mv;
 	}
 
@@ -186,15 +177,12 @@ public class AnnualController {
 		System.out.println("수정한 값 : " + ann );
 		int result = annService.updateAnnual(ann);
 
-
 		if(result > 0) {
 			mv.setViewName("redirect:annList.do");
 		}else {
 			throw new AnnualException("휴가신청 수정에 실패하였습니다.");
 		}
-
 		return mv;
-
 	}
 
 
@@ -203,6 +191,7 @@ public class AnnualController {
 	public String AnnualDelete(HttpSession session, int annual_no) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int mNo = loginUser.getmNo();
+		System.out.println("휴가번호 : " + annual_no);
 
 
 		int result = annService.deleteAnnual(annual_no);
