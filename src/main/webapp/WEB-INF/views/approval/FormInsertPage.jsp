@@ -48,7 +48,7 @@
        margin-left: 1em;
     }
     #smartEditor{
-    width:100%;
+       width:100%;
     	height:50vh;
     	resize: none;
     }
@@ -77,6 +77,7 @@
         	<option value= "인사">인사</option>
         	<option value= "총무">총무</option>
         	<option value= "회계">회계</option>
+        	<option value= "영업">영업</option>
         	<option value= "프로젝트">프로젝트</option>
         </select>
         </td>

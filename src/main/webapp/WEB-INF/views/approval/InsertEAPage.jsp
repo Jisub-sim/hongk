@@ -70,6 +70,7 @@
         <td width="15%">서식 번호</td>
         <td width="35%">${form.form_no}</td>
         <input type="hidden" name="form_no" value="${ form.form_no }">
+        <input type="hidden" name="ea_type" value="${ form.form_type }">
    		<input type="hidden" name="drafter" value="${ loginUser.mNo }">
    		<input type="hidden" name="app" id="app" >
    		<input type="hidden" name="ref" id="ref" >
@@ -103,7 +104,7 @@
     </tr>
     <tr></tr>
     <tr><td colspan="4" style="text-align: left;"> &nbsp; 파일 업로드 </td></tr>
-    <tr><td colspan="4" style=" background: white"><input type="file" name="uploadFile"></td></tr>
+    <tr><td colspan="4" style=" background: white"><input type="file" id="fileupload" name="uploadFile"></td></tr>
     </table>
     <br>
     

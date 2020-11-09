@@ -106,7 +106,7 @@
 				&nbsp; &nbsp;
 				<button type="submit" class="ea_bt">검색</button>
 			</div>
-		</form>		
+				
 			<br> <br>
 			<p style="width:90%;margin:auto;">결재 요청함 </p>
 			 <hr style="width:90%">
@@ -119,18 +119,18 @@
 
 				<table class="ea_table">
 					<thead>
-						<th><input type="checkbox"></th>
-						<th>NO</th>
-						<th>서식함</th>
-						<th>유형</th>
-						<th>문서제목</th>
-						<th>기안일</th>
-						<th>완료일</th>
-						<th>상태</th>
+						<th></th>
+						<th width="5%">NO</th>
+						<th width="8%">서식함</th>
+						<th width="8%">유형</th>
+						<th width="40%">문서제목</th>
+						<th width="15%">기안일</th>
+						<th width="15%">완료일</th>
+						<th width="15%">상태</th>
 					</thead>
 					
 					<c:forEach var="ea" items="${ list }">
-					<tr>
+					<tr class=" ea1">
 						<td></td>
 						<td>${ea.ea_no }</td>
 						<td>${ea.form_category }</td>
@@ -244,21 +244,9 @@
 					
 				</table>
 				<br>
-				<div id="ea_bt_div">
-					<button id="ea_de_bt" class="ea_bt">삭제</button>
-				</div>
 			</div>
 	</div>
 	<script>
-            $(function(){
-                $(".ea_table td").mouseenter(function(){
-                    $(this).parent().css({"cursor":"pointer"});
-                    $(this).parent().css({"background":"lightgray"});
-                }).mouseleave(function(){
-                    $(this).parent().css({"background":"white"});
-                });
-            });
-            
         	var message = ${ msg };
         	console.log(message);
         	if( !message.equals('')){
@@ -268,6 +256,15 @@
         	var s = ${search}
         	console.log(s);
         	
+            $(function(){
+                $(".ea_table td").mouseenter(function(){
+                    $(this).parent().css({"cursor":"pointer"});
+                    $(this).parent().css({"background":"lightgray", "font-weight":"bold"});
+                }).mouseleave(function(){
+                    $(this).parent().css({"background":"white", "font-weight":"normal"});
+                });
+            });
+            
 	</script> 
 </body>
 </html>

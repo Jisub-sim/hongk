@@ -4,6 +4,7 @@ public class Referrer {
 
 	private int re_no;
 	private int ea_no;
+	private String mName;
 	
 	public Referrer() {}
 
@@ -11,6 +12,14 @@ public class Referrer {
 		super();
 		this.re_no = re_no;
 		this.ea_no = ea_no;
+	}
+
+	public String getmName() {
+		return mName;
+	}
+
+	public void setmName(String mName) {
+		this.mName = mName;
 	}
 
 	public int getRe_no() {

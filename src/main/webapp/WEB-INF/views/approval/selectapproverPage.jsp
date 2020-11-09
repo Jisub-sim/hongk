@@ -33,7 +33,7 @@
         height: 60%;
     }
     #app_seach_div{
-        height: 40%;
+        height: 33%;
     }
     #des_approver table{
         width: 100%;
@@ -98,6 +98,15 @@
         margin: auto;
         padding: 1em;
     }
+    
+#app_team_div ul{
+	 list-style: none;
+    padding-left: 0px;
+}
+#lidept{
+	font-weight : bold;
+	font-size:18px;
+	margin-bottom:0.5em;}
 </style>
 </head>
 <body>
@@ -114,27 +123,29 @@
     <div id="wrap_approver_div">
         <br>
         <div id="des_approver">
-            <div id="app_team_div">
-                <p style="font-size: 15px; margin-left: 5%;">조직도</p>
+            <div id="app_team_div" style="overflow-y:scroll">
+<!--                 <p style="font-size: 15px; margin-left: 5%;">조직도</p> -->
           		<ul>
           		<c:forEach var="a" items="${ dept }">	
-          				
-          				<li>${a.deptCode }
+          				<li id="lidept">[${a.deptTitle }]
           					<ul class="lang_list">
           						<c:forEach var="b" items="${ list }">	
           							<c:if test="${a.deptCode eq b.deptCode}">
-          								<li id="m${b.mNo }">${ b.mName }
-          									<input type="hidden" value="${ b.mNo }">
-          								</li>
+          								<c:if test="${ b.mNo ne loginUser.mNo  }">
+	          								<li id="m${b.mNo }">${ b.mName }&nbsp;${ b.jobTitle }
+	          									<input type="hidden" value="${ b.mNo }">
+	          								</li>
+	          							</c:if>
           							</c:if>
           						</c:forEach>
           					</ul>
           				</li>
+          				<br>
           		</c:forEach>
           		
+          		<!-- 조직도에서 사원 선택 -->
           		  <script>
           		  var ap= null;
-          		  
 					$('.lang_list li').mouseenter(function(){
 						 $(this).css({"cursor":"pointer"});
 						 $(this).css({"background":"lightgray", "font-weight":"bold"});
@@ -142,7 +153,8 @@
 				      	$(this).css({"background":"white", "font-weight":"normal"});
 				    }).click(function(){
 				    	$('.lang_list li').css({"border":"none"});
-				    	$(this).css({"border":"1px solid red"});
+				    	$('#searchMemberTable_EA tr').css({"border":"none"});
+				    	$(this).css({"border":"3px solid gray"});
 				    	var mno = $(this).children().val();
 				    	ap = mno;
 				    	console.log(mno);
@@ -154,22 +166,22 @@
             <script>
            
             </script>
-            <div id="app_seach_div">
+            
                <table class="ea_table">
                    <tr>
-                       <td colspan="2"> <input type="text" placeholder="사원명을 검색하시오" style="width:100%;height: 100%;"></td>
-                       <td> <button style="width: 100%; height: 100%;">확인</button> </td>
+                       <td colspan="2"> <input type="text" id="searchName" placeholder="사원명을 검색하시오" style="width:100%;height: 100%;"></td>
+                       <td> <button style="width: 100%; height: 100%;" id="APPsearchBt" type="button">검색</button> </td>
                    </tr>
                </table> 
-               <table class="ea_table" style="border-top: none;">
+               <div id="app_seach_div" style="overflow-y:scroll;">
+               <table class="ea_table sea" style="border-top: none;" id="searchMemberTable_EA">
                    <tr>
                        <th width="10%">no</th>
                        <th width="30%">부서</th>
                        <th width="30%">사원명</th>
                    </tr>
-                 
                </table>
-               
+              
             </div>
         </div>
          <!-- 결재 > 버튼 -->
@@ -183,8 +195,8 @@
             <table class="ea_table" border="1" id="ea_create_table" >
             <tr>
                 <th>이름</th>
-                <th>직책</th>
                 <th>부서</th>
+                <th>직책</th>
                 <th>x<th>
             </tr>
               	<tbody>
@@ -210,7 +222,7 @@
 		$(function(){
 			$("#apselectbt").on("click",function(){
 				var ap_no = ap;
-				console.log(ap_no);
+				console.log('선택한 결재자 : ' + ap_no);
 				
 				$.ajax({
 					url:"addapprover.do",
@@ -222,14 +234,11 @@
 							$tableBody = $("#ea_create_table ");
 							
 							var $tr = $("<tr>");
-// 							var $n = $("<td class='level'>" ).text(i);
-							//id=lev"+i+"  name=lev"+i+">"
-// 							 	$n.attr('value',i);
 							var $aname = $("<td>").text(data.mName);
 							var $Haname = $("<input type='hidden' name='mname' class='mname' value="+data.mName+">");
 
-							var $dept = $("<td>").text(data.deptCode);
-							var $job = $("<td>").text(data.jobCode);
+							var $dept = $("<td>").text(data.deptTitle);
+							var $job = $("<td>").text(data.jobTitle);
 							var $bttd = $("<td>");
 							var $cancelBt = $("<button type='button'>").text("X");
 								$cancelBt.attr('class','cBt');
@@ -246,8 +255,10 @@
 							$tableBody.append($tr);
 							
 							var mno = 'm'  + data.mNo ;
+							var trid = 'tr'  + data.mNo ;
 							console.log(mno);
 							$('#'+ mno).attr('style', "display:none;");  //숨기기
+							$('#'+ trid).attr('style', "display:none;");
 							$('#'+ mno).css({"border":"none"});
 							
 							i++
@@ -269,9 +280,11 @@
 			$(document).on('click','.cBt', function(){
 				var mn = $(this).prev().val();
 				var mid = 'm'  + mn ; // li의 id
+				var trid = 'tr'  + mn ; // tr의 id
 				console.log("선택 취소할 mn : " + mn);
 				
 				$('#'+ mid).attr('style', "display:'';");
+				$('#'+ trid).attr('style', "display:'';");
 				$(this).parent().parent().remove();
 				
 				var select = $(this).parent().parent();
@@ -282,12 +295,75 @@
 				
 			});
 		});
+		// 사원명 검색
+			$(function() { 
+			$("#APPsearchBt").click(function() { 
+				//document.getElementById("appForm").setAttribute('action','searchMname.do' );
+				var searchName = document.getElementById("searchName").value;
+				
+				
+				$.ajax({
+					url:"searchMname.do",
+					data: {searchName:searchName},
+					type: "post",
+					dataType: "json",
+					success : function(data){
+							console.log(data);
+							$tableBody = $("#searchMemberTable_EA ");
+							
+							if(data.length > 0){	
+								for(var i in data){
+									var $tr = $("<tr id=tr"+data[i].mNo+">");
+									var $aMno = $("<td>").text(data[i].mNo);
+									var $dept = $("<td>").text(data[i].deptTitle);
+									var $aname = $("<td>").text(data[i].mName);
+									var $mn = $("<input type='hidden' name='mnoHidden' class='mnoHidden' value="+data[i].mNo+">");
+									
+									$tr.append($aMno);
+									$tr.append($dept);
+									$tr.append($aname);
+									$tr.append($mn);
+									$tableBody.append($tr);
+									
+								}
+								
+// 								 <!-- 검색 창에서 사원 선택 -->
+// 				          		  var ap= null;
+									$('.sea td').mouseenter(function(){
+										 $(this).parent().css({"cursor":"pointer"});
+										 $(this).parent().css({"background":"lightgray", "font-weight":"bold"});
+									}).mouseleave(function(){
+								      	$(this).parent().css({"background":"white", "font-weight":"normal"});
+								    }).click(function(){
+								    	$('.lang_list li').css({"border":"none"});
+								    	$('.sea td').parent().css({"border":"none"});
+								    	$(this).parent().css({"border":"3px solid gray"});
+								    	var mno = $(this).parent().children(":last").val();
+								    	ap = mno;
+								    	console.log('ap : ' + ap);
+									 });
+							}else{
+								var $tr = $("<tr>");
+								var $rContent = $("<td colspan='3'>").text("검색 결과가 없습니다.");
+								
+								$tr.append($rContent);
+								$tableBody.append($tr);
+							}
+					},
+					error : function(e){
+						console.log("error");
+					}
+				});
+				
+				})
+			})
+		
 		
 		// 최종 획인
 		$(function() { 
 			$("#comSelectBt").click(function() { 
-				var array = [];
 				
+				var array = [];
 				
 					var parent = window.opener;
 					 

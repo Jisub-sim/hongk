@@ -45,7 +45,7 @@
 	height: auto;
 }
 
-#ea_content span {
+#eat {
 	font-size: 30px;
 	font-weight: 500;
 	display: inline-block;
@@ -144,7 +144,15 @@
 		 <c:url var="deleteEA" value="deleteEA.do">
 			<c:param name="ea_no" value="${ ea.ea_no }"/>
 		</c:url>
-						
+		
+		<c:url var="TBackEAList" value="TBackEAList.do"/>
+		<c:url var="referEAList" value="referEAList.do"/>
+		<c:url var="wEAList" value="wEAList.do"/>	
+		<c:url var="completeEAList" value="completeEAList.do"/>	
+		<c:url var="earequest" value="earequest.do"/>	
+		<c:url var="temporEAList" value="temporEAList.do"/>				
+		<c:url var="progressEAList" value="progressEAList.do"/>		
+		 
 		 
 		<c:set var = "status" value="${ea.ea_status }" />
 		<c:set var ="drafter" value="${ea.drafter}"/>
@@ -159,7 +167,7 @@
 				            <button type="button" class="ea_bt" onclick="location.href='${takeBack}'">결재회수</button>
 				            <button type="button" class="ea_bt" onclick="applog();">진행현황</button>
 				            <button type="button" class="ea_bt"  onclick="fnSaveAsPdf();">PDF변환</button>
-				            <button type="button" class="ea_bt"  onclick="history.go(-1)">목록</button>
+				            <button type="button" class="ea_bt"  onclick="location.href='${earequest}'">목록</button>
 		       			</div>
 	       			</c:if>
 	       	<!-- 참조함 -->
@@ -167,7 +175,7 @@
 						<div class="btdiv">
 				            <button type="button" class="ea_bt" onclick="applog();">진행현황</button>
 				            <button type="button" class="ea_bt"  onclick="fnSaveAsPdf();">PDF변환</button>
-				            <button type="button" class="ea_bt"  onclick="history.go(-1)">목록</button>
+				            <button type="button" class="ea_bt"  onclick="location.href='${referEAList}'">목록</button>
 		       			</div>
 	       			</c:if>
        		<!-- 결재 대기함  -->
@@ -178,7 +186,7 @@
 			            <button type="button" class="ea_bt"  onclick="location.href='${updateEAPage}'">수정</button>
 			            <button type="button" class="ea_bt"  onclick="applog();">진행현황</button>
 			            <button type="button" class="ea_bt"  onclick="fnSaveAsPdf();">PDF변환</button>
-			            <button type="button" class="ea_bt"  onclick="history.go(-1)">목록</button>
+			            <button type="button" class="ea_bt"  onclick="location.href='${wEAList}'">목록</button>
 			        </div>
 			       </c:if>
 			  <!--  결재 진행함 -->
@@ -186,7 +194,7 @@
 			       <div class="btdiv">
 			       		<button type="button" class="ea_bt"  onclick="applog();">진행현황</button>
 			            <button type="button" class="ea_bt"  onclick="fnSaveAsPdf();">PDF변환</button>
-			            <button type="button" class="ea_bt"  onclick="history.go(-1)">목록</button>
+			            <button type="button" class="ea_bt"  onclick="location.href='${progressEAList}'">목록</button>
 			        </div>
 			       </c:if>
        			</c:if>
@@ -198,7 +206,7 @@
 	                <button type="button" class="ea_bt" onclick="location.href='${updateEAPage}'">수정</button>
 	                <button type="button" class="ea_bt" onclick="location.href='${teadelete}'">삭제</button>
 	                <button type="button" class="ea_bt" onclick="fnSaveAsPdf();">PDF변환</button>
-	                <button type="button" class="ea_bt" onclick="history.go(-1)">목록</button>
+	                <button type="button" class="ea_bt" onclick="location.href='${temporEAList}'">목록</button>
 	            </div>
 			</c:when>
 			<c:when test="${status eq 'C'}">
@@ -206,7 +214,7 @@
 	        <div class="btdiv">
 	                <button type="button" class="ea_bt" onclick="applog();">진행현황</button>
 	                <button type="button" class="ea_bt" onclick="fnSaveAsPdf();">PDF변환</button>
-	                <button type="button" class="ea_bt" onclick="history.go(-1)">목록</button>
+	                <button type="button" class="ea_bt" onclick="location.href='${completeEAList}'">목록</button>
 	            </div>
 			</c:when>
 			<c:when test="${status eq 'B'}">
@@ -216,13 +224,13 @@
  					<button type="button" class="ea_bt"  onclick="location.href='${updateEAPage}'">수정</button>
 	                <button type="button" class="ea_bt" onclick="retryEA();">재기안</button>
 	                <button type="button" class="ea_bt" onclick="applog();">진행현황</button>
-	                <button type="button" class="ea_bt" onclick="history.go(-1)">목록</button>
+	                <button type="button" class="ea_bt" onclick="location.href='${earequest}'">목록</button>
 	            </div>
 	             </c:if>
 	            <c:if test="${ CurPage eq 'TBack'  && drafter != loginUser.mNo}">
 		          <div class="btdiv">
 		               <button type="button" class="ea_bt" onclick="applog();">진행현황</button>
-		                <button type="button" class="ea_bt" onclick="location.href='${earequest}'">목록</button>
+		                <button type="button" class="ea_bt" onclick="location.href='${TBackEAList}'">목록</button>
 		            </div>
 		          </c:if>
 			</c:when>
@@ -258,7 +266,7 @@
 		</script>
   		
 		<div id="ea_content">
-			<span>기안서 작성</span>
+			<span id="eat">기안서 작성</span>
 			
 			<table id="approver_table" border="1">
 				<tr>
@@ -332,15 +340,23 @@
 				</tr>
 				<tr>
 					<td>결재자</td>
-					<td class="ea_line"></td>
+					<td > 
+						<c:forEach var="a" items="${ ap }">
+							${ a.mName } &nbsp;
+						</c:forEach>
+					</td>
 					<td>기안부서</td>
 					<td>${ ea.deptTitle }</td>
 				</tr>
 				<tr>
 					<td>참조자</td>
-					<td class="ea_line"></td>
-					<td style="border-bottom: 1px solid gray;">구분</td>
-					<td></td>
+					<td >
+						<c:forEach var="r" items="${ ref }">
+							${ r.mName } &nbsp;
+						</c:forEach>
+					</td>
+					<td style="border-bottom: 1px solid gray;">결재 번호</td>
+					<td>${ ea.ea_no }</td>
 				</tr>
 				<tr>
 					<td style="border-bottom: 1px solid gray;">제목</td>
@@ -353,11 +369,17 @@
 					<td colspan="4"
 						style="background: white; border-bottom: 1px solid gray;">
 						<div id="form_content_div">
-							<pre style="text-align: left; width: 90%; margin: auto;">
-						${ ea.ea_content }
-							</pre>
-
+							<pre style="text-align: left; width: 90%; margin: auto;">${ ea.ea_content }</pre>
 						</div>
+					</td>
+				</tr>
+				<tr></tr>
+				<tr>
+				<td>첨부파일</td>
+					<td colspan="3">
+						<c:if test="${ !empty f.original_FileName }">
+							<a href="${ contextPath }/resources/EAFileUpload/${ f.reName_FileName }" download="${ f.original_FileName }">${ f.original_FileName }</a>
+						</c:if>
 					</td>
 				</tr>
 			</table>
@@ -388,7 +410,7 @@
 				</tr>
 				<tr>
 					<td>파일</td>
-					<td><input type="file" name="ap_file"></td>
+					<td><input type="file" name="uploadFile"></td>
 				</tr>
 				<tr>
 					<td colspan="2">

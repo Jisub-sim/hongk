@@ -9,8 +9,11 @@ public class Files {
 	private String reName_FileName;
 	private Date save_Date;
 	private String File_type;
+
 	private String mName;
 	private int mNo;
+	private int mno;
+
 	public Files() {}
 	
 	
@@ -23,6 +26,15 @@ public class Files {
 		this.reName_FileName = reName_FileName;
 		this.save_Date = save_Date;
 		File_type = file_type;
+	}
+	
+
+	public int getMno() {
+		return mno;
+	}
+
+	public void setMno(int mno) {
+		this.mno = mno;
 	}
 
 
