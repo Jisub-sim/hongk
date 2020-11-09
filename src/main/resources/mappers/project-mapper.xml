@@ -303,6 +303,15 @@
 		FROM MEMBER
 		WHERE MNO=#{m}
 	</select>
+	<select id="selectProjectMain"  parameterType="Project" resultMap="projectResultSet">
+			 SELECT *
+        FROM PROJECT
+        WHERE PID IN (SELECT PID
+        FROM PMEMBER 
+        WHERE MNO=#{mNo}
+        AND PM_STATUS='Y')
+        AND ROWNUM  <![CDATA[ < ]]>6
+	</select>
 	
 	<select id="selectTask" resultMap="TaskResultSet">
 		SELECT *

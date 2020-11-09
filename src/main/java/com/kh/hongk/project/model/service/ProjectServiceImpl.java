@@ -218,5 +218,10 @@ public class ProjectServiceImpl implements ProjectService {
 		return pDao.selectAskFile(trId);
 	}
 
+	@Override
+	public ArrayList<Project> selectmyProjectMain(int mNo) {
+		return pDao.selectProjectMain(mNo);
+	}
+
 
 }
