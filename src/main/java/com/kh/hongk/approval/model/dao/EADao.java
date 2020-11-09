@@ -386,6 +386,16 @@ public class EADao {
 	public int updatewkend(Work wk) {
 		return sqlSession.update("workMapper.updatewkend", wk);
 	}
+	// Pmember 등록
+	public int insertPM(int manager) {
+	   return sqlSession.insert("projectMapper.insertPM", manager);
+	}
+	public Project selectp(int ea_no) {
+		return sqlSession.selectOne("projectMapper.selectp", ea_no);
+	}
+	public int PMupdateY(int pid) {
+		return sqlSession.update("projectMapper.PMupdateY", pid);
+	}
 	
 	
 

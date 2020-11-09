@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.member.exception.MemberException;
 import com.kh.hongk.member.model.service.MemberService;
 import com.kh.hongk.member.model.vo.Files;
@@ -71,10 +72,16 @@ public class MemberController {
 					}
 				
 			}
+			
 			int mno = loginUser.getmNo();
 			
+			ArrayList<Electronic_Approval> listWp = mService.listWp(mno);
+			System.out.println("listWp : " + listWp);
+			
 			Files newProfile = mService.selectProFiles(mno);
+			
 			model.addAttribute("file", newProfile);
+			model.addAttribute("listWp", listWp);
 			
 			System.out.println("로그인유저 : " + loginUser);
 			return "redirect:home.do";

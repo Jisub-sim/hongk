@@ -442,4 +442,24 @@
 		AND REF_FNO = #{trId}
 	</select>
 	
+	<!-- 결재 등록시 Pmember 정보 저장 ( status = W ) -->
+	<insert id="insertPM" parameterType="_int">
+		INSERT INTO PMEMBER VALUES (
+			#{ manager } , null, 'W', null, SEQ_PID.CURRVAL
+		)
+	</insert>
+	
+	<!-- 프로젝트 셀렉 -->
+	<select id="selectp" resultMap="projectResultSet">
+		SELECT *
+		FROM PROJECT
+		WHERE EA_NO = #{ ea_no }
+	</select>
+	
+	<update id="PMupdateY"  parameterType="_int">
+		UPDATE PMEMBER
+		SET PM_STATUS = 'Y'
+		WHERE PID = #{ pid }
+	
+	</update>
 </mapper>

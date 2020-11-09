@@ -52,12 +52,9 @@ public class WorkController {
 	
 	// 근무신청 클릭 시
 	 @RequestMapping("workinsert.do")
-	 public String WorkSelect(Work wk, Date start_time, Date end_time,
-			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no,
-			 @DateTimeFormat(pattern="HH:mm") Date fromDate) {
 
-//	 public String WorkSelect(Work wk, 
-//			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no ) {
+	 public String WorkSelect(Work wk, 
+			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no ) {
 
 		 int wktype= Integer.parseInt(wk_type);
 		 Member loginUser = (Member)session.getAttribute("loginUser");

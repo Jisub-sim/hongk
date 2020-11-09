@@ -323,9 +323,11 @@ private EAService eaService;
 		
 		int manager = Integer.parseInt(mid); 
 		Project p = new Project(ea.getEa_title(), ea.getEa_content(), pDate, deadLine, manager);
-		int resultEA = eaService.insertea(ea);
+		int resultEA = eaService.insertea(ea); // 결재 등록
 		
-		int resultP = eaService.inserteaP(p);
+		int resultP = eaService.inserteaP(p);  // 프로젝트 등록
+		int resultPM = eaService.insertPM(manager); // Pmember 등록
+		
 		System.out.println(" p : " + p);
 		
 		
@@ -508,6 +510,7 @@ private EAService eaService;
 			HttpServletRequest request, @RequestParam(value="uploadFile", required=false) MultipartFile file) {
 		Member loginUser = (Member)session.getAttribute("loginUser");
 		int approver_no = loginUser.getmNo();
+		int mno = loginUser.getmNo();
 		ap.setApprover_no(approver_no);	
 		System.out.println("Ap : " +ap);
 		
@@ -553,6 +556,10 @@ private EAService eaService;
 									int result3 =  eaService.EAupdateY(ea_no);
 									
 									int resultP =  eaService.PEAupdateY(ea_no);
+									Project p = eaService.selectp(ea_no);
+									int pid = p.getpId();
+									
+									int resultPM =  eaService.PMupdateY(pid);
 									
 									int resultann = eaService.annupdateY(ea_no);
 									Annual ann = eaService.selectAnn(ea_no);
