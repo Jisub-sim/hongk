@@ -44,7 +44,7 @@ public class HomeController {
 	private ProjectService pService;
 	@Autowired
 	private EAService eaService;
-	@Autowired
+	@Autowired 
 	private CalendarService cService;
 	
 	

@@ -301,20 +301,23 @@
 					<input class="cal_depttitle_input" value="${ jTitle } ${ loginUser.mName }" readonly>
 				</div>
 
-				<!--날짜 네비게이션  -->
 				<div class="navigation">
 					<a class="before_after_year"
 						href="./calendar.do?year=${today_info.search_year-1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt;&lt; <!-- 이전해 -->
-					</a> <a class="before_after_month"
+					</a>
+					<a class="before_after_month"
 						href="./calendar.do?year=${today_info.before_year}&month=${today_info.before_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						&lt; <!-- 이전달 -->
-					</a> <span class="this_month"> &nbsp;${today_info.search_year}.
+					</a> 
+					<span class="this_month"> &nbsp;${today_info.search_year}.
 						<c:if test="${today_info.search_month<10}">0</c:if>${today_info.search_month}
-					</span> <a class="before_after_month"
+					</span>
+					<a class="before_after_month"
 						href="./calendar.do?year=${today_info.after_year}&month=${today_info.after_month}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음달 --> &gt;
-					</a> <a class="before_after_year"
+					</a>
+					<a class="before_after_year"
 						href="./calendar.do?year=${today_info.search_year+1}&month=${today_info.search_month-1}&mNo=${mNo}&deptCode=${loginUser.deptCode}&pageurlnum=${pageurlnum1}">
 						<!-- 다음해 --> &gt;&gt;
 					</a>
@@ -365,13 +368,14 @@
 													<c:forEach var="a" items="${ aList }">
 														<c:if test="${ dateList.date < 10 }">
 															<c:if
-																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year &&
+																 a.annual_start.toString().substring(5,7)-1 eq dateList.month &&
+																  a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
 																<c:choose>
 																	<c:when test="${ a.annual_halftime eq 'am' }">
 																		<div class="cal_text2">오전반차</div>
 																	</c:when>
-																	<c:when test="${ a.annual_halftime eq 'pm' }">
-																	</c:when>
+																	<c:when test="${ a.annual_halftime eq 'pm' }"></c:when>
 																	<c:otherwise>
 																		<div class="cal_text3">휴가</div>
 																	</c:otherwise>
@@ -380,13 +384,14 @@
 														</c:if>
 														<c:if test="${ dateList.date >= 10 }">
 															<c:if
-																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year &&
+																 a.annual_start.toString().substring(5,7)-1 eq dateList.month &&
+																  a.annual_start.toString().substring(8,10) eq dateList.date}">
 																<c:choose>
 																	<c:when test="${ a.annual_halftime eq 'am' }">
 																		<div class="cal_text2">오전반차</div>
 																	</c:when>
-																	<c:when test="${ a.annual_halftime eq 'pm' }">
-																	</c:when>
+																	<c:when test="${ a.annual_halftime eq 'pm' }"></c:when>
 																	<c:otherwise>
 																		<div class="cal_text3">휴가</div>
 																	</c:otherwise>
@@ -417,7 +422,9 @@
 													<c:forEach var="a" items="${ aList }">
 														<c:if test="${ dateList.date < 10 }">
 															<c:if
-																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year &&
+																a.annual_start.toString().substring(5,7)-1 eq dateList.month &&
+																a.annual_start.toString().substring(8,10) eq 0+dateList.date}">
 																<c:if test="${ a.annual_halftime eq 'pm' }">
 																	<div class="cal_text2">오후반차</div>
 																</c:if>
@@ -425,7 +432,9 @@
 														</c:if>
 														<c:if test="${ dateList.date >= 10 }">
 															<c:if
-																test="${ a.annual_start.toString().substring(0,4) eq dateList.year && a.annual_start.toString().substring(5,7)-1 eq dateList.month && a.annual_start.toString().substring(8,10) eq dateList.date}">
+																test="${ a.annual_start.toString().substring(0,4) eq dateList.year &&
+																a.annual_start.toString().substring(5,7)-1 eq dateList.month &&
+																a.annual_start.toString().substring(8,10) eq dateList.date}">
 																<c:if test="${ a.annual_halftime eq 'pm' }">
 																	<div class="cal_text2">오후반차</div>
 																</c:if>
