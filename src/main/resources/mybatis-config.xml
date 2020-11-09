@@ -19,9 +19,15 @@
 		<typeAlias type="com.kh.hongk.calendar.model.vo.Calendar1" alias="Calendar"/>
 		<typeAlias type="com.kh.hongk.board.model.vo.Board" alias="Board"/>
 		<typeAlias type="com.kh.hongk.project.model.vo.Task" alias="Task"/>
+
+		<typeAlias type="com.kh.hongk.project.model.vo.Reply" alias="Reply"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.Request" alias="Request"/>
+		<typeAlias type="com.kh.hongk.project.model.vo.TrReply" alias="TrReply"/>
+
 		<typeAlias type="com.kh.hongk.annual.model.vo.Annual" alias="Annual"/>
 		<typeAlias type="com.kh.hongk.attendance.model.vo.Attendance" alias="Attendance"/>
 		<typeAlias type="com.kh.hongk.work.model.vo.Work" alias="Work"/>
+
 	</typeAliases>
 
 	<mappers>

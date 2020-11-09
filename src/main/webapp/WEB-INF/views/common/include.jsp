@@ -211,6 +211,10 @@ a {
 		<script>alert('${msg}');</script>
 		<c:remove var="msg"/>
 
+	</c:if>	
+	
+	<!-- 메뉴바는 어떤 페이지든 포함하고 있으므로 여기에서 contextPath 변수 값 선언 -->
+	<c:set var="contextPath" value="${ pageContext.servletContext.contextPath }" scope="application"/>
 
 
     <nav id="header">
@@ -219,11 +223,13 @@ a {
             <a href="" id="logo_font">Hongk</a>
         </div>
         	<c:url var="approval" value="app.do"/>
-            <c:url var="project" value="project.do"/>
+            <c:url var="project" value="myProject.do"/>
             <c:url var="attlist" value="attlist.do"/>
         <ul id="navi_font">
+
             <li><a href="${ approval }"class="navi_font">전자결재</a></li>
             <li><a href="${ project }" class="navi_font">프로젝트</a></li>
+
             <li><a href="" class="navi_font">일정관리</a></li>
             <li><a href="${ attlist }" class="navi_font">근태관리</a></li>
             <li><a href="" class="navi_font">게시판</a></li>
@@ -297,8 +303,6 @@ a {
         <li><a href="propose.html">제안 게시판</a></li>
         <li><a href="department.html">부서 게시판</a></li>
         <li><a href="free.html">자유 게시판</a></li>
-        <li><a href="myProject.do">내 프로젝트보기</a></li>
-
       </ul>
        -->
       

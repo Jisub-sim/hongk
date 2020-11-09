@@ -138,7 +138,7 @@ hr {
 	margin-left:50px;
 }
 #taskT{
-	margin-left:15px;
+	margin-left:15px;	
 }
 </style>
 </head>
@@ -148,7 +148,9 @@ hr {
 	<div id="main">
 
 		<form action="taskadd.do" method="post">
-	
+			<c:url var="project" value="project.do">
+				<c:param name="pId" value="${pId}"/>
+			</c:url>
 			<ul>
 				<li><a href="${ project }" id="back">뒤로가기</a> <input type="submit" id="save" value="등록하기">
 				</li>

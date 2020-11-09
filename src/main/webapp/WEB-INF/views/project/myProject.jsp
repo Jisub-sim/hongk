@@ -40,7 +40,7 @@
 			<th class="l1">요청</th>
 			<th class="l1">업무</th>
 			<th class="l1">상태</th>
-			<th id="date" class="l1">등록일</th>
+			<th id="date" class="l1">마감일</th>
 			<c:forEach var="p" items="${ list }">
 			<tr>
 				<td class="l1">${ p.pId }</td>
@@ -53,7 +53,7 @@
 				<td class="l1"><c:if test="${ p.progress eq 'I'}">진행중</c:if>
 				<c:if test="${ p.progress eq 'S'}">보류</c:if>
 				<c:if test="${ p.progress eq 'C'}">완료</c:if></td>
-				<td class="l1">${ p.pDate }</td>
+				<td class="l1">${ p.dateString }</td>
 			</tr>
 			</c:forEach>
 		</table>
