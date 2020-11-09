@@ -4,9 +4,9 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<!-- 프로젝트 시작위치 설정 -->
-	<welcom-file-list>
-		<welcom-file>index.jsp</welcom-file>
-	</welcom-file-list>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<!-- contextConfigLocation

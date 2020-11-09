@@ -52,6 +52,7 @@ public class WorkController {
 	
 	// 근무신청 클릭 시
 	 @RequestMapping("workinsert.do")
+
 	 public String WorkSelect(Work wk, 
 			 String wk_type,String mid, HttpSession session, Electronic_Approval ea, int form_no ) {
 
