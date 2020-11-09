@@ -28,7 +28,6 @@
 #ask{
     height:250px;
     width:46%;
-    float:right;
     margin-right: 2.4%;
     overflow:scroll;
 }
@@ -116,6 +115,7 @@ ul, li{
 #pg{
 	color:white;
 }
+
 </style>
 </head>
 <body>

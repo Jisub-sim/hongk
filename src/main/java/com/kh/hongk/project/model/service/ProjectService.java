@@ -93,6 +93,8 @@ public interface ProjectService {
 	public int insertAFile(Files f);
 	// ask File select 메소드
 	public Files selectAskFile(int trId);
+	// main 상위 5개 pId만 뽑는 메소드
+	public ArrayList<Project> selectmyProjectMain(int mNo);
 	
 	
 

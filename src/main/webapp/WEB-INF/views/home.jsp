@@ -5,6 +5,20 @@
 <head>
 	<title>Home</title>
 </head>
+<style>
+.pTitle{
+ width: 140px;
+}	
+.pmName{
+	width:30px;
+}
+.dateString{
+	width:70px;
+}
+.ptable{
+	text-align:center;
+}
+</style>
 <body>
 	<jsp:include page="common/include.jsp"/>
 	  <div id="main">
@@ -14,22 +28,24 @@
                 <div class="projectwrap">
                 <table class="projecttable">
                     <tr>
-                    <th></th>
-                    <th></th>
-                      <th>프로젝트 명</th>
-                      
-                      <td>팀명</td>
                     
-                      <th>업무수</th>
+                      <th class="pTitle">프로젝트 명</th>
+                    
+                      <th class="pmName">담당자</th>
                    
-                      <th>진행률</th>
-                    </th>
-                    <tr>
-
-                      <td>파이널 프로젝트</td>
-                      <td>개발 1팀 </td>
-                      <td> 5 </td>
-                      <td> 30% </td>
+                      <th class="dateString">마감일</th>
+                    </tr>
+						<c:forEach var="p" items="${plist}">
+						<c:url var="project" value="project.do">
+							<c:param name="pId" value="${p.pId}"/>
+						</c:url>
+					<tr class="ptable">
+						<td><a href="${project}">${p.pTitle }</a></td>
+						<td>${p.mName }</td>
+						<td>${p.dateString}</td>
+					</tr>		
+							
+					</c:forEach>
                   </table>
                 
                   </div>
