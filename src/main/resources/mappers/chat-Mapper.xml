@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapepr 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="chatMapper">
+	<resultMap id="chatResultSet" type="Room">
+		<id property="chNo" column="CHNO"/>
+		<result property="fromId" column="FROM_ID"/>
+		<result property="toId" column="TO_ID"/>
+		<result property="chatContent" column="CHAT_CONTENT"/>
+		<result property="chatTime" column="CHAT_TIME"/>
+	</resultMap>
+	
+	<select id="selectChatList" resultMap="chatResultSet" parameterType="Room">
+	  SELECT *
+    	FROM ROOM   
+    		WHERE (FROM_ID = #{fromId} AND TO_ID = #{toId}) 
+    		OR (FROM_ID= #{toId} AND TO_ID = #{fromId})
+		ORDER BY CHNO
+	</select>
+	
+	<insert id="insertChat" parameterType="Room" >
+		INSERT INTO ROOM VALUES
+		(SEQ_CHNO.NEXTVAL, #{fromId}, #{toId}, #{chatContent}, SYSDATE+1440)
+	</insert> 
+</mapper>

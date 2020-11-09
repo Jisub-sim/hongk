@@ -107,8 +107,6 @@ color: red;
     100% {opacity:1;}
 }
 
-
-출처: https://pikabu.tistory.com/77 [피카부]
 </style>
 
 
