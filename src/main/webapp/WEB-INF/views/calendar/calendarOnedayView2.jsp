@@ -1,10 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="com.kh.hongk.calendar.model.vo.Calendar1"%>
+	pageEncoding="UTF-8" import="java.util.ArrayList, com.kh.hongk.calendar.model.vo.Calendar1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+	ArrayList<Integer> test = (ArrayList<Integer>)request.getAttribute("test");
+	pageContext.setAttribute("test", test);
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css"/>
 <title>Insert title here</title>
 <style>
 .cal_wrap {
@@ -98,18 +105,91 @@
 
 .cal_text_table td {
 	border: 2px solid skyblue;
+	padding: 0;
+	height: 45px;
 	text-align: center;
 	font-size: 15px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#cal_th1, #cal_th2{
+	width: 99px;
+}
+
+#cal_th3{
+	width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#cal_th4{
+	width: 250px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#cal_th5, #cal_th6{
+	width: 150px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#cal_th7{
+	width: 100px;
 }
 
 .cal_text_table button {
 	margin: 1px;
 }
 
-#cal_td7 {
-	padding: 0;
-	margin: 0;
+.cal_td3_div{
+	width: 145px;
+	height: 20px;
+	padding: 0 0 0 5px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
+.cal_td4_div{
+	width: 245px;
+	height: 20px;
+	padding: 0 0 0 5px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.cal_td5_div, .cal_td6_div{
+	width: 145px;
+	height: 20px;
+	padding: 0 0 0 5px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cal_td7_div{
+	width: 95px;
+	height: 20px;
+	padding: 0 0 0 5px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.cal_td3_div:hover, .cal_td4_div:hover,
+ .cal_td5_div:hover, .cal_td6_div:hover{
+	height: auto;
+	white-space: normal;
+	overflow: visible;
+}
+
 </style>
 </head>
 <body>
@@ -119,94 +199,116 @@
 	<div id="main">
 		<div class="cal_wrap">
 			<div class="cal_ymd_div">
-				<p class="cal_ymd_p">${ calyear }년${ calmonth }월 ${ caldate }일</p>
+				<p class="cal_ymd_p" >${ calyear }년${ calmonth }월 ${ caldate }일</p>
 			</div>
 			<div class="cal_name_div">
 				<select class="cal_deptmember_select" id="cal_deptmember_select" name="mName">
-						<c:forEach var="dm" items="${ dmList }">
-							<option value="${ dm.mNo }">${ dm.jobCode }  ${ dm.mName }</option>
+						<c:forEach var="tm" items="${ tmList }">
+							<option value="${ tm.mNo }">${ tm.jobCode }  ${ tm.mName }</option>
 						</c:forEach>
 					</select>
 			</div>
 			<div class="cal_input_div">
-				<button class="cal_input_btn" type="button"
-					onclick="insert_popup();">일정 입력</button>
+				<c:if test="${ loginUser.mNo eq mNo }">
+					<button class="cal_input_btn" type="button"onclick="insert_popup();">일정 입력</button>
+				</c:if>
+				<c:if test="${ loginUser.mNo ne mNo }">
+					<button class="cal_input_btn" type="button">일정 입력</button>
+				</c:if>
 			</div>
 			<div class="cal_text_div">
 				<table class="cal_text_table">
 					<tr>
-						<th>시작시간</th>
-						<th>종료시간</th>
-						<th>업무종류</th>
-						<th>프로젝트명</th>
-						<th>제목</th>
-						<th>장소</th>
-						<th></th>
+						<th id="cal_th1">시작시간</th>
+						<th id="cal_th2">종료시간</th>
+						<th id="cal_th3">제목</th>
+						<th id="cal_th4">프로젝트</th>
+						<th id="cal_th5">업무종류</th>
+						<th id="cal_th6">장소</th>
+						<th id="cal_th7"></th>
 					</tr>
-
 					<c:forTokens var="i"
-						items="9.00,9.30,10.00,10.30,11.00,11.30,13.00,13.30,14.00,14.30,15.00,15.30,16.00,16.30,17.00,17.30"
+						items="9:00,9:30,10:00,10:30,11:00,11:30,13:00,13:30,14:00,14:30,15:00,15:30,16:00,16:30,17:00,17:30"
 						delims="," varStatus="status">
 						<tr>
-							<td id="cal_td1">${ i }</td>
+							<td id="cal_td1" class="cal_td1">${ i }</td>
 							<c:choose>
-								<c:when test="${ status.count == 1 }">
-									<td id="cal_td2[${status.count}]">9:30</td>
+								<c:when test="${ status.index == 0 }">
+									<td class="cal_td2">9:30</td>
 								</c:when>
-								<c:when test="${ status.count == 2 }">
-									<td id="cal_td2[${status.count}]">10:00</td>
+								<c:when test="${ status.index == 1 }">
+									<td class="cal_td2">10:00</td>
 								</c:when>
-								<c:when test="${ status.count == 3 }">
-									<td id="cal_td2[${status.count}]">10:30</td>
+								<c:when test="${ status.index == 2 }">
+									<td class="cal_td2">10:30</td>
 								</c:when>
-								<c:when test="${ status.count == 4 }">
-									<td id="cal_td2[${status.count}]">11:00</td>
+								<c:when test="${ status.index == 3 }">
+									<td class="cal_td2">11:00</td>
 								</c:when>
-								<c:when test="${ status.count == 5 }">
-									<td id="cal_td2[${status.count}]">11:30</td>
+								<c:when test="${ status.index == 4 }">
+									<td class="cal_td2">11:30</td>
 								</c:when>
-								<c:when test="${ status.count == 6 }">
-									<td id="cal_td2[${status.count}]">12:00</td>
+								<c:when test="${ status.index == 5 }">
+									<td class="cal_td2">12:00</td>
 								</c:when>
-								<c:when test="${ status.count == 7 }">
-									<td id="cal_td2[${status.count}]">13:30</td>
+								<c:when test="${ status.index == 6 }">
+									<td class="cal_td2">13:30</td>
 								</c:when>
-								<c:when test="${ status.count == 8 }">
-									<td id="cal_td2[${status.count}]">14:00</td>
+								<c:when test="${ status.index == 7 }">
+									<td class="cal_td2">14:00</td>
 								</c:when>
-								<c:when test="${ status.count == 9 }">
-									<td id="cal_td2[${status.count}]">14:30</td>
+								<c:when test="${ status.index == 8 }">
+									<td class="cal_td2">14:30</td>
 								</c:when>
-								<c:when test="${ status.count == 10 }">
-									<td id="cal_td2[${status.count}]">15:00</td>
+								<c:when test="${ status.index == 9 }">
+									<td class="cal_td2">15:00</td>
 								</c:when>
-								<c:when test="${ status.count == 11 }">
-									<td id="cal_td2[${status.count}]">15:30</td>
+								<c:when test="${ status.index == 10 }">
+									<td class="cal_td2">15:30</td>
 								</c:when>
-								<c:when test="${ status.count == 12 }">
-									<td id="cal_td2[${status.count}]">16:00</td>
+								<c:when test="${ status.index == 11 }">
+									<td class="cal_td2">16:00</td>
 								</c:when>
-								<c:when test="${ status.count == 13 }">
-									<td id="cal_td2[${status.count}]">16:30</td>
+								<c:when test="${ status.index == 12 }">
+									<td class="cal_td2">16:30</td>
 								</c:when>
-								<c:when test="${ status.count == 14 }">
-									<td id="cal_td2[${status.count}]">17:00</td>
+								<c:when test="${ status.index == 13 }">
+									<td class="cal_td2">17:00</td>
 								</c:when>
-								<c:when test="${ status.count == 15 }">
-									<td id="cal_td2[${status.count}]">17:30</td>
+								<c:when test="${ status.index == 14 }">
+									<td class="cal_td2">17:30</td>
 								</c:when>
 								<c:otherwise>
-									<td id="cal_td2[${status.count}]">18:00</td>
+									<td class="cal_td2">18:00</td>
 								</c:otherwise>
 							</c:choose>
-							<td id="cal_td3[${status.count}]"></td>
-							<td id="cal_td4"></td>
-							<td id="cal_td5"></td>
-							<td id="cal_td6"></td>
-							<td id="cal_td7">
-								<button id="cal_test_${ i }" type="button" onclick="calupdate();">수정</button>
-								<button id="cal_test_${ i }" type="button" onclick="caldelete();">삭제</button>
-							</td>
+							<c:forEach var="c" items="${ calList }">
+								<c:if test="${ i eq c.cBeginTime }">
+									<td class="cal_td3"><div class="cal_td3_div tooltip">${ c.cTitle }</div></td>
+									<td class="cal_td4"><div class="cal_td4_div">${ c.pTitle }</td>
+									<td class="cal_td5"><div class="cal_td5_div">${ c.cKind }</td>
+									<td class="cal_td6"><div class="cal_td6_div">${ c.cPlace }</td>
+									<td class="cal_td7">
+										<c:if test="${ loginUser.mNo eq mNo }">
+											<button class="cal_update_btn" type="button" value="${ c.cId }">수정</button>
+											<button class="cal_delete_btn" type="button" value="${ c.cId }">삭제</button>
+										</c:if>
+										<c:if test="${ loginUser.mNo ne mNo }">
+											<button class="cal_update_btn2" type="button" value="${ c.cId }">수정</button>
+											<button class="cal_delete_btn2" type="button" value="${ c.cId }">삭제</button>
+										</c:if>
+									</td>
+								</c:if>
+							</c:forEach>
+							<c:forEach var="t" items="${ test }">
+								<c:if test="${ status.index eq t }">
+		                    		<td class="cal_td3"></td>
+			                        <td class="cal_td4"></td>
+			                        <td class="cal_td5"></td>
+			                        <td class="cal_td6"></td>
+			                        <td class="cal_td7"></td>
+		                    	</c:if>
+		                   </c:forEach>
 						</tr>
 					</c:forTokens>
 				</table>
@@ -225,39 +327,44 @@
     		window.open(url, name, option)
     	};
     	
-    	function calupdate(){
-    		<c:url var="calupdate" value="calOnedayUpView.do">
-    			<c:param name="cId" value="27"/>
-			</c:url>
-			var url = "${ calupdate }";
-			var name = "일정수정";
-			var option = "width = 800, height = 410, left = 100, top = 50, location=no";
-			window.open(url, name, option)
-    	};
-    	
     	function reloadPage() {
     	    location.reload();
     	};
     	
     	window.onload = function(){
-    		
     		$("#cal_teammember_select").val(${mNo}).prop("selected", true);
 			$("#cal_deptmember_select").val(${mNo}).prop("selected", true);
-
-    	};
+    	}
+    	
+    	$(".cal_update_btn").click(function(){ 
+    		var cId = $(this).val();
+			var url = "./calOnedayUpView.do?cId="+cId;
+			var name = "일정수정";
+			var option = "width = 800, height = 410, left = 100, top = 50, location=no";
+			window.open(url, name, option)
+		});
+    	
+    	$(".cal_delete_btn").click(function(){ 
+    		result = confirm("일정을 삭제하시겠습니까?");
+    		if(result == true){
+    			var cId = $(this).val();
+        		location.href = "./calOnedayDelete.do?cId="+cId+"&cDate=${cDate}&mNo=${mNo}&deptCode=${loginUser.deptCode}";	
+    		}
+		});
     	
     	$(function(){
 			$('#cal_teammember_select').change(function(){
 				var mNo = $("#cal_teammember_select option:selected").val();
-				location.href="./calOneday.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
+				var cDate = $(cDate);
+    			location.href="./calOnedayTeam.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
 			});
 			$('#cal_deptmember_select').change(function(){
 				var mNo = $("#cal_deptmember_select option:selected").val();
-				location.href="./calOneday.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
+				location.href="./calOnedayTeam.do?cDate=${cDate}&mNo="+mNo+"&deptCode=${loginUser.deptCode}";
 			});
 		});
     	
-    	
+    	  
     </script>
 </body>
 </html>
