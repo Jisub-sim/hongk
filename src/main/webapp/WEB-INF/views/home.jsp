@@ -20,6 +20,10 @@
 	text-align:center;
 }
 
+.projecttable{
+	text-align: center;
+}
+
 /* 캘린더 CSS 시작 */
 .calendar td { 
 	font-family: "돋움";
@@ -277,6 +281,7 @@
 	text-overflow: ellipsis;
 }
 /* 캘린더 CSS 종료 */
+
 </style>
 <body>
 	<jsp:include page="common/include.jsp"/>
@@ -756,38 +761,29 @@
             <div class="Division" id="noticediv">
                 <div class="Divisiontext">공지사항</div>
                 <div class="projectwrap">
+                
                     <table class="projecttable">
                         <tr>
                             <th>NO</th>
-                            <th>상태</th>
+                            <th></th>
+                            <th>중요</th>
                             <th>제목</th>
                             <th>작성일</th>
                         </tr>
-                        <tr>    
-                            <th>22</th>
-                            <th><i id="blink" class="fas fa-bullhorn"></i></th>
-                            <th>공지사항 제목</th>
-                            <th>2020/11/11</th>
-                        </tr>
-                        <tr>    
-                            <th>22</th>
-                            <th><i id="blink" class="fas fa-bullhorn"></i></th>
-                            <th>공지사항 제목</th>
-                            <th>2020/11/11</th>
-                        </tr>
-                        <tr>    
-                            <th>22</th>
-                            <th><i id="blink" class="fas fa-bullhorn"></i></th>
-                            <th>공지사항 제목</th>
-                            <th>2020/11/11</th>
-                        </tr>
-                        <tr>    
-                            <th>22</th>
-                            <th><i id="blink" class="fas fa-bullhorn"></i></th>
-                            <th>공지사항 제목</th>
-                            <th>2020/11/11</th>
-                        </tr>
-                    
+                       <c:forEach var="n" items="${ boardlist }">
+                       	<c:if test="${n.b_Level == 1 }">
+							<c:url var="bdetail" value="bdetail.do">
+								<c:param name="bId" value="${n.bId}"/>
+							</c:url>
+							<tr>
+								<td>${n.bId }</td>
+								<td></td>
+								<td><i id="blink" class="fas fa-bullhorn"></i></td>
+								<td><a href="${ bdetail }">${ n.bTitle }</a></td>
+								<td>${n.createDate }</td>
+							</tr>		
+                       	</c:if>
+						</c:forEach>
                     </table>
                 </div>
             </div>
