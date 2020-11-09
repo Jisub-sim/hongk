@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.hongk.annual.model.vo.Annual;
 import com.kh.hongk.calendar.model.exception.CalendarException;
 import com.kh.hongk.calendar.model.service.CalendarService;
 import com.kh.hongk.calendar.model.vo.Calendar1;
@@ -27,7 +27,7 @@ public class CalendarController {
 	@Autowired
 	private CalendarService cService;
 	
-	@RequestMapping(value = "calendar.do", method = RequestMethod.GET)
+	@RequestMapping(value = "calendar.do", method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView calendar(ModelAndView mv, HttpServletRequest request, DateData dateData,
 								 String deptCode, int mNo){
 		
@@ -81,26 +81,22 @@ public class CalendarController {
 		}
 		
 		ArrayList<Member> dmList = cService.selectCalDMemberList(deptCode);
-		/*ArrayList<String> deptTitle = cService.selectDeptTitle(deptCode);
-		System.out.println(deptTitle);*/
 		
 		Pmember p = cService.selectCalPid(mNo);
-		System.out.println("p = " + p);
-		System.out.println("mNo 테스트 = " + mNo);
 		
 		int pId = p.getpId();
 		
 		ArrayList<Member> tmList = cService.selectCalTMemberList(pId);
-		/*ArrayList<String> teamTitle = cService.selectTeamTitle(pId);
-		System.out.println(teamTitle);*/
 		
 		Calendar1 c = new Calendar1();
 		c.setcDate(cDate);
 		c.setmName(mNo);
 		
-		System.out.println("c = " + c);
-		
 		ArrayList<Calendar1> calList = cService.selectCalendarList(c);
+		
+		ArrayList<Annual> aList = cService.selectCalAnnualList(mNo);
+		
+		System.out.println("aList = " + aList);
 		
 		System.out.println("dateList = " + dateList);
 		System.out.println("today_info = " + today_info);
@@ -113,11 +109,11 @@ public class CalendarController {
 		mv.addObject("dateList", dateList);		//날짜 데이터 배열
 		mv.addObject("today_info", today_info);
 		mv.addObject("dmList", dmList);
-		/*mv.addObject("deptTitle", deptTitle);*/
 		mv.addObject("tmList", tmList);
-		/*mv.addObject("teamTitle", teamTitle);*/
 		mv.addObject("calList", calList);
 		mv.addObject("mNo", mNo);
+		/*mv.addObject("numtest", numtest);*/
+		mv.addObject("aList", aList);
 		mv.setViewName("calendar/calendarTeam");
 		
 		return mv;
@@ -236,15 +232,47 @@ public class CalendarController {
 	public ModelAndView calendarInsert(ModelAndView mv, Calendar1 c, int mName) {
 		System.out.println("c1 = " + c);
 		ArrayList<Calendar1> result = cService.selectInsertCheck(c);
-		System.out.println("result = " + result);
 		
 		if(!result.isEmpty()) {
 			throw new CalendarException("지정한 시간에 이미 일정이 존재합니다.");
 		}
 		
-		int result2 = cService.insertCalendar(c);
+		String cDate = c.getcDate();
 		
-		if(result.isEmpty() && result2 > 0) {
+		ArrayList<Annual> result2 = cService.selectCalAnnualCheck(cDate);
+		
+		System.out.println("result2 = " + result2);
+		
+		int count = 0;
+		if(!result2.isEmpty()) {
+			if(result2.get(0).getAnnual_type() == 1) {
+				System.out.println("휴가사용일");
+				throw new CalendarException("휴가 사용일 입니다.");
+			}else if(result2.get(0).getAnnual_type() == 4) {
+				if(result2.get(0).getAnnual_halftime() == "am") {
+					if(c.getcBeginTime() == "9:00" || c.getcBeginTime() == "9:30" || c.getcBeginTime() == "10:00" || c.getcBeginTime() == "10:30" || 
+							c.getcBeginTime() == "11:00" || c.getcBeginTime() == "11:30") {
+						System.out.println("오전반차 사용일");
+						throw new CalendarException("오전반차 사용일 입니다.");
+					}
+					count = 1;
+				}else if(result2.get(0).getAnnual_halftime() == "pm") {
+					if(c.getcBeginTime() == "13:00" || c.getcBeginTime() == "13:30" || c.getcBeginTime() == "14:00" || c.getcBeginTime() == "14:30" ||
+							c.getcBeginTime() == "15:00" || c.getcBeginTime() == "15:30" || c.getcBeginTime() == "16:00" || c.getcBeginTime() == "16:30" ||
+							c.getcBeginTime() == "17:00" || c.getcBeginTime() == "17:00") {
+						System.out.println("오후반차 사용일");
+						throw new CalendarException("오후반차 사용일 입니다.");
+					}
+					count = 1;
+				}
+			}
+		}
+		int result3 = 0;
+		if(result.isEmpty() && (result2.isEmpty() || count == 1)){
+			result3 = cService.insertCalendar(c);
+		}
+		
+		if(result3 > 0) {
 			mv.addObject("mName", mName);
 			mv.setViewName("calendar/calendarClose");
 			return mv;
@@ -266,10 +294,44 @@ public class CalendarController {
 	}
 	
 	@RequestMapping("calOnedayUpdate.do")
-	public ModelAndView calendarOnedayUpdate(ModelAndView mv, int cId) {
-		int result = cService.updateCalendar(cId);
+	public ModelAndView calendarOnedayUpdate(ModelAndView mv, int cId, Calendar1 c) {
+		ArrayList<Calendar1> result = cService.selectInsertCheck(c);
 		
-		if(result > 0) {
+		if(!result.isEmpty()) {
+			throw new CalendarException("지정한 시간에 이미 일정이 존재합니다.");
+		}
+		
+		String cDate = c.getcDate();
+		
+		ArrayList<Annual> result2 = cService.selectCalAnnualCheck(cDate);
+		
+		System.out.println("result2 = " + result2);
+		
+		int count = 0;
+		if(!result2.isEmpty()) {
+			if(result2.get(0).getAnnual_type() == '1') {
+				throw new CalendarException("휴가 사용일 입니다.");
+			}else if(result2.get(0).getAnnual_type() == '4') {
+				if(result2.get(0).getAnnual_halftime() == "am") {
+					if(c.getcBeginTime() == "9:00" || c.getcBeginTime() == "9:30" || c.getcBeginTime() == "10:00" || c.getcBeginTime() == "10:30" || 
+							c.getcBeginTime() == "11:00" || c.getcBeginTime() == "11:30") {
+						throw new CalendarException("오전반차 사용일 입니다.");
+					}
+					count = 1;
+				}else if(result2.get(0).getAnnual_halftime() == "pm") {
+					if(c.getcBeginTime() == "13:00" || c.getcBeginTime() == "13:30" || c.getcBeginTime() == "14:00" || c.getcBeginTime() == "14:30" ||
+							c.getcBeginTime() == "15:00" || c.getcBeginTime() == "15:30" || c.getcBeginTime() == "16:00" || c.getcBeginTime() == "16:30" ||
+							c.getcBeginTime() == "17:00" || c.getcBeginTime() == "17:00") {
+						throw new CalendarException("오후반차 사용일 입니다.");
+					}
+					count = 1;
+				}
+			}
+		}
+
+		int result3 = cService.updateCalendar(c);
+		
+		if(result.isEmpty() && (result2.isEmpty() || count == 1) && result3 > 0) {
 			mv.setViewName("calendar/calendarClose");
 		} else {
 			throw new CalendarException("일정 수정에 실패하였습니다.");
