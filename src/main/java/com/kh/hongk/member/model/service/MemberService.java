@@ -2,6 +2,7 @@ package com.kh.hongk.member.model.service;
 
 import java.util.ArrayList;
 
+import com.kh.hongk.approval.model.vo.Electronic_Approval;
 import com.kh.hongk.member.model.vo.Files;
 import com.kh.hongk.member.model.vo.Member;
 
@@ -28,6 +29,8 @@ public interface MemberService {
 	public Files selectProFiles(int mno);
 	// 기존 프로필 파일 삭제
 	public int FileDelete(int file_no);
+
+	public ArrayList<Electronic_Approval> listWp(int mno);
 
 
 

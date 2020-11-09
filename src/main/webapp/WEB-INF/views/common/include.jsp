@@ -764,7 +764,8 @@ div.message.right .corner {
 	</c:if>
 	<nav id="header">
 		<div id="logo_div">
-			<i class="fab fa-accusoft"></i> <a href="" id="logo_font">Hongk</a>
+			<c:url var="home" value="home.do"/>
+			<i class="fab fa-accusoft"></i> <a href="${home }" id="logo_font">Hongk</a>
 		</div>
 		<c:url var="approval" value="app.do">
 			<c:param name="pageurlnum" value="1" />
@@ -791,6 +792,10 @@ div.message.right .corner {
 			<li id="1"><a href="${ attlist }" class="navi_font">근태관리</a></li>
 			<li id="1"><a href="${ board }" class="navi_font">게시판</a></li>
 			<li id="1"><a href="" class="navi_font"> 정보수정</a></li>
+			<li> <c:if test="${ loginUser.mLevel <= 2 }">
+               		<a href="${ MemberJoin }" class="navi_font">사원등록</a>
+           		 </c:if>
+            </li>
 		</ul>
 	</nav>
 
@@ -830,9 +835,9 @@ div.message.right .corner {
 						src="${pageContext.request.contextPath}/resources/ProfileFileUpload/profileDefault.PNG"
 						width="140px" height="140px" />
 				</c:if>
-				<h4>${ loginUser.mName }/${ loginUser.jobCode }/ ${ loginUser.deptCode }</h4>
+				<h4>${ loginUser.mName }/${ loginUser.jobTitle }/ ${ loginUser.deptTitle }</h4>
 				<c:url var="logout" value="logout.do" />
-				<button a href="${logout}">로그아웃</button>
+				<button><a href="${logout}">로그아웃</a></button>
 			</c:if>
 		</header>
 
@@ -870,7 +875,6 @@ div.message.right .corner {
 							<a href="${ FormInsertPage }">양식 추가</a>
 						</c:if>
 					</div></li>
-
 			</ul>
 		</div>
 		</c:if>
@@ -929,35 +933,6 @@ div.message.right .corner {
 		</c:if>
 
 
-		<!--    
-
-         <c:url var="formList" value="formList.do"/>
-        <c:url var="earequest" value="earequest.do"/>
-        <c:url var="temporEAList" value="temporEAList.do"/>
-        <c:url var="waitingEAList" value="waitingEAList.do"/>
-        <c:url var="progressEAList" value="progressEAList.do"/>
-        <c:url var="completeEAList" value="completeEAList.do"/>
-        <c:url var="TBackEAList" value="TBackEAList.do"/>
-        <c:url var="referEAList" value="referEAList.do"/>
-        <c:url var="sigList" value="sigList.do"/>
-        <c:url var="FormInsertPage" value="FormInsertPage.do"/>
-        <ul>
-        <li><br><b>기안</b></li>
-        <li><a href="${ formList }">기안문 작성</a></li>
-        <li><a href="${ earequest }">결재 요청함</a></li>
-        <li><a href="${ temporEAList }">임시 저장함</a></li>
-        <li><br><b>결재</b></li>
-        <li><a href="${ waitingEAList }">결재대기함</a></li>
-        <li><a href="${ progressEAList }">결재진행함</a></li>
-        <li><a href="${ completeEAList }">완료문서함</a></li>
-        <li><a href="${ TBackEAList }">반려문서함</a></li>
-        <li><a href="${ referEAList }">참조문서함</a></li>
-        <li><br><b>기타</b></li>
-        <li><a href="${ sigList }">서명관리</a></li>
-        <!-- 양식 추가 가능한 권한은..? -->
-
-		<li><a href="${ FormInsertPage }">양식 추가</a></li>
-		</ul>
 	</div>
 
 	<div id="icon_menu">

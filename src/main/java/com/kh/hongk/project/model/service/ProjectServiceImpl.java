@@ -17,7 +17,7 @@ import com.kh.hongk.project.model.vo.Request;
 import com.kh.hongk.project.model.vo.Task;
 import com.kh.hongk.project.model.vo.TrReply;
 
-@Service("bService")
+@Service("pService")
 public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	private ProjectDao pDao;
