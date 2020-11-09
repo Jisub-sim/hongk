@@ -85,7 +85,7 @@
 				</tr>
 				<tr>
 					<td> 프로필 등록 </td>
-					<td><input type="file" id="imagefileupload" name="uploadFile"  style="border:1px solid gray;"></td>
+					<td colspan="2"><input type="file" id="imagefileupload" name="uploadFile"  style="border:1px solid gray; height:auto"></td>
 				</tr>
 				<tr>
 					<td>성별</td>

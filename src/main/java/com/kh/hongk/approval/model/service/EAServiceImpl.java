@@ -171,8 +171,8 @@ public class EAServiceImpl implements EAService {
 	}
 //////// 참조 리스트
 	@Override
-	public ArrayList<Electronic_Approval> selectListrefea(int re_no ,PageInfo pi) {
-		return eaDao.selectListrefea(re_no, pi);
+	public ArrayList<Electronic_Approval> selectListrefea(int mno ,PageInfo pi) {
+		return eaDao.selectListrefea(mno, pi);
 	}
 	// 첫번째 결재자 결재 하였는가 
 	@Override
